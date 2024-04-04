@@ -1,10 +1,6 @@
 <template>
   <div>
-    <NuxtPage />
+    <Login />
   </div>
+  <NuxtPage />
 </template>
-<style>
-body {
-  background-color: black;
-}
-</style>

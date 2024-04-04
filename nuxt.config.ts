@@ -9,6 +9,8 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: [
-  ]
+  modules: ['@nuxt/image'],
+  image: {
+    dir: 'assets/images'
+  }
 })
