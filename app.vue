@@ -1,10 +1,11 @@
+<script setup>
+</script>
 <template>
-  <div>
-    <NuxtPage />
-  </div>
+  <NuxtPage />
 </template>
 <style>
 body {
   background-color: black;
 }
 </style>
+
