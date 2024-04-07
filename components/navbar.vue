@@ -3,7 +3,7 @@
   <div class="bg-black box-border w-full border-b border-gray-500/50 flex items-center justify-between px-4 py-2">
     
     <div class="flex items-center font-bold my-2">
-      <NuxtLink to="/hello" external class="text-white">Idea<span class="text-violet-500" style="z-index: 1">Sync</span>
+      <NuxtLink to="/" external class="text-white">Idea<span class="text-violet-500" style="z-index: 1">Sync</span>
       </NuxtLink>
     </div>
     <div class="flex items-center">
