@@ -17,44 +17,63 @@ const props = defineProps({
         name="email"
         class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
         required
+        autocomplete="off"
       />
     </div>
     <!-- Username -->
-    <div class="mb-4 pe-2  w-full md:w-1/2 lg:w-1/2">
-      <label for="username" class="block text-sm font-extralight text-white"
+    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
+      <label
+        for="username"
+        class="flex items-center text-sm font-extralight text-white"
         >帳號</label
       >
       <input
+        placeholder="英文或數字或英數混合，大於6位數"
         type="text"
         id="username"
         name="username"
         class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
         required
+        minlength="6"
+        autocomplete="off"
+        pattern="^[a-zA-Z0-9]*$"
       />
     </div>
     <!-- Password -->
-    <div class="mb-4 pe-2  w-full md:w-1/2 lg:w-1/2">
+    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
       <label for="password" class="block text-sm font-extralight text-white"
         >密碼</label
       >
       <input
+        placeholder="大小寫英文與數字，大於8位數"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
         type="password"
         id="password"
         name="password"
         class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
         required
+        minlength="8"
+        autocomplete="off"
       />
     </div>
     <!--firstname and lastname container-->
-    <div class="flex justify-between mb-4 pe-2  w-full md:w-1/2 lg:w-1/2 gap-1">
-      
+    <div class="flex justify-between mb-4 pe-2 w-full md:w-1/2 lg:w-1/2 gap-1">
       <div class="flex flex-col w-full md:w-8/12 lg:w-8/12">
-        <label for="firstName" class=" text-sm font-extralight">名</label>
-        <input required type="text" class="px-2 w-full border border-white bg-black rounded-md py-2">
+        <label for="firstName" class="text-sm font-extralight">名</label>
+        <input
+          autocomplete="off"
+          type="text"
+          class="px-2 w-full border border-white bg-black rounded-md py-2"
+        />
       </div>
-      <div class="flex flex-col  w-full md:w-4/12 lg:w-4/12">
-        <label for="lastName" class=" text-sm font-extralight">姓</label>
-        <input required type="text" class="px-2 w-full border border-white bg-black rounded-md py-2">
+      <div class="flex flex-col w-full md:w-4/12 lg:w-4/12">
+        <label for="lastName" class="text-sm font-extralight">姓</label>
+        <input
+          autocomplete="off"
+          required
+          type="text"
+          class="px-2 w-full border border-white bg-black rounded-md py-2"
+        />
       </div>
     </div>
     <!-- Nickname -->
@@ -63,6 +82,7 @@ const props = defineProps({
         >顯示明稱</label
       >
       <input
+        autocomplete="off"
         type="text"
         id="nickname"
         name="nickname"
@@ -71,22 +91,28 @@ const props = defineProps({
       />
     </div>
     <!-- Profile Description -->
-    <div class="mb-4 pe-2  w-full md:w-1/2 lg:w-1/2">
+    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
       <label
         for="profileDescription"
         class="block text-sm font-extralight text-white"
         >專長描述</label
       >
       <textarea
+        autocomplete="off"
+        placeholder="大於10個字"
         id="profileDescription"
         name="profileDescription"
         rows="3"
         class="form-textarea mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
         required
+        minlength="10"
       ></textarea>
     </div>
     <!-- Conditional render the submit button based on the userRole -->
-    <div v-if="userRole === 'creator'" class="pe-2 mb-6  w-full md:w-1/2 lg:w-1/2">
+    <div
+      v-if="userRole === 'creator'"
+      class="pe-2 mb-6 w-full md:w-1/2 lg:w-1/2"
+    >
       <button
         type="submit"
         class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
@@ -94,7 +120,7 @@ const props = defineProps({
         註冊
       </button>
     </div>
-    <div v-else class="pe-2 mb-6  w-full md:w-1/2 lg:w-1/2">
+    <div v-else class="pe-2 mb-6 w-full md:w-1/2 lg:w-1/2">
       <p class="font-extralight text-xs mb-1">申請後請等待審核通過</p>
       <button
         type="submit"
