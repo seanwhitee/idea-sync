@@ -5,9 +5,9 @@ const props = defineProps({
 });
 </script>
 <template>
-  <form class="w-fit pe-3 py-4 text-whtie">
+  <form class="w-full flex flex-col items-start pe-3 py-4 text-white">
     <!-- Email -->
-    <div class="mb-4 pe-2">
+    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
       <label for="email" class="block text-sm font-extralight text-white"
         >電子郵件</label
       >
@@ -20,7 +20,7 @@ const props = defineProps({
       />
     </div>
     <!-- Username -->
-    <div class="mb-4 pe-2">
+    <div class="mb-4 pe-2  w-full md:w-1/2 lg:w-1/2">
       <label for="username" class="block text-sm font-extralight text-white"
         >帳號</label
       >
@@ -33,7 +33,7 @@ const props = defineProps({
       />
     </div>
     <!-- Password -->
-    <div class="mb-4 pe-2">
+    <div class="mb-4 pe-2  w-full md:w-1/2 lg:w-1/2">
       <label for="password" class="block text-sm font-extralight text-white"
         >密碼</label
       >
@@ -46,36 +46,19 @@ const props = defineProps({
       />
     </div>
     <!--firstname and lastname container-->
-    <div class="flex items-center">
-      <!-- First Name -->
-      <div class="mb-4 pe-2">
-        <label for="firstName" class="block text-sm font-extralight text-white"
-          >名</label
-        >
-        <input
-          type="text"
-          id="firstName"
-          name="firstName"
-          class="mt-1 block bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-          required
-        />
+    <div class="flex justify-between mb-4 pe-2  w-full md:w-1/2 lg:w-1/2 gap-1">
+      
+      <div class="flex flex-col w-full md:w-8/12 lg:w-8/12">
+        <label for="firstName" class=" text-sm font-extralight">名</label>
+        <input required type="text" class="px-2 w-full border border-white bg-black rounded-md py-2">
       </div>
-      <!-- Last Name -->
-      <div class="mb-4 pe-2">
-        <label for="lastName" class="block text-sm font-extralight text-white"
-          >姓</label
-        >
-        <input
-          type="text"
-          id="lastName"
-          name="lastName"
-          class="mt-1 block bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-          required
-        />
+      <div class="flex flex-col  w-full md:w-4/12 lg:w-4/12">
+        <label for="lastName" class=" text-sm font-extralight">姓</label>
+        <input required type="text" class="px-2 w-full border border-white bg-black rounded-md py-2">
       </div>
     </div>
     <!-- Nickname -->
-    <div class="mb-4 pe-2">
+    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
       <label for="nickname" class="block text-sm font-extralight text-white"
         >顯示明稱</label
       >
@@ -88,7 +71,7 @@ const props = defineProps({
       />
     </div>
     <!-- Profile Description -->
-    <div class="mb-4 pe-2">
+    <div class="mb-4 pe-2  w-full md:w-1/2 lg:w-1/2">
       <label
         for="profileDescription"
         class="block text-sm font-extralight text-white"
@@ -103,7 +86,7 @@ const props = defineProps({
       ></textarea>
     </div>
     <!-- Conditional render the submit button based on the userRole -->
-    <div v-if="userRole === 'creator'" class="pe-2 mb-6">
+    <div v-if="userRole === 'creator'" class="pe-2 mb-6  w-full md:w-1/2 lg:w-1/2">
       <button
         type="submit"
         class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
@@ -111,7 +94,7 @@ const props = defineProps({
         註冊
       </button>
     </div>
-    <div v-else class="pe-2">
+    <div v-else class="pe-2 mb-6  w-full md:w-1/2 lg:w-1/2">
       <p class="font-extralight text-xs mb-1">申請後請等待審核通過</p>
       <button
         type="submit"
