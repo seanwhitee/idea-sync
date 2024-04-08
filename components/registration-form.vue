@@ -43,7 +43,6 @@ async function onSubmit(event) {
   // } else if (userRole === "mentor") {
   //   // do something
   // }
-  console.log("hello")
   router.push("/signin");
 }
 </script>
