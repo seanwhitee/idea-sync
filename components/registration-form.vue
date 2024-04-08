@@ -1,138 +1,104 @@
 <script setup>
+import { z } from "zod";
+
 // props annotation
 const props = defineProps({
   userRole: String,
 });
+const router = useRouter();
+const schema = z.object({
+  email: z.string().email("不符合信箱格式"),
+  username: z
+    .string()
+    .regex(/^[a-zA-Z0-9]+$/, "使用者名稱只能包含字母和數字")
+    .min(7, "使用者名稱必須大於6個字符"),
+  password: z
+    .string()
+    .regex(/[a-z]/, "密碼必須包含至少一個小寫字母")
+    .regex(/[A-Z]/, "密碼必須包含至少一個大寫字母")
+    .regex(/[0-9]/, "密碼必須包含至少一位數字")
+    .min(9, "密碼長度必須至少為 9 個字符")
+    .refine((value) => /^[a-zA-Z0-9]+$/.test(value), {
+      message: "密碼只能包含字母和數字",
+    }),
+  firstName: z.string(),
+  lastName: z.string(),
+  nickName: z.string(),
+  profileDescription: z.string().min(11, "專長描述必須大於10個字符"),
+});
+
+const state = reactive({
+  email: undefined,
+  username: undefined,
+  password: undefined,
+  firstName: undefined,
+  lastName: undefined,
+  nickName: undefined,
+  profileDescription: undefined,
+});
+
+async function onSubmit(event) {
+  // if (userRole === "creator") {
+  //   // do something
+  // } else if (userRole === "mentor") {
+  //   // do something
+  // }
+  console.log("hello")
+  router.push("/signin");
+}
 </script>
 <template>
-  <form class="w-full flex flex-col items-start pe-3 py-4 text-white">
-    <!-- Email -->
-    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
-      <label for="email" class="block text-sm font-extralight text-white"
-        >電子郵件</label
-      >
-      <input
-        type="email"
-        id="email"
-        name="email"
-        class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-        required
-        autocomplete="off"
-      />
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UFormGroup label="電子郵件" name="email" class="w-full md:w-1/2 lg:w-1/2">
+      <UInput v-model="state.email" />
+    </UFormGroup>
+    <UFormGroup label="帳號" name="username" class="w-full md:w-1/2 lg:w-1/2">
+      <UInput v-model="state.username" />
+    </UFormGroup>
+    <UFormGroup label="密碼" name="password" class="w-full md:w-1/2 lg:w-1/2">
+      <UInput v-model="state.password" type="password"  />
+    </UFormGroup>
+    <div class="flex w-full md:w-1/2 lg:w-1/2 justify-between gap-1">
+      <UFormGroup label="名" name="firstName" class="w-2/3">
+        <UInput v-model="state.firstName" />
+      </UFormGroup>
+      <UFormGroup label="姓" name="lastName" class="w-1/3">
+        <UInput v-model="state.lastName" />
+      </UFormGroup>
     </div>
-    <!-- Username -->
-    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
-      <label
-        for="username"
-        class="flex items-center text-sm font-extralight text-white"
-        >帳號</label
-      >
-      <input
-        placeholder="英文或數字或英數混合，大於6位數"
-        type="text"
-        id="username"
-        name="username"
-        class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-        required
-        minlength="6"
-        autocomplete="off"
-        pattern="^[a-zA-Z0-9]*$"
-      />
-    </div>
-    <!-- Password -->
-    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
-      <label for="password" class="block text-sm font-extralight text-white"
-        >密碼</label
-      >
-      <input
-        placeholder="大小寫英文與數字，大於8位數"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-        type="password"
-        id="password"
-        name="password"
-        class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-        required
-        minlength="8"
-        autocomplete="off"
-      />
-    </div>
-    <!--firstname and lastname container-->
-    <div class="flex justify-between mb-4 pe-2 w-full md:w-1/2 lg:w-1/2 gap-1">
-      <div class="flex flex-col w-full md:w-8/12 lg:w-8/12">
-        <label for="firstName" class="text-sm font-extralight">名</label>
-        <input
-          autocomplete="off"
-          type="text"
-          class="px-2 w-full border border-white bg-black rounded-md py-2"
-        />
-      </div>
-      <div class="flex flex-col w-full md:w-4/12 lg:w-4/12">
-        <label for="lastName" class="text-sm font-extralight">姓</label>
-        <input
-          autocomplete="off"
-          required
-          type="text"
-          class="px-2 w-full border border-white bg-black rounded-md py-2"
-        />
-      </div>
-    </div>
-    <!-- Nickname -->
-    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
-      <label for="nickname" class="block text-sm font-extralight text-white"
-        >顯示明稱</label
-      >
-      <input
-        autocomplete="off"
-        type="text"
-        id="nickname"
-        name="nickname"
-        class="mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-        required
-      />
-    </div>
-    <!-- Profile Description -->
-    <div class="mb-4 pe-2 w-full md:w-1/2 lg:w-1/2">
-      <label
-        for="profileDescription"
-        class="block text-sm font-extralight text-white"
-        >專長描述</label
-      >
-      <textarea
-        autocomplete="off"
-        placeholder="大於10個字"
-        id="profileDescription"
-        name="profileDescription"
-        rows="3"
-        class="form-textarea mt-1 block w-full bg-black border border-white rounded-lg py-2 ps-2 pe-2"
-        required
-        minlength="10"
-      ></textarea>
-    </div>
-    <!-- Conditional render the submit button based on the userRole -->
-    <div
-      v-if="userRole === 'creator'"
-      class="pe-2 mb-6 w-full md:w-1/2 lg:w-1/2"
+    <UFormGroup
+      label="顯示名稱"
+      name="nickName"
+      class="w-full md:w-1/2 lg:w-1/2"
     >
+      <UInput v-model="state.nickName" />
+    </UFormGroup>
+    <UFormGroup
+      label="專長描述"
+      name="profileDescription"
+      class="w-full md:w-1/2 lg:w-1/2"
+    >
+      <UTextarea v-model="state.profileDescription" />
+    </UFormGroup>
+    <div class="w-full md:w-1/2 lg:w-1/2">
+      <p v-if="userRole === 'mentor'" class="font-extralight text-xs mb-1">
+        申請後請等待審核通過
+      </p>
       <button
         type="submit"
-        class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+        class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg mt-0"
       >
-        註冊
+        <div
+          v-if="userRole === 'creator'"
+          class="flex items-center justify-center w-full"
+        >
+          註冊
+        </div>
+        <div v-else class="flex items-center justify-center w-full">申請</div>
       </button>
     </div>
-    <div v-else class="pe-2 mb-6 w-full md:w-1/2 lg:w-1/2">
-      <p class="font-extralight text-xs mb-1">申請後請等待審核通過</p>
-      <button
-        type="submit"
-        class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-      >
-        申請
-      </button>
-    </div>
-
-    <!--If the user already registered before, provide a link to signin page-->
-    <div class="flex justify-start pe-2 mt-4 text-whit font-extralight text-xs">
+    <div class="w-full md:w-1/2 lg:w-1/2 flex justify-start pe-2 mt-4 text-whit font-extralight text-xs">
       有帳號嗎？<NuxtLink to="/signin" class="underline">登入</NuxtLink>
     </div>
-  </form>
+  </UForm>
 </template>

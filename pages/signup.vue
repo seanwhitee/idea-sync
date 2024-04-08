@@ -4,7 +4,7 @@ const role = ref("creator");
 </script>
 <template>
   <GradientFog />
-  <div class="flex items-center font-bold ms-4 mt-3 mb-16">
+  <div class="flex items-center font-bold ms-4 pt-3 mb-16">
     
     <NuxtLink to="/" external class="text-white"
       >Idea<span class="text-violet-500" style="z-index: 1">Sync</span>

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/image"],
+  modules: ["@nuxt/image", "@nuxt/ui"],
   image: {
     dir: "assets/images",
   },
