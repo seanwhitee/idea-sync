@@ -9,7 +9,7 @@
     <div class="flex items-center">
       <NuxtLink to="/signin" class=" flex items-center justify-center text-white py-2 px-4 cursor-pointer">登入</NuxtLink>
       <NuxtLink to="/signup"><button
-          class="flex items-center rounded-md bg-gray-50 px-2 py-2 text-xs font-bold text-violet-900 ring-1 ring-inset ring-gray-500/10 cursor-pointer">
+          class="flex items-center rounded-md bg-gray-50 px-2 py-2 text-xs font-bold text-black ring-1 ring-inset ring-gray-500/10 cursor-pointer">
           立即註冊
         </button></NuxtLink>
     </div>
