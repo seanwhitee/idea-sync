@@ -49,8 +49,6 @@ async function onSubmit(event) {
     nickName: state.nickName,
     profileDescription: state.profileDescription,
     email: state.email,
-    allowProjectApply: true,
-    allowProjectCreate: true,
     emailVerified: false,
     avatarUrl: "default-avatar.png",
     firstName: state.firstName,
@@ -63,6 +61,8 @@ async function onSubmit(event) {
       id: 1,
       roleName: props.userRole,
     };
+    result.allowProjectCreate = true;
+    result.allowProjectApply = true;
   } else if (props.userRole === "mentor") {
     // Prepare data for mentor
     result.roleVerified = false;
@@ -70,6 +70,8 @@ async function onSubmit(event) {
       id: 2,
       roleName: props.userRole,
     };
+    result.allowProjectCreate = false;
+    result.allowProjectApply = true
   }
 
   await $fetch(registerEndPoint, {
