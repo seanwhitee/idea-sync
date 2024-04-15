@@ -110,10 +110,6 @@ async function onSubmit(event) {
     <UFormGroup label="密碼" name="password" class="w-full md:w-1/2 lg:w-1/2 ">
       <UInput v-model="state.password" type="password"  class="rounded-md"/>
     </UFormGroup>
-
-    <UFormGroup label="密碼" name="password" class="w-full md:w-1/2 lg:w-1/2">
-      <UInput v-model="state.password" type="password" />
-    </UFormGroup>
     <div class="flex w-full md:w-1/2 lg:w-1/2 justify-between gap-1 ">
       <UFormGroup label="名" name="firstName" class="w-2/3">
         <UInput v-model="state.firstName" class="rounded-md"/>
