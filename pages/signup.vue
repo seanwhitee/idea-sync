@@ -1,6 +1,16 @@
 <script setup>
 import { ref } from "vue";
 const role = ref("creator");
+const options = [
+  {
+    value: 'mentor',
+    label: 'mentor',
+  },
+  {
+    value: 'creactor',
+    label: 'creactor',
+  }
+]
 </script>
 <template>
   <GradientFog />
@@ -15,21 +25,23 @@ const role = ref("creator");
     <h1 class="font-light text-4xl mb-10">建立新帳號</h1>
 
     <!--select type input to determine if user status is creator or mentor-->
-    <label class="text-sm font-extralight">身份：</label>
-    <div class="flex bg-black w-fit border border-white rounded-lg px-3 mb-5">
-      <div class="flex items-center justify-center">
-        <NuxtImg src="arrow-down.png" />
-      </div>
-      <select
-        id="status"
-        name="status"
-        class="appearance-none bg-black  text-white py-4 px-3 rounded-lg leading-tight focus:outline-none focus:border-gray-500"
-        @change="role = $event.target.value"
+    <div class="flex content-evenly">
+    <p class="content-center text-sm font-extrali.ght">身份：</p>
+      <el-select
+        v-model="role"
+        placeholder="Select"
+        size="large"
+        style="width: 240px"
       >
-        <option value="creator">提案/申請者</option>
-        <option value="mentor">指導者</option>
-      </select>
-    </div>
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+      </el-select>
+      </div>
+    
     <RegistrationForm :userRole="role"/>
   </div>
 </template>
