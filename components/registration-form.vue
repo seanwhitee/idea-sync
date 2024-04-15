@@ -99,23 +99,27 @@ async function onSubmit(event) {
   });
 }
 </script>
-<template>
+<template class="text-white">
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="電子郵件" name="email" class="w-full md:w-1/2 lg:w-1/2">
-      <UInput v-model="state.email" />
+    <UFormGroup label="電子郵件" name="email" class="w-full md:w-1/2 lg:w-1/2 ">
+      <UInput v-model="state.email" class="rounded-md"/>
+    </UFormGroup> 
+    <UFormGroup label="帳號" name="username" class="w-full md:w-1/2 lg:w-1/2 ">
+      <UInput v-model="state.username" class="rounded-md"/>
     </UFormGroup>
-    <UFormGroup label="帳號" name="username" class="w-full md:w-1/2 lg:w-1/2">
-      <UInput v-model="state.username" />
+    <UFormGroup label="密碼" name="password" class="w-full md:w-1/2 lg:w-1/2 ">
+      <UInput v-model="state.password" type="password"  class="rounded-md"/>
     </UFormGroup>
+
     <UFormGroup label="密碼" name="password" class="w-full md:w-1/2 lg:w-1/2">
       <UInput v-model="state.password" type="password" />
     </UFormGroup>
     <div class="flex w-full md:w-1/2 lg:w-1/2 justify-between gap-1 ">
       <UFormGroup label="名" name="firstName" class="w-2/3">
-        <UInput v-model="state.firstName" />
+        <UInput v-model="state.firstName" class="rounded-md"/>
       </UFormGroup>
-      <UFormGroup label="姓" name="lastName" class="w-1/3">
-        <UInput v-model="state.lastName" />
+      <UFormGroup label="姓" name="lastName" class="w-1/3 " >
+        <UInput v-model="state.lastName" class="rounded-md"/>
       </UFormGroup>
     </div>
     <UFormGroup
@@ -123,14 +127,14 @@ async function onSubmit(event) {
       name="nickName"
       class="w-full md:w-1/2 lg:w-1/2"
     >
-      <UInput v-model="state.nickName" />
+      <UInput class="bg-white rounded-md" v-model="state.nickName" />
     </UFormGroup>
     <UFormGroup
       label="專長描述"
       name="profileDescription"
       class="w-full md:w-1/2 lg:w-1/2"
     >
-      <UTextarea v-model="state.profileDescription" />
+      <UTextarea class="bg-white rounded-md" v-model="state.profileDescription" />
     </UFormGroup>
     <div class="w-full md:w-1/2 lg:w-1/2">
       <p v-if="userRole === 'mentor'" class="font-extralight text-xs mb-1">
@@ -142,7 +146,7 @@ async function onSubmit(event) {
       >
         <div
           v-if="userRole === 'creator'"
-          class="flex items-center justify-center w-full"
+          class="flex items-center justify-center w-full text-white"
         >
           註冊
         </div>

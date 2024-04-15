@@ -1,6 +1,6 @@
 export default {
   theme: {},
-  plugins: [],
+  plugins: [require("daisyui")],
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
@@ -8,5 +8,6 @@ export default {
     "./plugins/**/*.{js,ts}",
     "./app.vue",
     "./error.vue",
+    
   ],
 };
