@@ -1,9 +1,14 @@
 <script setup>
 import { ref } from "vue";
 const role = ref("creator");
-console.log(role);
 
-
+const handleRoleButtonClick = (role) => {
+  if (role === "creator") {
+    return "提案/申請者";
+  } else if (role === "mentor") {
+    return "指導者";
+  }
+};
 </script>
 <template>
   <GradientFog />
@@ -16,15 +21,15 @@ console.log(role);
     <h1 class="font-light text-4xl mb-10">建立新帳號</h1>
 
     <!--select type input to determine if user status is creator or mentor-->
-    <div class="flex content-evenly">
+    <div class="flex content-evenly mb-10">
       <p class="content-center text-sm font-extrali.ght">身份：</p>
       <div class="dropdown dropdown-hover dropdown-right dropdown-end">
-        <div tabindex="0" class="btn m-1 glass" >{{ role }}</div>
+        <div tabindex="0" class="btn m-1 glass">{{ handleRoleButtonClick(role) }}</div>
         <ul
           tabindex="0"
           class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
         >
-          <li @click="role='creactor'"><a>提案/申請者</a></li>
+          <li @click="role='creator'"><a>提案/申請者</a></li>
           <li @click="role='mentor'"><a>指導者</a></li>
         </ul>
       
