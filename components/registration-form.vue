@@ -123,14 +123,14 @@ async function onSubmit(event) {
       name="nickName"
       class="w-full md:w-1/2 lg:w-1/2"
     >
-      <UInput class="bg-white rounded-md" v-model="state.nickName" />
+      <UInput class="rounded-md" v-model="state.nickName" />
     </UFormGroup>
     <UFormGroup
       label="專長描述"
       name="profileDescription"
       class="w-full md:w-1/2 lg:w-1/2"
     >
-      <UTextarea class="bg-white rounded-md" v-model="state.profileDescription" />
+      <UTextarea class="rounded-md" v-model="state.profileDescription" />
     </UFormGroup>
     <div class="w-full md:w-1/2 lg:w-1/2">
       <p v-if="userRole === 'mentor'" class="font-extralight text-xs mb-1">
