@@ -1,6 +1,12 @@
+
 <script setup>
 import { z } from "zod";
+import { ref } from "vue";
 
+// api end point
+const registerEndPoint = "http://localhost:8080/api/v1/users/register";
+
+const submitMessage = ref("");
 // props annotation
 const props = defineProps({
   userRole: String,
@@ -38,12 +44,59 @@ const state = reactive({
 });
 
 async function onSubmit(event) {
-  // if (userRole === "creator") {
-  //   // do something
-  // } else if (userRole === "mentor") {
-  //   // do something
-  // }
-  router.push("/signin");
+  const result = {
+    userName: state.username,
+    password: state.password,
+    nickName: state.nickName,
+    profileDescription: state.profileDescription,
+    email: state.email,
+    emailVerified: false,
+    avatarUrl: "default-avatar.png",
+    firstName: state.firstName,
+    lastName: state.lastName,
+  };
+  if (props.userRole === "creator") {
+    // Prepare data for creator
+    result.roleVerified = true;
+    result.userRole = {
+      id: 1,
+      roleName: props.userRole,
+    };
+    result.allowProjectCreate = true;
+    result.allowProjectApply = true;
+  } else if (props.userRole === "mentor") {
+    // Prepare data for mentor
+    result.roleVerified = false;
+    result.userRole = {
+      id: 2,
+      roleName: props.userRole,
+    };
+    result.allowProjectCreate = false;
+    result.allowProjectApply = true
+  }
+
+  await $fetch(registerEndPoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(result),
+  }).then((response) => {
+    switch (response) {
+      case "user already exist":
+        submitMessage.value = "使用者已經存在";
+        break;
+      case "user registration failed, data is not valid":
+        submitMessage.value = "使用者註冊失敗，資料無效";
+        break;
+      case "user registered successfully":
+        submitMessage.value = "註冊成功";
+        router.push("/signin");
+        break;
+      default:
+        break;
+    }
+  });
 }
 </script>
 <template class="text-white">
@@ -70,14 +123,14 @@ async function onSubmit(event) {
       name="nickName"
       class="w-full md:w-1/2 lg:w-1/2"
     >
-      <UInput class="bg-white rounded-md" v-model="state.nickName" />
+      <UInput class="rounded-md" v-model="state.nickName" />
     </UFormGroup>
     <UFormGroup
       label="專長描述"
       name="profileDescription"
       class="w-full md:w-1/2 lg:w-1/2"
     >
-      <UTextarea class="bg-white rounded-md" v-model="state.profileDescription" />
+      <UTextarea class="rounded-md" v-model="state.profileDescription" />
     </UFormGroup>
     <div class="w-full md:w-1/2 lg:w-1/2">
       <p v-if="userRole === 'mentor'" class="font-extralight text-xs mb-1">
@@ -96,7 +149,34 @@ async function onSubmit(event) {
         <div v-else class="flex items-center justify-center w-full">申請</div>
       </button>
     </div>
-    <div class="w-full md:w-1/2 lg:w-1/2 flex justify-start pe-2 mt-4 text-whit font-extralight text-xs">
+
+    <!--submit feeback-->
+    <div
+      v-if="submitMessage"
+      class="flex items-center justify-center w-full md:w-1/2 lg:w-1/2"
+    >
+      <p
+        v-if="submitMessage === '註冊成功'"
+        class="text-green-500 font-extralight text-xs"
+      >
+        {{ submitMessage }}
+      </p>
+      <p
+        v-if="submitMessage === '使用者已經存在'"
+        class="text-red-500 font-extralight text-xs"
+      >
+        {{ submitMessage }}
+      </p>
+      <p
+        v-if="submitMessage === '使用者註冊失敗，資料無效'"
+        class="text-red-500 font-extralight text-xs"
+      >
+        {{ submitMessage }}
+      </p>
+    </div>
+    <div
+      class="w-full md:w-1/2 lg:w-1/2 flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
+    >
       有帳號嗎？<NuxtLink to="/signin" class="underline">登入</NuxtLink>
     </div>
   </UForm>
