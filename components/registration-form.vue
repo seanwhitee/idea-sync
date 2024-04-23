@@ -93,6 +93,9 @@ async function onSubmit(event) {
         submitMessage.value = "註冊成功";
         router.push("/signin");
         break;
+      case "email already exist":
+        submitMessage.value = "電子郵件已經存在";
+        break;
       default:
         break;
     }
@@ -169,6 +172,12 @@ async function onSubmit(event) {
       </p>
       <p
         v-if="submitMessage === '使用者註冊失敗，資料無效'"
+        class="text-red-500 font-extralight text-xs"
+      >
+        {{ submitMessage }}
+      </p>
+      <p
+        v-if="submitMessage === '電子郵件已經存在'"
         class="text-red-500 font-extralight text-xs"
       >
         {{ submitMessage }}
