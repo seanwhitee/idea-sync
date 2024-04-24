@@ -49,7 +49,7 @@ const featuresData = [
             </p>
           </div>
         </div>
-        <div class="w-1/2">
+        <div class="w-full md:w-1/2 lg:w-1/2">
           <p class="text-white text-4xl md:text-6xl lg:text-6xl">找尋夥伴從未如此簡單</p>
           <NuxtLink to="/signup"
             ><button

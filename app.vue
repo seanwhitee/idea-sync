@@ -6,6 +6,7 @@
 <style>
 body {
   background-color: black;
+  min-height: 100vh;
 }
 </style>
 

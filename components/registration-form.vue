@@ -1,4 +1,3 @@
-
 <script setup>
 import { z } from "zod";
 import { ref } from "vue";
@@ -10,8 +9,11 @@ const submitMessage = ref("");
 // props annotation
 const props = defineProps({
   userRole: String,
+  updateStep: Function,
+  updateUserInfo: Function,
+  triggerGeneratePassCode: Function,
 });
-const router = useRouter();
+
 const schema = z.object({
   email: z.string().email("不符合信箱格式"),
   username: z
@@ -72,7 +74,7 @@ async function onSubmit(event) {
       roleName: props.userRole,
     };
     result.allowProjectCreate = false;
-    result.allowProjectApply = true
+    result.allowProjectApply = true;
   }
 
   await $fetch(registerEndPoint, {
@@ -89,12 +91,10 @@ async function onSubmit(event) {
       case "user registration failed, data is not valid":
         submitMessage.value = "使用者註冊失敗，資料無效";
         break;
-      case "user registered successfully":
-        submitMessage.value = "註冊成功";
-        router.push("/signin");
-        break;
-      case "email already exist":
-        submitMessage.value = "電子郵件已經存在";
+      case "user data is valid":
+        props.updateStep(2);
+        props.updateUserInfo(result);
+        props.triggerGeneratePassCode(result.userName, result.email);
         break;
       default:
         break;
@@ -104,66 +104,53 @@ async function onSubmit(event) {
 </script>
 <template class="text-white">
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="電子郵件" name="email" class="w-full md:w-1/2 lg:w-1/2 ">
-      <UInput v-model="state.email" class="rounded-md"/>
-    </UFormGroup> 
-    <UFormGroup label="帳號" name="username" class="w-full md:w-1/2 lg:w-1/2 ">
-      <UInput v-model="state.username" class="rounded-md"/>
+    <UFormGroup label="電子郵件" name="email" class="w-full">
+      <UInput v-model="state.email" class="rounded-md" />
     </UFormGroup>
-    <UFormGroup label="密碼" name="password" class="w-full md:w-1/2 lg:w-1/2 ">
-      <UInput v-model="state.password" type="password"  class="rounded-md"/>
+    <UFormGroup label="帳號" name="username" class="w-full">
+      <UInput v-model="state.username" class="rounded-md" />
     </UFormGroup>
-    <div class="flex w-full md:w-1/2 lg:w-1/2 justify-between gap-1 ">
+    <UFormGroup label="密碼" name="password" class="w-full">
+      <UInput v-model="state.password" type="password" class="rounded-md" />
+    </UFormGroup>
+    <div class="flex w-full justify-between gap-1">
       <UFormGroup label="名" name="firstName" class="w-2/3">
-        <UInput v-model="state.firstName" class="rounded-md"/>
+        <UInput v-model="state.firstName" class="rounded-md" />
       </UFormGroup>
-      <UFormGroup label="姓" name="lastName" class="w-1/3 " >
-        <UInput v-model="state.lastName" class="rounded-md"/>
+      <UFormGroup label="姓" name="lastName" class="w-1/3">
+        <UInput v-model="state.lastName" class="rounded-md" />
       </UFormGroup>
     </div>
     <UFormGroup
       label="顯示名稱"
       name="nickName"
-      class="w-full md:w-1/2 lg:w-1/2"
+      class="w-full"
     >
       <UInput class="rounded-md" v-model="state.nickName" />
     </UFormGroup>
     <UFormGroup
       label="專長描述"
       name="profileDescription"
-      class="w-full md:w-1/2 lg:w-1/2"
+      class="w-full"
     >
       <UTextarea class="rounded-md" v-model="state.profileDescription" />
     </UFormGroup>
-    <div class="w-full md:w-1/2 lg:w-1/2">
-      <p v-if="userRole === 'mentor'" class="font-extralight text-xs mb-1">
-        申請後請等待審核通過
-      </p>
+    <div class="w-full">
       <button
         type="submit"
         class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg mt-0"
       >
-        <div
-          v-if="userRole === 'creator'"
-          class="flex items-center justify-center w-full text-white"
-        >
-          註冊
+        <div class="flex items-center justify-center w-full text-white">
+          驗證信箱
         </div>
-        <div v-else class="flex items-center justify-center w-full">申請</div>
       </button>
     </div>
 
     <!--submit feeback-->
     <div
       v-if="submitMessage"
-      class="flex items-center justify-center w-full md:w-1/2 lg:w-1/2"
+      class="flex items-center justify-center w-full"
     >
-      <p
-        v-if="submitMessage === '註冊成功'"
-        class="text-green-500 font-extralight text-xs"
-      >
-        {{ submitMessage }}
-      </p>
       <p
         v-if="submitMessage === '使用者已經存在'"
         class="text-red-500 font-extralight text-xs"
@@ -176,15 +163,9 @@ async function onSubmit(event) {
       >
         {{ submitMessage }}
       </p>
-      <p
-        v-if="submitMessage === '電子郵件已經存在'"
-        class="text-red-500 font-extralight text-xs"
-      >
-        {{ submitMessage }}
-      </p>
     </div>
     <div
-      class="w-full md:w-1/2 lg:w-1/2 flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
+      class="w-full flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
     >
       有帳號嗎？<NuxtLink to="/signin" class="underline">登入</NuxtLink>
     </div>
