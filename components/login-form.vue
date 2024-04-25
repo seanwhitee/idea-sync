@@ -36,7 +36,7 @@ const onSubmit = async () => {
 
 	console.log(response)
   if (response === '') {
-    submitMessage.value = '帳號密碼錯誤'
+    submitMessage.value = '帳號密碼錯誤，或身份尚未通過申請'
   }
   else { // login successfull
     router.push('/projects')
@@ -69,7 +69,7 @@ const onSubmit = async () => {
       class="flex items-center justify-center w-full"
     >
       <p
-        v-if="submitMessage === '帳號密碼錯誤'"
+        v-if="submitMessage === '帳號密碼錯誤，或身份尚未通過申請'"
         class="text-red-500 font-extralight text-xs"
       >
         {{ submitMessage }}
