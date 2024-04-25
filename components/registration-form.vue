@@ -91,6 +91,9 @@ async function onSubmit(event) {
       case "user registration failed, data is not valid":
         submitMessage.value = "使用者註冊失敗，資料無效";
         break;
+      case "email already exist":
+        submitMessage.value = "電子郵件已經存在";
+        break;
       case "user data is valid":
         props.updateStep(2);
         props.updateUserInfo(result);
@@ -153,6 +156,12 @@ async function onSubmit(event) {
     >
       <p
         v-if="submitMessage === '使用者已經存在'"
+        class="text-red-500 font-extralight text-xs"
+      >
+        {{ submitMessage }}
+      </p>
+      <p
+        v-if="submitMessage === '電子郵件已經存在'"
         class="text-red-500 font-extralight text-xs"
       >
         {{ submitMessage }}
