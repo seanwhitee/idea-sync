@@ -55,19 +55,15 @@ async function onSubmit(event) {
   if (props.userRole === "creator") {
     // Prepare data for creator
     result.roleVerified = true;
-    result.userRole = {
-      id: 1,
-      roleName: props.userRole,
-    };
+    result.roleId = 1;
+    result.roleName = props.userRole;
     result.allowProjectCreate = true;
     result.allowProjectApply = true;
   } else if (props.userRole === "mentor") {
     // Prepare data for mentor
     result.roleVerified = false;
-    result.userRole = {
-      id: 2,
-      roleName: props.userRole,
-    };
+    result.roleId = 2;
+    result.roleName = props.userRole;
     result.allowProjectCreate = false;
     result.allowProjectApply = true;
   }
