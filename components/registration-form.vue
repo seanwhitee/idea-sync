@@ -9,13 +9,9 @@ const submitMessage = ref("");
 // props annotation
 const props = defineProps({
   userRole: String,
-  updateStep: Function,
-  updateUserInfo: Function,
-  triggerGeneratePassCode: Function,
 });
 
 const schema = z.object({
-  email: z.string().email("不符合信箱格式"),
   username: z
     .string()
     .regex(/^[a-zA-Z0-9]+$/, "使用者名稱只能包含字母和數字")
@@ -36,7 +32,6 @@ const schema = z.object({
 });
 
 const state = reactive({
-  email: undefined,
   username: undefined,
   password: undefined,
   firstName: undefined,
@@ -51,8 +46,6 @@ async function onSubmit(event) {
     password: state.password,
     nickName: state.nickName,
     profileDescription: state.profileDescription,
-    email: state.email,
-    emailVerified: false,
     avatarUrl: "default-avatar.png",
     firstName: state.firstName,
     lastName: state.lastName,
@@ -91,13 +84,8 @@ async function onSubmit(event) {
       case "user registration failed, data is not valid":
         submitMessage.value = "使用者註冊失敗，資料無效";
         break;
-      case "email already exist":
-        submitMessage.value = "電子郵件已經存在";
-        break;
       case "user data is valid":
-        props.updateStep(2);
-        props.updateUserInfo(result);
-        props.triggerGeneratePassCode(result.userName, result.email);
+        submitMessage.value = "註冊成功";
         break;
       default:
         break;
@@ -107,9 +95,6 @@ async function onSubmit(event) {
 </script>
 <template class="text-white">
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormGroup label="電子郵件" name="email" class="w-full">
-      <UInput v-model="state.email" class="rounded-md" />
-    </UFormGroup>
     <UFormGroup label="帳號" name="username" class="w-full">
       <UInput v-model="state.username" class="rounded-md" />
     </UFormGroup>
@@ -143,8 +128,11 @@ async function onSubmit(event) {
         type="submit"
         class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg mt-0"
       >
-        <div class="flex items-center justify-center w-full text-white">
-          驗證信箱
+        <div v-if="props.userRole === 'creator'" class="flex items-center justify-center w-full text-white">
+          註冊
+        </div>
+        <div v-if="props.userRole === 'mentor'" class="flex items-center justify-center w-full text-white">
+          申請
         </div>
       </button>
     </div>
@@ -155,13 +143,13 @@ async function onSubmit(event) {
       class="flex items-center justify-center w-full"
     >
       <p
-        v-if="submitMessage === '使用者已經存在'"
-        class="text-red-500 font-extralight text-xs"
+        v-if="submitMessage === '註冊成功'"
+        class="text-green-500 font-extralight text-xs"
       >
         {{ submitMessage }}
       </p>
       <p
-        v-if="submitMessage === '電子郵件已經存在'"
+        v-if="submitMessage === '使用者已經存在'"
         class="text-red-500 font-extralight text-xs"
       >
         {{ submitMessage }}
