@@ -24,7 +24,7 @@ const updateRole = (newRole) => {
   <div class="flex flex-col text-white mx-auto p-10 w-full">
     <h1 class="font-light text-4xl mb-10">建立新帳號</h1>
 
-    <div class="w-full md:w-1/2 lg:w-1/2 p-4">
+    <div class="w-full md:w-1/2 lg:w-1/3 p-4">
       <RoleSelector
         :updateRole="updateRole"
         :handleRoleButtonClick="handleRoleButtonClick"
