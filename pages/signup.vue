@@ -62,7 +62,7 @@ const updateUserInfo = (newUserInfo) => {
       >Idea<span class="text-violet-500" style="z-index: 1">Sync</span>
     </NuxtLink>
   </div>
-  <div class="flex flex-col items-center text-white mx-auto mt-20 p-10 w-full">
+  <div class="flex flex-col items-center md:items-center lg:items-start text-white mx-auto mt-20 p-10 w-full">
     <h1 class="font-light text-4xl mb-10">建立新帳號</h1>
 
     <div class="w-full md:w-1/2 lg:w-1/3 p-4">

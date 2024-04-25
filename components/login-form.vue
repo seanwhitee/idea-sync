@@ -38,7 +38,9 @@ const onSubmit = async () => {
     submitMessage.value = '帳號密碼錯誤，或身份尚未通過申請'
   }
   else { // login successfull
-    router.push('/projects')
+    // router.push('/projects')
+
+    // console.log(response)
     // persist the login state and user info
     // redirect to the projects browsing page
   }
