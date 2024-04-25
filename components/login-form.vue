@@ -34,7 +34,6 @@ const onSubmit = async () => {
 		},
 	})
 
-	console.log(response)
   if (response === '') {
     submitMessage.value = '帳號密碼錯誤，或身份尚未通過申請'
   }
