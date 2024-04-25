@@ -61,27 +61,21 @@ const onSubmit = async (event) => {
     switch (response) {
       case "User data saving failed":
         submitMessage.value = "註冊失敗";
-        setTimeout(() => {
-          submitMessage.value = "";
-        }, 3000);
-        router.push("/");
         break;
       case "User data saved successfully":
         submitMessage.value = "註冊成功";
-        setTimeout(() => {
-          submitMessage.value = "";
-        }, 3000);
         router.push("/signin");
         break;
       default:
         break;
     }
   } else if (!successFlag) {
-    setTimeout(() => {
-      submitMessage.value = "";
-    }, 3000);
     router.push("/");
   }
+
+  setTimeout(() => {
+    submitMessage.value = "";
+  }, 3000);
 };
 </script>
 <template>
