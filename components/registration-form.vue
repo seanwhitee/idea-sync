@@ -11,6 +11,8 @@ const props = defineProps({
   userRole: String,
 });
 
+const router = useRouter();
+
 const schema = z.object({
   username: z
     .string()
@@ -83,13 +85,21 @@ async function onSubmit(event) {
         break;
       case "user registration failed, data is not valid":
         submitMessage.value = "使用者註冊失敗，資料無效";
+        router.push("/signup");
         break;
       case "user data is valid":
         submitMessage.value = "註冊成功";
+        router.push("/signin");
         break;
       default:
         break;
     }
+
+    // reset submit message for 3 seconds
+    setTimeout(() => {
+      submitMessage.value = "";
+    }, 3000);
+
   });
 }
 </script>
