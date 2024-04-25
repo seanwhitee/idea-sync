@@ -10,7 +10,7 @@ import LoginForm from "~/components/login-form.vue";
   </div>
   <div class="flex flex-col items-center text-white mx-auto p-10 w-full">
     <h1 class="font-light text-4xl mb-10">登入</h1>
-    <div class="w-full md:w-1/2 lg:w-1/2 p-4">
+    <div class="w-full md:w-1/2 lg:w-1/3 p-4">
       <LoginForm />
     </div>
   </div>
