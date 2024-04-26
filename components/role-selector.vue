@@ -14,7 +14,7 @@ const handleRoleButtonClick = (role) => {
 </script>
 <template>
   <!--select type input to determine if user status is creator or mentor-->
-  <div class="flex content-evenly mb-10">
+  <div class="flex content-evenly mb-5">
     <p class="content-center text-sm font-extrali.ght">身份：</p>
     <div class="dropdown dropdown-hover dropdown-bottom">
       <div tabindex="0" class="btn m-1 glass">
