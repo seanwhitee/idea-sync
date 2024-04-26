@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxt/image", "@nuxt/ui", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
   image: {
-    dir: "assets/images",
+    dir: "assets/images"
   },
   app: {
     head: {
