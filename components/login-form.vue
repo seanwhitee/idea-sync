@@ -1,9 +1,11 @@
 <script setup>
-import {z} from 'zod'
-import {ref} from 'vue'
+import { z } from "zod";
+import { ref } from "vue";
+import { useAuthStore } from "~/store/auth";
 
 const router = useRouter();
-const submitMessage = ref('')
+const submitMessage = ref("");
+const authStore = useAuthStore();
 
 const schema = z.object({
   username: z
@@ -23,28 +25,31 @@ const schema = z.object({
 const state = reactive({
   username: undefined,
   password: undefined,
-
 });
 
 const onSubmit = async () => {
-	const response = await $fetch('http://localhost:8080/api/v1/users/login?username=' + state.username + '&password=' + state.password, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	})
+  const response = await $fetch(
+    "http://localhost:8080/api/v1/users/login?username=" +
+      state.username +
+      "&password=" +
+      state.password,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-  if (response === '') {
-    submitMessage.value = '帳號密碼錯誤，或身份尚未通過申請'
+  if (response === "") {
+    submitMessage.value = "帳號密碼錯誤，或身份尚未通過申請";
+  } else {
+    // login successfull
+    const user = response;
+    authStore.login(user);
+    router.push("/projects");
   }
-  else { // login successfull
-    // router.push('/projects')
-
-    // console.log(response)
-    // persist the login state and user info
-    // redirect to the projects browsing page
-  }
-}
+};
 </script>
 <template>
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
@@ -65,10 +70,7 @@ const onSubmit = async () => {
       </button>
     </div>
 
-    <div
-      v-if="submitMessage"
-      class="flex items-center justify-center w-full"
-    >
+    <div v-if="submitMessage" class="flex items-center justify-center w-full">
       <p
         v-if="submitMessage === '帳號密碼錯誤，或身份尚未通過申請'"
         class="text-red-500 font-extralight text-xs"
@@ -79,9 +81,13 @@ const onSubmit = async () => {
     <div
       class="w-full flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
     >
-    <div class="flex items-center justify-center gap-4 w-full">
-      <NuxtLink to="/signup" class="hover:underline">註冊</NuxtLink><span>|</span><NuxtLink to="/forgot-password" class="hover:underline">忘記密碼</NuxtLink>
-    </div>
+      <div class="flex items-center justify-center gap-4 w-full">
+        <NuxtLink to="/signup" class="hover:underline">註冊</NuxtLink
+        ><span>|</span
+        ><NuxtLink to="/forgot-password" class="hover:underline"
+          >忘記密碼</NuxtLink
+        >
+      </div>
     </div>
   </UForm>
 </template>

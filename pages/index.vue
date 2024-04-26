@@ -1,4 +1,11 @@
 <script setup>
+import { useAuthStore } from '~/store/auth';
+const router = useRouter();
+const authStore = useAuthStore();
+const isLogin = authStore.isLogin;
+if (isLogin) {
+    router.push("/projects")
+}
 const featuresData = [
   {
     image: "white-check.png",
