@@ -6,7 +6,7 @@ const role = ref("creator");
 const handleRoleButtonClick = (role) => {
   props.updateRole(role);
   if (role === "creator") {
-    return "提案/申請者";
+    return "學生";
   } else if (role === "mentor") {
     return "指導者";
   }
@@ -24,7 +24,7 @@ const handleRoleButtonClick = (role) => {
         tabindex="0"
         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
       >
-        <li @click="role = 'creator'"><a>提案/申請者</a></li>
+        <li @click="role = 'creator'"><a>學生</a></li>
         <li @click="role = 'mentor'"><a>指導者</a></li>
       </ul>
     </div>
