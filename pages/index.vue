@@ -36,7 +36,7 @@ const featuresData = [
 			<div class="text-6xl">
       <p class="text-white font-bold">找專題成員？</p>
       <p class="text-white font-bold">
-        使用Idea<span class="text-violet-500 font-bold">Sync</span>
+        使用Idea<span class="text-transparent bg-clip-text font-bold bg-gradient-to-tr from-indigo-500 via-purple-500 to-white/80">Sync</span>
       </p>
 			</div>
       <br />
