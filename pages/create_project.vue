@@ -1,80 +1,41 @@
 <script setup>
 </script>
 <template>
-    <div class="w-[1334px] h-[1713px] flex items-center justify-center">
-        <div class="w-[180px] h-[60px] left-[1154px] top-[1653px] absolute">
-            <div class="w-[180px] h-[60px] left-0 top-0 absolute bg-white rounded-[15px]"></div>
-            <div class="w-16 h-[37px] left-[58px] top-[11px] absolute text-black text-[32px] font-bold font-['Inter']">
-                發布</div>
-        </div>
-        <div class="w-[843.06px] h-[60px] left-[20px] top-[270px] absolute">
-            <div class="w-[296.06px] h-14 left-[547px] top-[2px] absolute">
-                <div class="w-[237.06px] left-[59px] top-0 absolute text-white text-[46px] font-light font-['Inter']">
-                    需指導者</div>
-                <div class="w-[45px] h-[45px] left-0 top-[5px] absolute border-2 border-violet-400"></div>
+    <div class="flex flex-col items-center w-full">
+        <div id="tag" class="flex border border-gray h-10 w-1/2 flex-row rounded-sm m-3">
+            <div class="h-10 inline-block self-start flex flex-row items-center">
+                <p class="text-white px-2">標籤</p>
+                <button class="bg-purple-400 hover:bg-purple-300 text-white font-bold px-2 rounded-lg">
+                    畢業專題
+                </button>
             </div>
-            <div class="w-[242px] h-[60px] left-0 top-0 absolute">
-                <div class="w-[210.51px] left-0 top-[11px] absolute text-white text-[32px] font-light font-['Inter']">
-                    申請人數</div>
-                <div class="w-[81px] h-[60px] left-[161px] top-0 absolute">
-                    <div class="w-[81px] h-[60px] left-0 top-0 absolute bg-white/opacity-20 rounded-[15px]"></div>
-                    <div
-                        class="w-[34px] left-[31px] top-[7px] absolute text-white text-[38px] font-normal font-['Inter']">
-                        1</div>
-                </div>
+            <div class="flex justify-center ml-auto">
+                <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">
+                    +
+                </button>
             </div>
         </div>
-        <div class="w-[1334px] h-[90px] left-0 top-[127px] absolute">
-            <div class="w-[1334px] h-[90px] left-0 top-0 absolute bg-neutral-800 rounded-[5px]"></div>
-            <div
-                class="w-[167.12px] left-[19.78px] top-[26px] absolute text-white text-[32px] font-light font-['Inter']">
-                標題</div>
-        </div>
-        <div class="w-[373px] h-[41px] left-[20px] top-[383px] absolute">
-            <div
-                class="w-[210.51px] h-[3.16px] left-0 top-[1px] absolute text-white text-[32px] font-light font-['Inter']">
-                畢業專題</div>
-            <div class="w-[187px] h-[4.16px] left-[186px] top-0 absolute">
-                <div class="w-8 h-[3.16px] left-0 top-[1px] absolute text-white text-[32px] font-light font-['Inter']">是
-                </div>
-                <div
-                    class="w-8 h-[3.16px] left-[155px] top-0 absolute text-white text-[32px] font-light font-['Inter']">
-                    否</div>
+        <input type="text" id="title" name="title" class="text-xl w-1/2 bg-gray-800 text-white px-2 py-2"
+            placeholder="標題">
+        <div class="flex h-10 w-1/2 flex-row m-2">
+            <div class="h-10 inline-block self-start flex flex-row items-center">
+                <p class="text-white px-2 mr-2 text-lg">申請人數</p>
+                <input type="number" id="applicant" name="applicant"
+                    class="bg-gray-800 text-white font-bold py-1 px-4 rounded-lg w-16 mr-20">
+                <input type="checkbox" id="teacher" name="teacher" class="w-6 h-6 bg-black mg-2 mr-2">
+                <p class="text-white px-2 mr-2 text-lg">需指導者</p>
             </div>
         </div>
-        <div class="w-[1334px] h-[408px] left-0 top-[583px] absolute">
-            <div class="w-[1334px] h-[408px] left-0 top-0 absolute bg-neutral-800 rounded-[5px]"></div>
-            <div class="w-[84px] left-[27px] top-[26px] absolute text-white text-[32px] font-light font-['Inter']">說明
-            </div>
-        </div>
-        <div class="w-[1331px] h-[536px] left-[3px] top-[1020px] absolute">
-            <div class="w-[1331px] h-[536px] left-0 top-0 absolute bg-violet-400/opacity-50"></div>
-            <div
-                class="w-[918px] h-[73px] left-[207px] top-[174px] absolute text-center text-violet-400 text-6xl font-bold font-['Inter']">
-                Choose files or drag and drop</div>
-            <div
-                class="w-[392px] h-12 left-[452px] top-[276px] absolute text-center text-white text-[40px] font-semibold font-['Inter']">
-                Allowed content</div>
-            <div class="w-[366.37px] h-[99px] left-[477.44px] top-[399px] absolute bg-violet-400 rounded-[20px]"></div>
-            <div
-                class="w-[220px] h-[74px] left-[556px] top-[412px] absolute text-center text-white text-6xl font-semibold font-['Inter']">
-                Ready</div>
-            <div class="w-[93.54px] h-24 left-[618.73px] top-[49px] absolute"></div>
-        </div>
-        <div class="w-[1331px] h-[74px] left-[3px] top-0 absolute border border-white">
-            <div class="w-[83.77px] left-[16px] top-[17px] absolute text-white text-[32px] font-light font-['Inter']">標籤
-            </div>
-            <div class="w-[230px] h-[58.07px] left-[100px] top-[7px] absolute">
-                <div
-                    class="w-[230px] h-[58.07px] left-0 top-0 absolute bg-violet-400/opacity-30 rounded-[15px] border border-violet-400">
-                </div>
-                <div
-                    class="w-[133.35px] h-[38px] left-[67px] top-[10px] absolute text-white text-[32px] font-light font-['Inter']">
-                    畢業專題</div>
-            </div>
-            <div class="w-[60px] h-[60px] left-[1257px] top-[7px] absolute">
-                <div class="w-[60px] h-[60px] left-0 top-0 absolute bg-neutral-800 rounded-[100px]"></div>
-            </div>
+        <input type="text" id="school" name="school" class="text-xl w-1/2 bg-gray-800 text-white px-2 py-2 mb-3"
+            placeholder="學校">
+        <input type="text" id="description" name="description"
+            class="h-100 w-1/2 relative text-xl bg-gray-800 text-white px-2 py-2" placeholder="說明">
+        <div class="flex flex-col items-center w-1/2 bg-violet-400 m-3 py-3">
+            <img src="/assets/images/upload.png" alt="upload" class="w-14 h-14 opacity-100" />
+            <p class="text-violet-500 px-2 mr-2 text-2xl opacity-100">Choose files or drag and drop</p>
+            <p class="text-white px-2 mr-2 text-lg opacity-100">Allowed content</p>
+            <button
+                class="bg-violet-600 hover:bg-violet-900 text-white text-2xl font-bold py-2 px-6 m-3 rounded-lg">Ready</button>
         </div>
     </div>
 </template>
