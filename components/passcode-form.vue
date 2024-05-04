@@ -21,14 +21,20 @@ const matcher = (userEnterPassCode, passCode) => {
 const onSubmit = async (event) => {
   let successFlag = false;
   if (props.passCode.expiryTime < new Date().getTime()) {
+    successFlag = false;
     submitMessage.value = "驗證碼已過期";
   }
   if (matcher(state.passCode, props.passCode.code)) {
-    submitMessage.value = "驗證成功";
     successFlag = true;
+    submitMessage.value = "驗證成功";
+    setTimeout(() => {
+      submitMessage.value = "";
+      router.push("/signin");
+    }, 4000);
+    
   } else {
-    submitMessage.value = "驗證碼錯誤";
     successFlag = false;
+    submitMessage.value = "驗證碼錯誤";
   }
 
   if (successFlag) {
@@ -60,22 +66,22 @@ const onSubmit = async (event) => {
     );
     switch (response) {
       case "User data saving failed":
-        submitMessage.value = "註冊失敗";
-        break;
-      case "User data saved successfully":
-        submitMessage.value = "註冊成功";
-        router.push("/signin");
+      submitMessage.value = "註冊失敗";
+        setTimeout(() => {
+          submitMessage.value = "";
+          router.push("/");
+        }, 3000);
         break;
       default:
         break;
     }
   } else if (!successFlag) {
-    router.push("/");
+    setTimeout(() => {
+      submitMessage.value = "";
+      router.push("/");
+    }, 3000);
+    
   }
-
-  setTimeout(() => {
-    submitMessage.value = "";
-  }, 3000);
 };
 </script>
 <template>
