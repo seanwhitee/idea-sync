@@ -1,6 +1,6 @@
 <script setup></script>
 <template>
-    <div class="flex items-center bg-gray-500/50 w-full flex px-2">
+    <div class="flex items-center bg-black box-border border-b border-gray-500/50 w-full flex px-2">
         <div class="inline-block cursor-pointer" onclick="">
             <img src="/assets/images/menus.png" alt="upload" class="w-8 h-8 mr-1" />
         </div>
