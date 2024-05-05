@@ -1,6 +1,7 @@
 <script setup>
 </script>
 <template>
+    <LoginedNavbar />
     <div class="flex flex-col items-center w-full">
         <div id="tag" class="flex border border-gray h-10 w-1/2 flex-row rounded-sm m-3">
             <div class="h-10 inline-block self-start flex flex-row items-center">
@@ -28,8 +29,8 @@
         </div>
         <input type="text" id="school" name="school" class="text-xl w-1/2 bg-gray-800 text-white px-2 py-2 mb-3"
             placeholder="學校">
-        <input type="text" id="description" name="description"
-            class="h-100 w-1/2 relative text-xl bg-gray-800 text-white px-2 py-2" placeholder="說明">
+        <textarea type="text" id="description" name="description" style="height: 250px;"
+            class="w-1/2 relative text-xl bg-gray-800 text-white px-2 py-2" placeholder="說明"></textarea>
         <div class="flex flex-col items-center w-1/2 bg-violet-400 m-3 py-3">
             <img src="/assets/images/upload.png" alt="upload" class="w-14 h-14 opacity-100" />
             <p class="text-violet-500 px-2 mr-2 text-2xl opacity-100">Choose files or drag and drop</p>
