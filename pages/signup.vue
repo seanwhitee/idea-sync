@@ -57,32 +57,46 @@ const updateUserInfo = (newUserInfo) => {
 </script>
 <template>
   <GradientFog />
-  <div class="flex items-center font-bold w-full p-4">
-    <NuxtLink to="/" external class="text-white"
-      >Idea<span class="text-violet-500" style="z-index: 1">Sync</span>
-    </NuxtLink>
-  </div>
-  <div class="flex flex-col items-center md:items-center lg:items-start text-white mx-auto mt-20 p-10 w-full">
-    <h1 class="font-light text-4xl mb-10">建立新帳號</h1>
-
-    <div class="w-full md:w-1/2 lg:w-1/3 p-4">
-      <RegistrationForm
-        v-if="step === 1"
-        :updateStep="updateStep"
-        :updateUserInfo="updateUserInfo"
-        :generatePassCode="generatePassCode"
+  <div
+    class="flex items-center justify-center text-white mx-auto px-5 py-20 md:py-36 lg:py-36 rounded-xl w-full"
+  >
+    <div
+      class="w-full md:w-7/12 lg:w-1/3 py-12 px-10 bg-black md:bg-zinc-950 lg:bg-zinc-950 rounded-2xl flex items-start justify-center flex-col"
+    >
+      <img
+        src="/public/favicon.png"
+        alt="favicon"
+        class="translate-x-4 w-20 rounded-3xl mb-6 shadow-xl"
       />
-      <PasscodeForm
-        v-else-if="step === 2"
-        :userInfo="userInfo"
-        :passCode="passCode"
-        :generatePassCode="generatePassCode"
-        :userRole="getRoleName(userInfo.roleId)"
-      />
-      <div
-        class="w-full flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
+      <h1
+        class="flex px-4 justify-start w-full font-semibold text-lg md:text-2xl lg:text-2xl mb-8"
       >
-        有帳號嗎？<NuxtLink to="/signin" class="underline">登入</NuxtLink>
+        <span>創建你的</span>
+        <NuxtLink to="/" external class="text-white"
+          >Idea<span class="text-violet-500">Sync</span>
+        </NuxtLink>
+        <span>帳號</span>
+      </h1>
+
+      <div class="w-full p-4">
+        <RegistrationForm
+          v-if="step === 1"
+          :updateStep="updateStep"
+          :updateUserInfo="updateUserInfo"
+          :generatePassCode="generatePassCode"
+        />
+        <PasscodeForm
+          v-else-if="step === 2"
+          :userInfo="userInfo"
+          :passCode="passCode"
+          :generatePassCode="generatePassCode"
+          :userRole="getRoleName(userInfo.roleId)"
+        />
+        <div
+          class="w-full flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
+        >
+          有帳號嗎？<NuxtLink to="/signin" class="underline">登入</NuxtLink>
+        </div>
       </div>
     </div>
   </div>

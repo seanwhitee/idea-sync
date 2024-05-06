@@ -92,13 +92,11 @@ async function onSubmit(event) {
         break;
       case "user registration failed, data is not valid":
         submitMessage.value = "使用者註冊失敗，資料無效";
-        router.push("/signup");
         break;
       case "email already registered":
         submitMessage.value = "電子郵件已經註冊";
         break;
       case "user data is valid":
-        submitMessage.value = "註冊成功";
         props.updateStep(2);
         props.updateUserInfo({
           username: result.userName,
