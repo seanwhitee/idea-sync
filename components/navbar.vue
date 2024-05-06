@@ -1,6 +1,6 @@
 <script setup></script>
 <template>
-  <div class="bg-black box-border w-full border-b border-gray-500/50 flex items-center justify-between px-4 py-2">
+  <div class="bg-black box-border w-full border-b border-gray-500/50 flex items-center justify-between px-4 py-2 fixed">
 
     <div class="flex items-center font-bold my-2">
       <NuxtLink to="/" external class="text-white flex items-center justify-center"><img src="/public/favicon.png" class="me-3 w-8 rounded-lg" />Idea<span class="text-violet-500" style="z-index: 1">Sync</span>

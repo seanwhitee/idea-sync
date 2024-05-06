@@ -1,55 +1,105 @@
 <script setup>
-import { useAuthStore } from '~/store/auth';
+import { useAuthStore } from "~/store/auth";
+import { useProjectStore } from "~/store/project";
 
-// const authStore = useAuthStore();
-// if (!authStore.isLogin) {
-// 	router.push("error");
-// }
+const router = useRouter();
 
-// // check if the user have the role permission
-// if (!authStore.userInfo.roleVerified || )
+// 1. check if the user is login and role is verified
+// 2. check if the user role is creator
+// if not, redirect to home page
+const authStore = useAuthStore();
+const projectStore = useProjectStore();
+if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
+  router.push("/");
+}
+
+if (!authStore.userInfo.roleName === "creator") {
+  router.push("/");
+}
 </script>
 <template>
-	<LoginedNavbar />
-	<div class="flex flex-col items-center w-full">
-		<div id="tag" class="flex border border-gray h-10 w-1/2 flex-row rounded-sm m-3">
-			<div class="h-10 self-start flex flex-row items-center">
-				<p class="text-white px-2">標籤</p>
-				<button class="bg-purple-400 hover:bg-purple-300 text-white font-bold px-2 rounded-lg">
-					畢業專題
-				</button>
-			</div>
-			<div class="flex justify-center ml-auto">
-				<button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">
-					+
-				</button>
-			</div>
-		</div>
-		<input type="text" id="title" name="title" class="text-xl w-1/2 bg-gray-800 text-white px-2 py-2"
-			placeholder="標題" />
-		<div class="flex h-10 w-1/2 flex-row m-2">
-			<div class="h-10 self-start flex flex-row items-center">
-				<p class="text-white px-2 mr-2 text-lg">申請人數</p>
-				<input type="number" id="applicant" name="applicant"
-					class="bg-gray-800 text-white font-bold py-1 px-4 rounded-lg w-16 mr-20" />
-				<input type="checkbox" id="teacher" name="teacher" class="w-6 h-6 bg-black mg-2 mr-2" />
-				<p class="text-white px-2 mr-2 text-lg">需指導者</p>
-			</div>
-		</div>
-		<input type="text" id="school" name="school" class="text-xl w-1/2 bg-gray-800 text-white px-2 py-2 mb-3"
-			placeholder="學校" />
-		<textarea type="text" id="description" name="description" style="height: 250px"
-			class="w-1/2 relative text-xl bg-gray-800 text-white px-2 py-2" placeholder="說明"></textarea>
-		<div class="flex flex-col items-center w-1/2 bg-violet-400 m-3 py-3">
-			<img src="/assets/images/upload.png" alt="upload" class="w-14 h-14 opacity-100" />
-			<p class="text-violet-500 px-2 mr-2 text-2xl opacity-100">
-				Choose files or drag and drop
-			</p>
-			<p class="text-white px-2 mr-2 text-lg opacity-100">Allowed content</p>
-			<button class="bg-violet-600 hover:bg-violet-900 text-white text-2xl font-bold py-2 px-6 m-3 rounded-lg">
-				Ready
-			</button>
-		</div>
-	</div>
+  <LoginedNavbar />
+  <Sidebar />
+  <div
+    class="flex flex-col items-center w-full md:w-3/5 lg:w-3/5 pt-36 mx-auto gap-4"
+  >
+    <TagContainer />
+    <!--title-->
+    <label class="form-control w-full bg-primary-content rounded-none">
+      <input
+        v-model="projectStore.title"
+        type="text"
+        placeholder="標題"
+        class="input input-bordered w-full bg-black rounded-none"
+      />
+    </label>
+
+    <!--allow applcant num-->
+    <div class="w-full flex items-center justify-start">
+      <label class="label gap-2">
+        <span class="label-text">申請人數</span>
+        <input
+          v-model="projectStore.allowApplicantsNum"
+          type="number"
+          min="1"
+          @change="
+            (e) => {
+              if (e.target.value < 1) {
+                e.target.value = 1;
+              }
+            }
+          "
+          class="flex items-center justify-center outline-none bg-black py-2 border border-gray-500/30"
+        />
+      </label>
+    </div>
+
+    <!--is graduation project-->
+    <div class="flex items-center justify-start w-full">
+      <label class="label cursor-pointer gap-2">
+        <span class="label-text">畢業專題</span>
+        <span class="text-sm">否</span>
+        <input
+          v-model="projectStore.isGraduationProject"
+          type="checkbox"
+          class="toggle"
+          checked
+        />
+        <span class="text-sm">是</span>
+      </label>
+    </div>
+
+    <!--school-->
+    <label class="form-control w-full bg-primary-content rounded-none">
+      <input
+        v-model="projectStore.school"
+        type="text"
+        placeholder="學校"
+        class="input input-bordered w-full bg-black rounded-none"
+      />
+    </label>
+
+    <!--description-->
+    <textarea
+      v-model="projectStore.description"
+      class="w-full h-40 bg-black rounded-none textarea textarea-bordered"
+      placeholder="說明"
+    ></textarea>
+
+    <!--image upload-->
+    <div class="px-30 py-10 bg-violet-400/50 flex flex-col items-center justify-center w-full">
+      <NuxtImg src="upload.png" alt="upload" class="w-12 mb-5" />
+      <p class=" font-semibold text-lg mb-5">Allow content: jpeg, png</p>
+      <input type="file"
+      class="file-input file-input-bordered w-full max-w-xs bg-violet-400"
+      accept="image/jpeg, image/png"
+      />
+    </div>
+    <!--submit button-->
+    <div class="w-full flex items-cente justify-end mt-10">
+      <button class="btn bg-white text-black">
+        發布
+      </button>
+    </div>
+  </div>
 </template>
-]
