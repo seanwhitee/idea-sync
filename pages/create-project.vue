@@ -21,7 +21,7 @@ if (!authStore.userInfo.roleName === "creator") {
   <LoginedNavbar />
   <Sidebar />
   <div
-    class="flex flex-col items-center w-full md:w-3/5 lg:w-3/5 pt-36 mx-auto gap-4"
+    class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-36 pb-20 mx-auto gap-4"
   >
     <TagContainer />
     <!--title-->
