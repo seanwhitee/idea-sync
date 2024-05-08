@@ -26,7 +26,7 @@ const logout = () => {
           {{ authStore.userInfo.nickName }}
         </span>
         <span class="flex text-xs font-light w-32 overflow-auto">
-          dsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesg
+          {{ authStore.userInfo.email }}
           
         </span>
       </div>
