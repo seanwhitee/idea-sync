@@ -1,5 +1,4 @@
 <script setup>
-import { set } from "zod";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 
