@@ -2,6 +2,7 @@
 </script>
 <template>
   <NuxtPage />
+  <UNotifications />
 </template>
 <style>
 body {

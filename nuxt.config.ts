@@ -4,16 +4,20 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   pages: true,
   css: ["~/assets/css/main.css"],
-
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-  modules: ["@nuxt/image", "@nuxt/ui", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+  modules: [
+    "@nuxt/image",
+    "@nuxt/ui",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+  ],
   image: {
-    dir: "assets/images"
+    dir: "assets/images",
   },
   app: {
     head: {

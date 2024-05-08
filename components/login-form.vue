@@ -47,6 +47,9 @@ const onSubmit = async () => {
     // login successfull
     const user = response;
     authStore.login(user);
+    if (authStore.userInfo.roleName === "admin") {
+      router.push("/admin-dashboard");
+    }
     router.push("/projects");
   }
 };

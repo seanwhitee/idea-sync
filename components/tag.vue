@@ -7,7 +7,7 @@ const props = defineProps({
 </script>
 <template>
   <div
-    class="flex bg-violet-800/50 border border-violet-500 text-white font-bold px-2 rounded-lg gap-1"
+    class="flex bg-violet-800/50 border font-light border-violet-500 text-white px-2 rounded-lg gap-1"
   >
     <button
     @click="projectStore.deleteTag(props.tagName)"
