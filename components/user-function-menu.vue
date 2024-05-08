@@ -18,18 +18,26 @@ const logout = () => {
         <NuxtImg
           :src="authStore.userInfo.avatarUrl"
           alt="user-avatar"
-          class="w-3"
+          class="w-4"
         />
       </div>
-      <span class="text-md font-light">{{
-        authStore.userInfo.nickName
-      }}</span>
+      <div class="flex flex-col items-start justify-center">
+        <span class="flex text-md font-bold w-32 overflow-auto">
+          {{ authStore.userInfo.nickName }}
+        </span>
+        <span class="flex text-xs font-light w-32 overflow-auto">
+          dsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesgdsgsgsgesg
+          
+        </span>
+      </div>
     </div>
     <ul
       tabindex="0"
       class="dropdown-content z-[2] menu p-2 shadow rounded-lg w-52 left-1 bg-gray-800"
     >
-      <li @click="logout" class="hover:bg-gray-800/50 rounded-lg"><p>Logout</p></li>
+      <li @click="logout" class="hover:bg-gray-800/50 rounded-lg">
+        <p>登出</p>
+      </li>
     </ul>
   </div>
 </template>
