@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     "@pinia-plugin-persistedstate/nuxt",
   ],
   image: {
-    dir: "assets/images",
+    dir: "assets/images"
   },
   app: {
     head: {
