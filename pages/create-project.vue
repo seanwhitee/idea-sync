@@ -251,7 +251,7 @@ const handleSubmit = async () => {
     />
     <div class="w-full flex items-center justify-end">
       <button
-        class="hover:bg-zinc-800/50 px-10 border border-gray-600 opacity-80 py-2 text-sm bg-zinc-950 text-white"
+        class="hover:bg-zinc-800/50 px-10 border border-gray-600 py-2 text-sm bg-zinc-950 text-white"
         @click="handleSubmit"
       >
         發布
