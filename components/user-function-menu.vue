@@ -22,11 +22,12 @@ const logout = () => {
         />
       </div>
       <div class="flex flex-col items-start justify-center">
-        <span class="flex text-md font-bold w-[131px] overflow-auto">
+        <span class="flex text-md font-bold w-[131px] overflow-hidden">
           {{ authStore.userInfo.nickName }}
         </span>
-        <span class="flex text-xs font-light w-[131px] overflow-auto">
-          {{ authStore.userInfo.email }}
+        <span class="flex text-xs font-light w-[131px] overflow-hidden">
+          {{ authStore.userInfo.email + authStore.userInfo.email }}
+          
           
         </span>
       </div>

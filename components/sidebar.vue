@@ -55,7 +55,7 @@ const itemAllowShow = (routeName) => {
       <div class="h-4/5 w-full pt-4 pb-2">
         <!--barItem container-->
         <ul
-          class="w-full h-full flex flex-col items-center justify-start pb-2 overflow-y-scroll mb-6"
+          class="w-full h-full flex flex-col items-center justify-start pt-4 pb-2 overflow-y-scroll mb-6"
         >
           <button
             v-for="item in items"
