@@ -29,7 +29,8 @@ if (authStore.userInfo.roleName !== "creator") {
 const file = ref(null);
 const previewUrl = ref(null);
 const statusMessage = ref(null);
-const statusMessageColor = ref("bg-red-500");
+const statusMessageColor = ref("bg-red-200");
+const statusMessageTextColor = ref("text-red-800");
 
 const handleFileChange = (e) => {
   file.value = e.target.files?.[0] ?? null;
@@ -58,7 +59,8 @@ const isValidInputData = (title, description, school, file) => {
   // check if the title, description, school is empty
   if (!title || !description || !school || !file) {
     statusMessage.value = "請填寫完整資料";
-    statusMessageColor.value = "bg-amber-400/50";
+    statusMessageColor.value = "bg-yellow-200";
+    statusMessageTextColor.value = "text-yellow-800";
     setTimeout(() => {
       statusMessage.value = "";
     }, 3000);
@@ -142,7 +144,8 @@ const handleSubmit = async () => {
       } else {
         // find the message from messageMap
         statusMessage.value = messageMap[res];
-        statusMessageColor.value = "bg-red-500/50";
+        statusMessageColor.value = "bg-red-200";
+        statusMessageTextColor.value = "text-red-800";
         setTimeout(() => {
           statusMessage.value = "";
           router.go();
@@ -248,6 +251,7 @@ const handleSubmit = async () => {
       v-if="statusMessage"
       :message="statusMessage"
       :color="statusMessageColor"
+      :textColor="statusMessageTextColor"
     />
     <div class="w-full flex items-center justify-end">
       <button
