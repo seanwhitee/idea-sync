@@ -19,19 +19,18 @@ const handleClick = (item) => {
 // check if the user is creator or admin
 const itemAllowShow = (routeName) => {
   if (routeName === "創建提案") {
-    return (
-      authStore.userInfo.roleName === "creator"
-    );
+    return authStore.userInfo.roleName === "creator";
   } else if (routeName === "瀏覽提案") {
     return (
-    authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "creator" ||
       authStore.userInfo.roleName === "admin" ||
-      authStore.userInfo.roleName === "mentor");
-
+      authStore.userInfo.roleName === "mentor"
+    );
   } else if (routeName === "管理提案") {
     return (
-    authStore.userInfo.roleName === "creator" ||
-      authStore.userInfo.roleName === "mentor");
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor"
+    );
   } else if (routeName === "儀表板") {
     return authStore.userInfo.roleName === "admin";
   }
@@ -49,8 +48,7 @@ const itemAllowShow = (routeName) => {
   <Transition name="slide-fade">
     <div
       v-if="toggler"
-      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-56 px-2
-      bg-black fixed overflow-y-scroll"
+      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 bg-black fixed overflow-y-scroll"
     >
       <div class="h-4/5 w-full pt-4 pb-2">
         <!--barItem container-->
@@ -60,7 +58,7 @@ const itemAllowShow = (routeName) => {
           <button
             v-for="item in items"
             :key="item.name"
-            class="mb-2 w-full hover:bg-gray-800 transition duration-300 ease-in-out rounded-lg focus:outline-none"
+            class="mb-2 w-full hover:bg-zinc-800 transition duration-300 ease-in-out rounded-lg focus:outline-none py-1"
             @click="handleClick(item)"
           >
             <BarItem
@@ -71,10 +69,10 @@ const itemAllowShow = (routeName) => {
           </button>
         </ul>
         <div
-        class="flex items-center justify-center px-1 w-56 h-14 fixed bottom-0 left-0"
+          class="flex items-center justify-center w-full h-14"
         >
-        <UserFunctionMenu />
-      </div>
+          <UserFunctionMenu />
+        </div>
       </div>
     </div>
   </Transition>
