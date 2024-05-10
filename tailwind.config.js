@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   theme: {},
   plugins: [require("daisyui")],
   content: [
