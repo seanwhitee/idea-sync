@@ -8,7 +8,9 @@ const items = ref([
   { name: "瀏覽提案", icon: "browse.png", path: "/projects" },
   { name: "管理提案", icon: "manage.png", path: "/manage-project" },
   { name: "儀表板", icon: "dashboard.png", path: "/admin-dashboard" },
+  { name: "個人檔案", icon: "default-avatar.png", path: "/profile" },
 ]);
+
 const toggler = ref(false);
 const router = useRouter();
 
@@ -33,8 +35,16 @@ const itemAllowShow = (routeName) => {
     );
   } else if (routeName === "儀表板") {
     return authStore.userInfo.roleName === "admin";
+  } else if (routeName === "個人檔案") {
+    return true;
   }
 };
+
+// Compute which items are visible based on the role
+const visibleItems = computed(() => {
+  return items.value.filter((item) => itemAllowShow(item.name));
+});
+
 </script>
 <template>
   <!-- sidebar toggler-->
@@ -56,21 +66,15 @@ const itemAllowShow = (routeName) => {
           class="w-full h-full flex flex-col items-center justify-start pt-4 pb-2 overflow-y-scroll mb-6"
         >
           <button
-            v-for="item in items"
+            v-for="item in visibleItems"
             :key="item.name"
             class="mb-2 w-full hover:bg-zinc-800 transition duration-300 ease-in-out rounded-lg focus:outline-none py-1"
             @click="handleClick(item)"
           >
-            <BarItem
-              v-if="itemAllowShow(item.name)"
-              :name="item.name"
-              :icon="item.icon"
-            />
+            <BarItem :name="item.name" :icon="item.icon" />
           </button>
         </ul>
-        <div
-          class="flex items-center justify-center w-full h-14"
-        >
+        <div class="flex items-center justify-center w-full h-14">
           <UserFunctionMenu />
         </div>
       </div>
