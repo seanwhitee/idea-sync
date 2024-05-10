@@ -12,7 +12,7 @@ const logout = () => {
     <div
       tabindex="0"
       role="button"
-      class="btn m-1 flex gap-3 items-center justify-start bg-black text-white hover:bg-gray-800 border-none"
+      class="btn my-1 flex gap-3 items-center justify-start bg-black text-white hover:bg-zinc-800 border-none"
     >
       <div class="p-1 bg-black rounded-full border border-white">
         <NuxtImg
@@ -34,10 +34,13 @@ const logout = () => {
     </div>
     <ul
       tabindex="0"
-      class="dropdown-content z-[2] menu p-2 shadow rounded-lg w-52 left-1 bg-gray-800"
+      class="dropdown-content absolute z-[2] menu px-2 py-3 shadow rounded-lg w-full bg-zinc-800"
     >
-      <li @click="logout" class="hover:bg-gray-800/50 rounded-lg">
-        <p>登出</p>
+      <li @click="" class="hover:bg-zinc-800/50 rounded-lg">
+        <p class="py-4">切換帳號</p>
+      </li>
+      <li @click="logout" class="hover:bg-zinc-800/50 rounded-lg">
+        <p class="py-4">登出</p>
       </li>
     </ul>
   </div>
