@@ -94,12 +94,6 @@ const handleSubmit = async () => {
       }),
     });
     if (response.failure !== undefined) {
-      statusMessage.value = messageMap[response.failure];
-      statusMessageColor.value = "bg-yellow-200";
-      statusMessageTextColor.value = "text-yellow-800";
-      setTimeout(() => {
-        statusMessage.value = "";
-      }, 3000);
       throw new Error(response.failure);
     }
 
