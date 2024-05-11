@@ -8,6 +8,8 @@ const messageMap = {
   "Project with the same title already exists": "此提案已存在",
   "Project created successfully": "提案創建成功",
   "Project created failed": "提案創建失敗",
+  "Invalid file type": "檔案類型錯誤",
+  "File too large": "檔案過大",
 }
 
 const router = useRouter();
@@ -92,6 +94,7 @@ const handleSubmit = async () => {
       }),
     });
     if (response.failure !== undefined) {
+      statusMessage.value = messageMap[response.failure];
       throw new Error(response.failure);
     }
 
