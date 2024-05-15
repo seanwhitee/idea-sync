@@ -16,7 +16,7 @@ const handleRoleButtonClick = (role) => {
   <!--select type input to determine if user status is creator or mentor-->
   <div class="flex content-evenly mb-5">
     <p class="content-center text-sm font-extrali.ght">身份：</p>
-    <div class="dropdown dropdown-hover dropdown-bottom">
+    <div class="dropdown dropdown-hover dropdown-right">
       <div tabindex="0" class="btn m-1 glass">
         {{handleRoleButtonClick(role)}}
       </div>
