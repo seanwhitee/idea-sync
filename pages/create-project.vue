@@ -181,7 +181,8 @@ const handleSubmit = async () => {
         v-model="projectStore.title"
         type="text"
         placeholder="標題"
-        class="input input-bordered w-full bg-black rounded-none outline-none"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted"
       />
     </label>
 
@@ -228,14 +229,16 @@ const handleSubmit = async () => {
         v-model="projectStore.school"
         type="text"
         placeholder="學校"
-        class="input input-bordered w-full bg-black rounded-none"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted" 
       />
     </label>
 
     <!--description-->
     <textarea
       v-model="projectStore.description"
-      class="w-full h-40 bg-black rounded-none textarea textarea-bordered"
+      class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none
+      focus:border-white focus:border-dotted"
       placeholder="說明"
     ></textarea>
 

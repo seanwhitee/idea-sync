@@ -17,15 +17,15 @@ const handleRoleButtonClick = (role) => {
   <div class="flex content-evenly mb-5">
     <p class="content-center text-sm font-extrali.ght">身份：</p>
     <div class="dropdown dropdown-hover dropdown-bottom">
-      <div tabindex="0" class="btn m-1 glass">
+      <div tabindex="0" class="btn m-1 glass text-white hover:bg-inherit">
         {{handleRoleButtonClick(role)}}
       </div>
       <ul
         tabindex="0"
-        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+        class="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 glass"
       >
-        <li @click="role = 'creator'"><a>學生</a></li>
-        <li @click="role = 'mentor'"><a>指導者</a></li>
+        <li @click="role = 'creator'" class="hover:bg-zinc-800/50 rounded-box"><a>學生</a></li>
+        <li @click="role = 'mentor'" class="hover:bg-zinc-800/50 rounded-box"><a>指導者</a></li>
       </ul>
     </div>
   </div>
