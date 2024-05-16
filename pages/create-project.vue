@@ -73,7 +73,7 @@ const handleSubmit = async () => {
   // ** upload image to exchange the real url **
 
   // check if the input data is valid
-  if (!isValidInputData(projectStore.title, projectStore.description, projectStore.school, file.value)) {
+  if(!isValidInputData(projectStore.title, projectStore.description, projectStore.school, file.value)) {
     return;
   }
 
@@ -168,31 +168,43 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
 <template>
   <LoginedNavbar />
   <Sidebar />
-  <div class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-28 md:pt-36 lg:pt-36 pb-20 mx-auto gap-4">
+  <div
+    class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-28 md:pt-36 lg:pt-36 pb-20 mx-auto gap-4"
+  >
     <TagContainer />
     <!--title-->
     <label class="form-control w-full bg-primary-content rounded-none">
-      <input v-model="projectStore.title" type="text" placeholder="標題"
-        class="input input-bordered w-full bg-black rounded-none outline-none" />
+      <input
+        v-model="projectStore.title"
+        type="text"
+        placeholder="標題"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted"
+      />
     </label>
 
     <!--allow applcant num-->
     <div class="w-full flex items-center justify-start">
       <label class="label gap-2 flex justify-start items-center">
         <span class="label-text">需求人數</span>
-        <input @change="(e) => {
-          e.preventDefault();
-          if (e.target.value < 1) {
-            e.target.value = 1;
-          }
-          projectStore.allowApplicantsNum = e.target.value;
-        }
-        " :value="projectStore.allowApplicantsNum" type="number" min="1"
-          class="flex items-center justify-center outline-none text-center w-2/5 bg-black py-2 border border-gray-500/30" />
+        <input
+          @change="
+            (e) => {
+              e.preventDefault();
+              if (e.target.value < 1) {
+                e.target.value = 1;
+              }
+              projectStore.allowApplicantsNum = e.target.value;
+            }
+          "
+          :value="projectStore.allowApplicantsNum"
+          type="number"
+          min="1"
+          class="flex items-center justify-center outline-none text-center w-2/5 bg-black py-2 border border-gray-500/30"
+        />
       </label>
     </div>
 
@@ -201,27 +213,47 @@ const handleSubmit = async () => {
       <label class="label cursor-pointer gap-2">
         <span class="label-text">畢業專題</span>
         <span class="text-sm">否</span>
-        <input v-model="projectStore.isGraduationProject" type="checkbox" class="toggle" checked />
+        <input
+          v-model="projectStore.isGraduationProject"
+          type="checkbox"
+          class="toggle"
+          checked
+        />
         <span class="text-sm">是</span>
       </label>
     </div>
 
     <!--school-->
     <label class="form-control w-full bg-primary-content rounded-none">
-      <input v-model="projectStore.school" type="text" placeholder="學校"
-        class="input input-bordered w-full bg-black rounded-none" />
+      <input
+        v-model="projectStore.school"
+        type="text"
+        placeholder="學校"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted" 
+      />
     </label>
 
     <!--description-->
-    <textarea v-model="projectStore.description" class="w-full h-40 bg-black rounded-none textarea textarea-bordered"
-      placeholder="說明"></textarea>
+    <textarea
+      v-model="projectStore.description"
+      class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none
+      focus:border-white focus:border-dotted"
+      placeholder="說明"
+    ></textarea>
 
     <!--image upload-->
-    <div class="px-30 py-10 bg-violet-400/50 flex flex-col items-center justify-center w-full">
+    <div
+      class="px-30 py-10 bg-violet-400/50 flex flex-col items-center justify-center w-full"
+    >
       <NuxtImg src="upload.png" alt="upload" class="w-12 mb-5" />
       <p class="font-semibold text-lg mb-5">Allow content: jpeg, png</p>
-      <input type="file" @change="handleFileChange" class="file-input file-input-bordered w-full max-w-xs bg-violet-400"
-        accept="image/jpeg, image/png" />
+      <input
+        type="file"
+        @change="handleFileChange"
+        class="file-input file-input-bordered w-full max-w-xs bg-violet-400"
+        accept="image/jpeg, image/png"
+      />
     </div>
 
     <!--preview upload-->
@@ -234,14 +266,15 @@ const handleSubmit = async () => {
       :type="messageType"
     />
     <div class="w-full flex items-center justify-end">
-      <button class="hover:bg-zinc-800/50 px-10 border border-gray-600 py-2 text-sm bg-zinc-950 text-white"
-        @click="handleSubmit">
+      <button
+        class="hover:bg-zinc-800/50 px-10 border border-gray-600 py-2 text-sm bg-zinc-950 text-white"
+        @click="handleSubmit"
+      >
         發布
       </button>
     </div>
   </div>
 </template>
-
 <style scoped>
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
