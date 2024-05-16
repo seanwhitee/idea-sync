@@ -21,12 +21,12 @@ const tagName = ref("");
 </script>
 <template>
   <div
-    class="flex border border-dotted border-white py-2 items-center px-2 w-full justify-between"
+    class="flex border border-dotted border-white items-center px-2 py-1 w-full justify-between"
   >
     <div class="justify-start w-1/12 flex items-center ps-2">
       <p class="flex text-white">標籤</p>
     </div>
-    <div class="flex items-center justify-between w-11/12">
+    <div class="flex items-center justify-between w-11/12 py-2">
       <!--tags-->
       <div class="flex gap-2 items-center justify-start overflow-x-scroll px-2 w-11/12">
         <Tag v-for="tag in projectStore.tags" :key="tag" :tagName="tag" />
@@ -78,7 +78,7 @@ const tagName = ref("");
                     輸入標籤
                   </DialogTitle>
                   <div class="mt-2 w-full">
-                    <input v-model="tagName" type="text" placeholder="Type here..." class="border border-gray-500/50 outline-none rounded-md px-3 py-3 text-sm font-light w-full" />
+                    <input v-model="tagName" type="text" placeholder="Type here..." class="border bg-zinc-900/50 border-gray-500/50 outline-none rounded-md px-3 py-3 text-sm font-light w-full" />
                   </div>
 
                   <div class="mt-4 flex items-center justify-end">
