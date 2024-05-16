@@ -5,7 +5,7 @@ import LoginForm from "~/components/login-form.vue";
   <GradientFog />
   <div class="py-20 md:py-48 lg:py-36">
     <div
-      class="flex flex-col items-start text-white mx-auto px-5 w-10/12 md:w-1/2 lg:w-1/3 bg-black md:bg-zinc-950 lg:bg-zinc-950 rounded-2xl py-5 md:py-20 lg:py-10"
+      class="flex flex-col items-start text-white mx-auto px-5 w-10/12 md:w-1/2 lg:w-1/2 max-w-lg bg-black md:bg-zinc-950 lg:bg-zinc-950 rounded-2xl py-5 md:py-20 lg:py-10"
     >
     <img
         src="/public/favicon.png"
