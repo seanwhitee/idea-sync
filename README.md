@@ -4,21 +4,30 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
-Make sure to install the dependencies:
+### Make sure to install the dependencies:
 
-```bash
-# npm
-npm install
+  ```bash
+  # npm
+  npm install
 
-# pnpm
-pnpm install
+  # pnpm
+  pnpm install
 
-# yarn
-yarn install
+  # yarn
+  yarn install
 
-# bun
-bun install
-```
+  # bun
+  bun install
+  ```
+
+### Create `.env` file.
+
+  ```bash
+  AWS_ACCESS_KEY=
+  AWS_SECRET_ACCESS_KEY=
+  AWS_BUCKET_NAME=
+  AWS_BUCKET_REGION=
+  ```
 
 ## Development Server
 
