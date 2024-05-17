@@ -65,7 +65,7 @@ const onSubmit = async () => {
     <div class="w-full">
       <button
         type="submit"
-        class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg mt-0"
+        class="w-full bg-violet-800 hover:bg-violet-800/90 font-thin py-2 px-4 rounded-lg mt-0"
       >
         <div class="flex items-center justify-center w-full text-white">
           登入
