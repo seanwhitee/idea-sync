@@ -20,7 +20,7 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
   bun install
   ```
 
-### Create `.env` file.
+### Create `.env` file
 
   ```bash
   AWS_ACCESS_KEY=
