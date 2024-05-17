@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+// store for create project
 export const useProjectStore = defineStore(
   "project",
   () => {
