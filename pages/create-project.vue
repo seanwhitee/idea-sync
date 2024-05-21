@@ -78,7 +78,7 @@ const handleSubmit = async () => {
   }
 
   // check if isAllowProjectCreate is true
-  if (!authStore.allowProjectCreate) {
+  if (!authStore.userInfo.allowProjectCreate) {
     statusMessage.value = "您的狀態無法創建提案";
     messageType.value = "error";
     setTimeout(() => {

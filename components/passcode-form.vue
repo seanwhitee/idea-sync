@@ -29,7 +29,6 @@ const onSubmit = async (event) => {
     submitMessage.value = "驗證成功";
     setTimeout(() => {
       submitMessage.value = "";
-      router.push("/signin");
     }, 4000);
     
   } else {
@@ -69,7 +68,6 @@ const onSubmit = async (event) => {
       submitMessage.value = "註冊失敗";
         setTimeout(() => {
           submitMessage.value = "";
-          router.push("/");
         }, 3000);
         break;
       default:
@@ -78,7 +76,6 @@ const onSubmit = async (event) => {
   } else if (!successFlag) {
     setTimeout(() => {
       submitMessage.value = "";
-      router.push("/");
     }, 3000);
     
   }
