@@ -26,13 +26,13 @@ const tagName = ref("");
     <div class="justify-start w-1/12 flex items-center ps-2">
       <p class="flex text-white">標籤</p>
     </div>
-    <div class="flex items-center justify-between w-11/12 py-2">
+    <div class="flex items-start justify-between w-11/12 py-2">
       <!--tags-->
-      <div class="flex gap-2 items-center justify-start overflow-x-scroll px-2 w-11/12">
+      <div class="flex flex-wrap gap-2 items-center justify-start overflow-x-scroll px-2 w-11/12">
         <Tag v-for="tag in projectStore.tags" :key="tag" :tagName="tag" />
       </div>
 
-      <div class="flex items-center justify-center w-1/12">
+      <div class="flex justify-center w-1/12 items-center">
         <button
           type="button"
           @click="openModal"
@@ -84,7 +84,7 @@ const tagName = ref("");
                   <div class="mt-4 flex items-center justify-end">
                     <button
                       type="button"
-                      class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      class="inline-flex justify-center rounded-md border border-transparent bg-zinc-800 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       @click="projectStore.addTag(tagName)"
                       :disabled="!tagName"
                     >
