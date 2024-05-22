@@ -68,6 +68,10 @@ const onSubmit = async (event) => {
         break;
       default:
         submitMessage.value = "註冊成功";
+        setTimeout(() => {
+          router.push('/signin')
+          submitMessage.value = "";
+        }, 3000);
         break;
     }
   } else if (!successFlag) {
