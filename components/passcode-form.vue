@@ -26,10 +26,6 @@ const onSubmit = async (event) => {
   }
   if (matcher(state.passCode, props.passCode.code)) {
     successFlag = true;
-    submitMessage.value = "驗證成功";
-    setTimeout(() => {
-      submitMessage.value = "";
-    }, 4000);
     
   } else {
     successFlag = false;
@@ -71,6 +67,7 @@ const onSubmit = async (event) => {
         }, 3000);
         break;
       default:
+        submitMessage.value = "註冊成功";
         break;
     }
   } else if (!successFlag) {
@@ -114,7 +111,7 @@ const onSubmit = async (event) => {
         {{ submitMessage }}
       </p>
       <p
-        v-if="submitMessage === '驗證成功' || submitMessage === '註冊成功'"
+        v-if="submitMessage === '註冊成功'"
         class="text-green-500 font-extralight text-xs"
       >
         {{ submitMessage }}
