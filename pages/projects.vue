@@ -12,9 +12,28 @@ if (!isLogin || !authStore.userInfo.roleVerified) {
   router.push("/");
 }
 
+const getArchiveProjects = async () => {
+  try {
+    const response = await $fetch(
+      `http://localhost:8080/api/v1/archive/getArchives?userId=${authStore.userInfo.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    projectPoolStore.archiveProjects = response;
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+};
+
+getArchiveProjects();
 // fetch projects from api
-async function handleGroupChange(group) {
-  if (group === "member_recruiting") {
+async function handleGroupChange() {
+  if (projectPoolStore.selectedGroup === "member_recruiting") {
     try {
       const response = await $fetch(
         `http://localhost:8080/api/v1/projectStatus/getProjectStatusForMembers`,
@@ -29,7 +48,7 @@ async function handleGroupChange(group) {
     } catch (error) {
       console.error(error);
     }
-  } else if(group === 'mentor_recruiting') {
+  } else if(projectPoolStore.selectedGroup === 'mentor_recruiting') {
 		try {
 			const response = await $fetch(
 				`http://localhost:8080/api/v1/projectStatus/getProjectStatusForTeachers`,
@@ -86,6 +105,9 @@ handleGroupChange(projectPoolStore.selectedGroup);
       </button>
     </div>
     <Searchbar />
-    <ProjectPost v-for="project in projectPoolStore.projects" :key="project.id" :project="project" />
+    <ProjectPost 
+    v-for="project in projectPoolStore.projects" 
+    :key="project.id" 
+    :project="project" />
   </div>
 </template>

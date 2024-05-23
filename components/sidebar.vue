@@ -9,6 +9,7 @@ const items = ref([
   { name: "管理提案", icon: "manage.png", path: "/manage-project" },
   { name: "儀表板", icon: "dashboard.png", path: "/admin-dashboard" },
   { name: "個人檔案", icon: "default-avatar.png", path: "/profile" },
+  { name: "收納", icon: "archive.png", path: "/archive" },
 ]);
 
 const toggler = ref(false);
@@ -37,6 +38,9 @@ const itemAllowShow = (routeName) => {
     return authStore.userInfo.roleName === "admin";
   } else if (routeName === "個人檔案") {
     return true;
+  } else if (routeName === "收納") {
+    return authStore.userInfo.roleName === "creator" ||
+    authStore.userInfo.roleName === "mentor";
   }
 };
 
