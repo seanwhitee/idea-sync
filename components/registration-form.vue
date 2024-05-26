@@ -125,7 +125,7 @@ async function onSubmit(event) {
   });
 }
 </script>
-<template class="text-white">
+<template>
   <RoleSelector :updateRole="updateRole" />
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormGroup label="Email" name="email" class="w-full">

@@ -2,6 +2,7 @@
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 
+// handle createProject api response message
 const messageMap = {
   "User is not allowed to create project": "您的狀態無法創建提案",
   "Invalid project data": "資料不完整",
@@ -28,9 +29,8 @@ if (authStore.userInfo.roleName !== "creator") {
 
 const file = ref(null);
 const previewUrl = ref(null);
-const statusMessage = ref(null);
-const statusMessageColor = ref("bg-red-200");
-const statusMessageTextColor = ref("text-red-800");
+const statusMessage = ref("");
+const messageType = ref("error");
 
 const handleFileChange = (e) => {
   file.value = e.target.files?.[0] ?? null;
@@ -59,8 +59,7 @@ const isValidInputData = (title, description, school, file) => {
   // check if the title, description, school is empty
   if (!title || !description || !school || !file) {
     statusMessage.value = "請填寫完整資料";
-    statusMessageColor.value = "bg-yellow-200";
-    statusMessageTextColor.value = "text-yellow-800";
+    messageType.value = "warning";
     setTimeout(() => {
       statusMessage.value = "";
     }, 3000);
@@ -70,13 +69,26 @@ const isValidInputData = (title, description, school, file) => {
 }
 
 const handleSubmit = async () => {
-  // upload image to exchange the real url
+
+  // ** upload image to exchange the real url **
 
   // check if the input data is valid
   if(!isValidInputData(projectStore.title, projectStore.description, projectStore.school, file.value)) {
     return;
   }
+
+  // check if isAllowProjectCreate is true
+  if (!authStore.allowProjectCreate) {
+    statusMessage.value = "您的狀態無法創建提案";
+    messageType.value = "error";
+    setTimeout(() => {
+      statusMessage.value = "";
+    }, 3000);
+    return;
+  }
+
   const checksum = await computeSHA256(file.value);
+
   try {
     const response = await $fetch(`/api/getSignedURL`, {
       method: "POST",
@@ -115,7 +127,7 @@ const handleSubmit = async () => {
     return;
   }
 
-  // save project to database
+  // ** save project to database **
   try {
     const response = await $fetch(
       `http://localhost:8080/api/v1/project/create`,
@@ -144,11 +156,9 @@ const handleSubmit = async () => {
       } else {
         // find the message from messageMap
         statusMessage.value = messageMap[res];
-        statusMessageColor.value = "bg-red-200";
-        statusMessageTextColor.value = "text-red-800";
+        messageType.value = "error";
         setTimeout(() => {
           statusMessage.value = "";
-          router.go();
         }, 3000);
       }
     });
@@ -171,7 +181,8 @@ const handleSubmit = async () => {
         v-model="projectStore.title"
         type="text"
         placeholder="標題"
-        class="input input-bordered w-full bg-black rounded-none outline-none"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted"
       />
     </label>
 
@@ -218,14 +229,16 @@ const handleSubmit = async () => {
         v-model="projectStore.school"
         type="text"
         placeholder="學校"
-        class="input input-bordered w-full bg-black rounded-none"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted" 
       />
     </label>
 
     <!--description-->
     <textarea
       v-model="projectStore.description"
-      class="w-full h-40 bg-black rounded-none textarea textarea-bordered"
+      class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none
+      focus:border-white focus:border-dotted"
       placeholder="說明"
     ></textarea>
 
@@ -250,8 +263,7 @@ const handleSubmit = async () => {
     <StatusMessage
       v-if="statusMessage"
       :message="statusMessage"
-      :color="statusMessageColor"
-      :textColor="statusMessageTextColor"
+      :type="messageType"
     />
     <div class="w-full flex items-center justify-end">
       <button
