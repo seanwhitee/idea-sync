@@ -78,7 +78,7 @@ const handleSubmit = async () => {
   }
 
   // check if isAllowProjectCreate is true
-  if (!authStore.allowProjectCreate) {
+  if (!authStore.userInfo.allowProjectCreate) {
     statusMessage.value = "您的狀態無法創建提案";
     messageType.value = "error";
     setTimeout(() => {
@@ -152,7 +152,6 @@ const handleSubmit = async () => {
     ).then((res) => {
       if (res === "Project created successfully") {
         toast.add({ title: "提案創建成功" });
-        router.push("/projects");
       } else {
         // find the message from messageMap
         statusMessage.value = messageMap[res];

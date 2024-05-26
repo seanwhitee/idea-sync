@@ -3,12 +3,17 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
   pages: true,
-  css: ["~/assets/css/main.css"],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
+  tailwindcss: {
+    cssPath: ['~/assets/css/main.css', { injectPosition: "first" }],
+    configPath: 'tailwind.config.js',
+    exposeConfig: {
+      level: 2
     },
+    config: {},
+    viewer: true,
+  },
+  colorMode: {
+    preference: "dark",
   },
   colorMode: {
     preference: "dark",
@@ -18,6 +23,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/tailwindcss",
   ],
   image: {
     dir: "assets/images"

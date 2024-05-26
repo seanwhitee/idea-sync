@@ -26,11 +26,6 @@ const onSubmit = async (event) => {
   }
   if (matcher(state.passCode, props.passCode.code)) {
     successFlag = true;
-    submitMessage.value = "驗證成功";
-    setTimeout(() => {
-      submitMessage.value = "";
-      router.push("/signin");
-    }, 4000);
     
   } else {
     successFlag = false;
@@ -69,16 +64,19 @@ const onSubmit = async (event) => {
       submitMessage.value = "註冊失敗";
         setTimeout(() => {
           submitMessage.value = "";
-          router.push("/");
         }, 3000);
         break;
       default:
+        submitMessage.value = "註冊成功";
+        setTimeout(() => {
+          router.push('/signin')
+          submitMessage.value = "";
+        }, 3000);
         break;
     }
   } else if (!successFlag) {
     setTimeout(() => {
       submitMessage.value = "";
-      router.push("/");
     }, 3000);
     
   }
@@ -89,16 +87,16 @@ const onSubmit = async (event) => {
     <UFormGroup label="驗證碼" name="passCode" class="w-full">
       <UInput v-model="state.passCode" class="rounded-md" type="number" />
     </UFormGroup>
-    <div class="w-full flex flex-col gap-y-3">
+    <div class="w-full flex flex-col gap-y-3 font-thin">
       <button
         @click="props.generatePassCode()"
-        class="w-full bg-violet-400/40 border border-violet-400 font-extralight py-2 px-4 rounded-lg mt-0"
+        class="w-full bg-violet-800 hover:bg-violet-800/90 py-2 px-4 rounded-lg mt-0"
       >
         重新發送驗證碼
       </button>
       <button
         type="submit"
-        class="w-full bg-violet-400 hover:bg-violet-400/90 font-extralight py-2 px-4 rounded-lg mt-0"
+        class="w-full bg-violet-800 hover:bg-violet-800/90 py-2 px-4 rounded-lg mt-0"
       >
         <div class="flex items-center justify-center w-full text-white">
           提交
@@ -117,7 +115,7 @@ const onSubmit = async (event) => {
         {{ submitMessage }}
       </p>
       <p
-        v-if="submitMessage === '驗證成功' || submitMessage === '註冊成功'"
+        v-if="submitMessage === '註冊成功'"
         class="text-green-500 font-extralight text-xs"
       >
         {{ submitMessage }}

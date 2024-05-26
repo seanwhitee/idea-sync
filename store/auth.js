@@ -1,9 +1,13 @@
 import { defineStore } from "pinia";
+import { useProjectPoolStore } from "./projectPool";
 import { ref } from "vue";
 
 export const useAuthStore = defineStore(
   "auth",
   () => {
+    const projectPoolStore = useProjectPoolStore();
+
+
     const isLogin = ref(false);
     const userInfo = ref({});
     const login = (user) => {
@@ -13,6 +17,9 @@ export const useAuthStore = defineStore(
     const logout = () => {
       isLogin.value = false;
       userInfo.value = {};
+      projectPoolStore.projects = [];
+      projectPoolStore.archiveProjects = [];
+      projectPoolStore.selectedGroup = "member_recruiting";
     };
     return { isLogin, userInfo, login, logout };
   },

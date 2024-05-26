@@ -9,6 +9,8 @@ const items = ref([
   { name: "管理提案", icon: "manage.png", path: "/manage-project" },
   { name: "儀表板", icon: "dashboard.png", path: "/admin-dashboard" },
   { name: "個人檔案", icon: "default-avatar.png", path: "/profile" },
+
+  { name: "收納", icon: "archive.png", path: "/archive" },
 ]);
 
 const toggler = ref(false);
@@ -37,6 +39,9 @@ const itemAllowShow = (routeName) => {
     return authStore.userInfo.roleName === "admin";
   } else if (routeName === "個人檔案") {
     return true;
+  } else if (routeName === "收納") {
+    return authStore.userInfo.roleName === "creator" ||
+    authStore.userInfo.roleName === "mentor";
   }
 };
 
@@ -50,7 +55,7 @@ const visibleItems = computed(() => {
   <!-- sidebar toggler-->
   <div
     @click="toggler = !toggler"
-    class="fixed top-4 left-2 cursor-pointer z-[1] rounded-md"
+    class="fixed top-4 left-2 cursor-pointer z-[2] rounded-md"
   >
     <NuxtImg src="menus.png" alt="sidebar-toggler" class="w-8 h-8" />
   </div>
@@ -58,7 +63,8 @@ const visibleItems = computed(() => {
   <Transition name="slide-fade">
     <div
       v-if="toggler"
-      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 bg-black fixed overflow-y-scroll"
+      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 
+      bg-black fixed overflow-y-scroll z-[1]"
     >
       <div class="h-4/5 w-full pt-4 pb-2">
         <!--barItem container-->

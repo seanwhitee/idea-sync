@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+// store for create project
 export const useProjectStore = defineStore(
   "project",
   () => {
@@ -25,7 +26,13 @@ export const useProjectStore = defineStore(
 		}
 
 		const deleteTag = (tag) => {
-			tags.value.pop(tag);
+
+			// search for tag name
+			const index = tags.value.indexOf(tag);
+			// if it exists, delete it
+			if (index > -1) {
+				tags.value.splice(index, 1);
+			}
 		}
     return { 
 			addTag,
