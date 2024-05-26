@@ -9,6 +9,7 @@ const items = ref([
   { name: "管理提案", icon: "manage.png", path: "/manage-project" },
   { name: "儀表板", icon: "dashboard.png", path: "/admin-dashboard" },
   { name: "個人檔案", icon: "default-avatar.png", path: "/profile" },
+
   { name: "收納", icon: "archive.png", path: "/archive" },
 ]);
 

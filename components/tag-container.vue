@@ -26,6 +26,7 @@ const tagName = ref("");
     <div class="justify-start w-1/12 flex items-center ps-2">
       <p class="flex text-white">標籤</p>
     </div>
+
     <div class="flex items-start justify-between w-11/12 py-2">
       <!--tags-->
       <div class="flex flex-wrap gap-2 items-center justify-start overflow-x-scroll px-2 w-11/12">
