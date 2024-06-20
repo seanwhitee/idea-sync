@@ -15,6 +15,7 @@ export const useProjectStore = defineStore(
 		const applicantCount = ref(0);
 		const projectImages = ref([]);
 		const tags = ref([]);
+		const createAt = ref(new Date());
 
 		/**
 		 * @param {string} tag
@@ -47,6 +48,7 @@ export const useProjectStore = defineStore(
 			applicantCount,
 			projectImages,
 			tags,
+			createAt
 		};
   },
 );

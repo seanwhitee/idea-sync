@@ -1,9 +1,7 @@
 <script setup>
 import { useAuthStore } from "~/store/auth";
-import { useSearchStore } from "~/store/searchbar";
 import { useProjectPoolStore } from "~/store/projectPool";
 const authStore = useAuthStore();
-const searchStore = useSearchStore();
 const projectPoolStore = useProjectPoolStore();
 const isLogin = authStore.isLogin;
 const router = useRouter();
@@ -12,7 +10,7 @@ if (!isLogin || !authStore.userInfo.roleVerified) {
   router.push("/");
 }
 
-const getArchiveProjects = async () => {
+const getarchiveProjectIds = async () => {
   try {
     const response = await $fetch(
       `http://localhost:8080/api/v1/archive/getArchives?userId=${authStore.userInfo.id}`,
@@ -23,14 +21,14 @@ const getArchiveProjects = async () => {
         },
       }
     );
-    projectPoolStore.archiveProjects = response;
+    projectPoolStore.archiveProjectIds = response;
   } catch (e) {
     console.error(e);
     return;
   }
 };
 
-getArchiveProjects();
+getarchiveProjectIds();
 // fetch projects from api
 async function handleGroupChange() {
   if (projectPoolStore.selectedGroup === "member_recruiting") {
