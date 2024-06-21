@@ -5,17 +5,10 @@ import { ref } from "vue";
 export const useCommentStore = defineStore(
   "conmment",
   () => {
-		const comment = ref("");
     const commentChuncks = ref([]);
 
-    const addComment = (comment) => {
-      commentChuncks.value.push(comment);
-    }
-
     return { 
-			comment,
       commentChuncks,
-      addComment
 		};
   },
 );
