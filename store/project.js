@@ -16,6 +16,22 @@ export const useProjectStore = defineStore(
 		const projectImages = ref([]);
 		const tags = ref([]);
 		const createAt = ref(new Date());
+		const requireSkills = ref("");
+
+		const reset = () => {
+			hostId.value = 0;
+			title.value = "";
+			description.value = "";
+			statusId.value = 0;
+			isGraduationProject.value = false;
+			school.value = "";
+			requireSkills.value = "";
+			allowApplicantsNum.value = 1;
+			applicantCount.value = 0;
+			projectImages.value = [];
+			tags.value = [];
+			createAt.value = new Date();
+		}
 
 		/**
 		 * @param {string} tag
@@ -38,6 +54,8 @@ export const useProjectStore = defineStore(
     return { 
 			addTag,
 			deleteTag,
+			reset,
+			requireSkills,
 			hostId,
 			title,
 			description,

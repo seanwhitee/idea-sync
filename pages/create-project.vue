@@ -27,6 +27,9 @@ if (authStore.userInfo.roleName !== "creator") {
   router.push("/projects");
 }
 
+// clear project store data
+projectStore.reset();
+
 const file = ref(null);
 const previewUrl = ref(null);
 const statusMessage = ref("");
@@ -147,6 +150,7 @@ const handleSubmit = async () => {
           applicantCount: 0,
           projectImages: projectStore.projectImages,
           tags: projectStore.tags,
+          requireSkills: projectStore.requireSkills,
         }),
       }
     ).then((res) => {
@@ -174,6 +178,16 @@ const handleSubmit = async () => {
     class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-28 md:pt-36 lg:pt-36 pb-20 mx-auto gap-4"
   >
     <TagContainer />
+    <!--require skills-->
+    <label class="form-control w-full bg-primary-content rounded-none">
+      <input
+        v-model="projectStore.requireSkills"
+        type="text"
+        placeholder="所需技能"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
+        focus:border-white focus:border-dotted"
+      />
+    </label>
     <!--title-->
     <label class="form-control w-full bg-primary-content rounded-none">
       <input

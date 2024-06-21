@@ -3,12 +3,14 @@ import { ref } from "vue";
 import { useProjectStore } from "~/store/project";
 import { useProjectPoolStore } from "~/store/projectPool";
 import { useAuthStore } from "~/store/auth";
+import { useCommentStore } from "~/store/comment";
 
 const route = useRoute();
 const router = useRouter();
 const projectStore = useProjectStore();
 const authStore = useAuthStore();
 const projectPoolStore = useProjectPoolStore();
+const commentStore = useCommentStore();
 const toast = useToast();
 
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
@@ -28,6 +30,26 @@ const filterProjects = computed(() => {
     (project) => project.id !== parseInt(route.params.id)
   );
 });
+
+const getCommentChunks = async () => {
+  try {
+    await $fetch(
+      `http://localhost:8080/api/v1/comment/getAllCommentChunks?projectId=${route.params.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((response) => {
+      commentStore.commentChuncks = response;
+    });
+
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+};
 
 const getApplicants = async () => {
   try {
@@ -82,6 +104,7 @@ const getProjectData = async () => {
         projectStore.applicantCount = response.applicantCount;
         projectStore.projectImages = response.images;
         projectStore.tags = response.tags;
+        projectStore.requireSkills = response.requireSkills;
 
         projectStore.createAt = formatDate(response.createAt);
       })
@@ -89,7 +112,9 @@ const getProjectData = async () => {
         getHostUserData();
       }).then(() => {
         getApplicants();
-      })
+      }).then(() => {
+        getCommentChunks();
+      });
   } catch (e) {
     console.error(e);
     return;
@@ -216,21 +241,54 @@ const handleProjectApply = async () => {
         <p>應徵人數：{{ projectStore.applicantCount }}</p>
       </div>
 
+      <!-- require skills -->
+      <div class="flex flex-col">
+        <h2 class="font-bold text-lg">所需技能：</h2>
+        <p class="opacity-80">{{ projectStore.requireSkills }}</p>
+      </div>
+
       <!-- tags -->
       <div class="flex gap-1 flex-wrap">
         <div
           v-if="projectStore.isGraduationProject"
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-xs md:text-base"
+          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light 
+          border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-xs md:text-base"
         >
           畢業專題
         </div>
         <Tag v-for="tag in projectStore.tags" :key="tag" :tagName="tag" />
       </div>
 
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 mb-10">
         <h2 class="font-bold text-lg">提案說明：</h2>
         <p class="opacity-80">{{ projectStore.description }}</p>
       </div>
+      <h2 class="font-bold text-lg">{{ commentStore.commentChuncks.length }} 則留言</h2>
+      <div class="flex items-center justify-start gap-2 w-full">
+        <NuxtImg 
+          :src="authStore.userInfo.avatarUrl"
+          alt="user-avatar"
+          class="w-8 h-8 rounded-full border border-white"
+        />
+        <CommentInput 
+          :userId="authStore.userInfo.id"
+          :projectId="parseInt(route.params.id)"
+        />
+      </div>
+      
+      <CommentChunk
+        v-for="chunk in commentStore.commentChuncks"
+        :key="chunk.id"
+        :formatDate="formatDate"
+        :commentId="chunk.id"
+        :avatarURL="chunk.avatarURL"
+        :comment="chunk.text"
+        :nickName="chunk.nickName"
+        :date="formatDate(chunk.createAt)" 
+        :userId="authStore.userInfo.id"
+        :projectId="parseInt(route.params.id)"
+        :children="chunk.children" 
+        />
     </div>
     <div class="hidden md:flex lg:flex flex-col md:w-5/12 lg:w-4/12 gap-2">
       <ProjectCard
