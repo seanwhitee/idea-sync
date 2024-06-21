@@ -204,6 +204,10 @@ const handleProjectApply = async () => {
   <div class="flex w-11/12 pt-28 md:pt-24 lg:pt-24 pb-20 mx-auto gap-2">
     <div class="flex flex-col w-full md:w-7/12 lg:w-8/12 gap-6 items-start">
       <div class="flex flex-col items-start justify-center p-1">
+        <NuxtImg
+          :src="projectStore.projectImages[0]"
+          alt="project-image"
+          class="w-14 h-14 rounded-md flex" />
         <h1 class="text-2xl font-bold">{{ projectStore.title }}</h1>
         <p class="text-xs font-extralight opacity-50">
           {{ projectStore.createAt }}
