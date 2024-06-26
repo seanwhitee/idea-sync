@@ -197,12 +197,14 @@ const handleProjectApply = async () => {
     });
   }
 };
+
 </script>
 <template>
   <LoginedNavbar />
   <Sidebar />
   <div class="flex w-11/12 pt-28 md:pt-24 lg:pt-24 pb-20 mx-auto gap-2">
     <div class="flex flex-col w-full md:w-7/12 lg:w-8/12 gap-6 items-start">
+      <ProjectStatusVisualizer :statusId="projectStore.statusId" />
       <div class="flex flex-col items-start justify-center p-1">
         <NuxtImg
           :src="projectStore.projectImages[0]"
@@ -222,8 +224,12 @@ const handleProjectApply = async () => {
         />
         <button
           v-if="projectStore.hostId !== authStore.userInfo.id && 
-          ((projectStore.statusId === 1 && authStore.userInfo.roleName === 'creator') ||
-          (projectStore.statusId === 2 && authStore.userInfo.roleName === 'mentor'))"
+          ((projectStore.statusId === 1 && 
+          authStore.userInfo.roleName === 'creator' && 
+          authStore.userInfo.allowProjectApply) || (
+          projectStore.statusId === 2 && 
+          authStore.userInfo.roleName === 'mentor' && 
+          authStore.userInfo.allowProjectApply))"
           @click="handleProjectApply"
           class="flex items-center justify-center bg-white h-3/5 font-light text-sm px-6 py-4 
           text-black rounded-md"
@@ -268,7 +274,7 @@ const handleProjectApply = async () => {
         <p class="opacity-80">{{ projectStore.description }}</p>
       </div>
       <h2 class="font-bold text-lg">{{ commentStore.commentChuncks.length }} 則留言</h2>
-      <div class="flex items-center justify-start gap-2 w-full">
+      <div class="flex items-start justify-start gap-2 w-full">
         <NuxtImg 
           :src="authStore.userInfo.avatarUrl"
           alt="user-avatar"
