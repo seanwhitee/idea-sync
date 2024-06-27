@@ -10,31 +10,15 @@ if (!isLogin || !authStore.userInfo.roleVerified) {
   router.push("/");
 }
 
-const getarchiveProjectIds = async () => {
-  try {
-    const response = await $fetch(
-      `http://localhost:8080/api/v1/archive/getArchives?userId=${authStore.userInfo.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    projectPoolStore.archiveProjectIds = response;
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-};
+const isLoading = ref(false);
 
-getarchiveProjectIds();
 // fetch projects from api
 async function handleGroupChange() {
+  isLoading.value = true;
   if (projectPoolStore.selectedGroup === "member_recruiting") {
     try {
       const response = await $fetch(
-        `http://localhost:8080/api/v1/projectStatus/getProjectStatusForMembers`,
+        `http://localhost:8080/api/v1/projectStatus/getProjectStatusForMembers?userId=${authStore.userInfo.id}`,
         {
           method: "GET",
           headers: {
@@ -43,22 +27,26 @@ async function handleGroupChange() {
         }
       );
 			projectPoolStore.projects = response[0].projects;
+      isLoading.value = false;
     } catch (error) {
+      isLoading.value = false;
       console.error(error);
     }
   } else if(projectPoolStore.selectedGroup === 'mentor_recruiting') {
 		try {
 			const response = await $fetch(
-				`http://localhost:8080/api/v1/projectStatus/getProjectStatusForTeachers`,
-				{
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json",
-					},
-				}
+				`http://localhost:8080/api/v1/projectStatus/getProjectStatusForTeachers?userId=${authStore.userInfo.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
 			);
 			projectPoolStore.projects = response[0].projects;
+      isLoading.value = false;
 		} catch (error) {
+      isLoading.value = false;
 			console.error(error);
 		}
 	}
@@ -103,9 +91,15 @@ handleGroupChange(projectPoolStore.selectedGroup);
       </button>
     </div>
     <Searchbar />
-    <ProjectPost 
-    v-for="project in projectPoolStore.projects" 
-    :key="project.id" 
-    :project="project" />
+    <div v-if="!isLoading && projectPoolStore.projects.length > 0">
+      <ProjectPost 
+      v-for="project in projectPoolStore.projects" 
+      :key="project.id" 
+      :project="project" />
+    </div>
+    <div v-if="isLoading && projectPoolStore.projects.length !== 0" 
+      class="flex flex-col item justify-center">
+      <Loader />
+    </div>
   </div>
 </template>

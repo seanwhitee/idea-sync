@@ -60,8 +60,9 @@ const computeSHA256 = async (file) => {
 };
 
 const isValidInputData = (title, description, school, requireSkills, tags, file) => {
+
   // check if the title, description, school is empty
-  if (!title || !description || !school || !file || !requireSkills) {
+  if (!title || !description || !school || !file || !requireSkills || tags.length === 0) {
     statusMessage.value = "請填寫完整資料";
     messageType.value = "warning";
     setTimeout(() => {

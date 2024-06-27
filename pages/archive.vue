@@ -10,6 +10,24 @@ if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   router.push('/')
 }
 
+const getarchiveProjectIds = async () => {
+  try {
+    const response = await $fetch(
+      `http://localhost:8080/api/v1/archive/getArchives?userId=${authStore.userInfo.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    projectPoolStore.archiveProjectIds = response;
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+};
+
 </script>
 <template>
   <LoginedNavbar />
