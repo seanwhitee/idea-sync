@@ -12,7 +12,6 @@ const props = defineProps({
 });
 
 const hoverEffect = ref(false);
-const isOpen = ref(false);
 
 const addToArchive = async () => {
   try {
@@ -30,7 +29,7 @@ const addToArchive = async () => {
         toast.add({
           title: "收納成功",
         });
-        projectPoolStore.archiveProjects.push(props.project.id);
+        projectPoolStore.archiveProjectIds.push(props.project.id);
         break;
 
       default:
@@ -96,8 +95,8 @@ const deleteFromArchive = async () => {
         toast.add({
           title: "已移出收納",
         });
-        projectPoolStore.archiveProjects =
-          projectPoolStore.archiveProjects.filter(
+        projectPoolStore.archiveProjectIds =
+          projectPoolStore.archiveProjectIds.filter(
             (id) => id !== props.project.id
           );
         break;
@@ -119,6 +118,7 @@ const deleteFromArchive = async () => {
     <div class="flex flex-col justify-between h-full w-10/12">
       <div class="flex flex-col">
         <p
+          @click="router.push(`/project/${props.project.id}`)"
           class="text-white text-base md:text-2xl font-bold hover:bg-violet-500 ease-linear duration-200 cursor-pointer w-fit"
           :class="
             hoverEffect
@@ -168,14 +168,14 @@ const deleteFromArchive = async () => {
           alt="filled-bookmark"
           class="w-3"
           @click="deleteFromArchive"
-          v-if="projectPoolStore.archiveProjects.includes(props.project.id)"
+          v-if="projectPoolStore.archiveProjectIds.includes(props.project.id)"
         />
         <img 
           src="assets/images/unfill-bookmark.png"
           alt="unfill-bookmark" 
           class="w-3"
           @click="addToArchive"
-          v-if="!projectPoolStore.archiveProjects.includes(props.project.id)"/>
+          v-if="!projectPoolStore.archiveProjectIds.includes(props.project.id)"/>
       </div>
     </div>
   </div>
