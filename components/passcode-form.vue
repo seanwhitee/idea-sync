@@ -87,7 +87,7 @@ const onSubmit = async (event) => {
     <UFormGroup label="驗證碼" name="passCode" class="w-full">
       <UInput v-model="state.passCode" class="rounded-md" type="number" />
     </UFormGroup>
-    <div class="w-full flex flex-col gap-y-3 font-thin">
+    <div class="w-full flex flex-col gap-y-3 font-thin text-white">
       <button
         @click="props.generatePassCode()"
         class="w-full bg-violet-800 hover:bg-violet-800/90 py-2 px-4 rounded-lg mt-0"
@@ -98,7 +98,7 @@ const onSubmit = async (event) => {
         type="submit"
         class="w-full bg-violet-800 hover:bg-violet-800/90 py-2 px-4 rounded-lg mt-0"
       >
-        <div class="flex items-center justify-center w-full text-white">
+        <div class="flex items-center justify-center w-full">
           提交
         </div>
       </button>

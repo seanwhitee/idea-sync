@@ -1,12 +1,21 @@
+<script setup>
+import { useSearchStore } from '~/store/search';
+
+const searchStore = useSearchStore();
+
+</script>
 <template>
   <div
-    class="flex items-center bg-black cursor-pointer px-3 py-3 border border-zinc-800 shadow-xl w-full"
+    class="flex items-center bg-black cursor-pointer px-3 py-3 border 
+    border-zinc-800 shadow-xl w-full"
   >
     <!--search input-->
     <input
       type="text"
-      placeholder="search..."
+      placeholder="Enter to search..."
       class="focus:outline-none outline-none bg-black w-11/12"
+      v-model="searchStore.searchString"
+      @keyup.enter="searchStore.startSearch(searchStore.searchString)"
     />
     <!--search icon-->
     <div class="w-1/12 flex items-center justify-end">
@@ -26,4 +35,3 @@
     </div>
   </div>
 </template>
-<script setup></script>

@@ -9,10 +9,10 @@ const toast = useToast();
 const router = useRouter();
 const props = defineProps({
   project: Object,
+  isArchived: Boolean,
 });
 
 const hoverEffect = ref(false);
-const isOpen = ref(false);
 
 const addToArchive = async () => {
   try {
@@ -30,7 +30,9 @@ const addToArchive = async () => {
         toast.add({
           title: "收納成功",
         });
-        projectPoolStore.archiveProjects.push(props.project.id);
+        projectPoolStore.archives.push({
+          ...props.project,
+        });
         break;
 
       default:
@@ -96,9 +98,9 @@ const deleteFromArchive = async () => {
         toast.add({
           title: "已移出收納",
         });
-        projectPoolStore.archiveProjects =
-          projectPoolStore.archiveProjects.filter(
-            (id) => id !== props.project.id
+        projectPoolStore.archives =
+          projectPoolStore.archives.filter(
+            (archive) => archive.id !== props.project.id
           );
         break;
       default:
@@ -108,6 +110,9 @@ const deleteFromArchive = async () => {
     console.error(e);
     return;
   }
+};
+const checkIfArchiveProjectExist = (id) => {
+  return projectPoolStore.archives.filter((archive) => archive.id === id).length > 0;
 };
 </script>
 <template>
@@ -119,6 +124,7 @@ const deleteFromArchive = async () => {
     <div class="flex flex-col justify-between h-full w-10/12">
       <div class="flex flex-col">
         <p
+          @click="router.push(`/project/${props.project.id}`)"
           class="text-white text-base md:text-2xl font-bold hover:bg-violet-500 ease-linear duration-200 cursor-pointer w-fit"
           :class="
             hoverEffect
@@ -134,10 +140,10 @@ const deleteFromArchive = async () => {
             {{ props.project.school }} <span class="opacity-50 z-0">｜</span>
           </p>
           <p>
-            需求：{{ props.project.allowApplicantsNum }}
+            需求人數：{{ props.project.allowApplicantsNum }}
             <span class="opacity-50 z-0">｜</span>
           </p>
-          <p>應徵：{{ props.project.applicantCount }}</p>
+          <p>申請人數：{{ props.project.applicantCount }}</p>
         </div>
         <p class="break-words py-1 pe-3 font-thin text-xs md:text-base">
           {{ description }}
@@ -148,7 +154,8 @@ const deleteFromArchive = async () => {
       <div class="flex flex-wrap items-center gap-2 pe-3 py-1 w-full">
         <div
           v-if="props.project.graduationProject"
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-xs md:text-base"
+          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border 
+          font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
         >
           畢業專題
         </div>
@@ -168,14 +175,14 @@ const deleteFromArchive = async () => {
           alt="filled-bookmark"
           class="w-3"
           @click="deleteFromArchive"
-          v-if="projectPoolStore.archiveProjects.includes(props.project.id)"
+          v-if="checkIfArchiveProjectExist(props.project.id)"
         />
         <img 
           src="assets/images/unfill-bookmark.png"
           alt="unfill-bookmark" 
           class="w-3"
           @click="addToArchive"
-          v-if="!projectPoolStore.archiveProjects.includes(props.project.id)"/>
+          v-if="!checkIfArchiveProjectExist(props.project.id)"/>
       </div>
     </div>
   </div>
