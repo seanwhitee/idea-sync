@@ -30,7 +30,7 @@ const tags = computed(() => {
 });
 </script>
 <template>
-  <div class="flex items-start justify-between cursor-pointer gap-1 px-2 py-2 bg-zinc-900"
+  <div class="flex w-full items-start justify-between cursor-pointer gap-1 px-3 py-2 bg-zinc-900"
     @mouseover="hoverEffect = true"
     @mouseleave="hoverEffect = false">
     <div class="flex flex-col gap-1">
@@ -56,7 +56,8 @@ const tags = computed(() => {
       <div class="flex flex-wrap gap-1">
         <div
           v-if="props.isGraduationProject"
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-xs md:text-base"
+          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light
+          border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
         >
           畢業專題
         </div>

@@ -140,10 +140,10 @@ const checkIfArchiveProjectExist = (id) => {
             {{ props.project.school }} <span class="opacity-50 z-0">｜</span>
           </p>
           <p>
-            需求：{{ props.project.allowApplicantsNum }}
+            需求人數：{{ props.project.allowApplicantsNum }}
             <span class="opacity-50 z-0">｜</span>
           </p>
-          <p>應徵：{{ props.project.applicantCount }}</p>
+          <p>申請人數：{{ props.project.applicantCount }}</p>
         </div>
         <p class="break-words py-1 pe-3 font-thin text-xs md:text-base">
           {{ description }}
@@ -154,7 +154,8 @@ const checkIfArchiveProjectExist = (id) => {
       <div class="flex flex-wrap items-center gap-2 pe-3 py-1 w-full">
         <div
           v-if="props.project.graduationProject"
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-xs md:text-base"
+          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border 
+          font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
         >
           畢業專題
         </div>

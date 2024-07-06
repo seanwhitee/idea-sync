@@ -13,15 +13,22 @@ const projectPoolStore = useProjectPoolStore();
 const commentStore = useCommentStore();
 const toast = useToast();
 
+
+
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   router.push('/');
 }
 
+const appliedUsers = ref([]);
 const avatarURL = ref('');
 const username = ref('');
 const email = ref('');
 const applyButtonName = ref('申請');
 
+/**
+ * TODO: change projectPoolStore.projects to relatedProjects state
+ * and add state to top for this component.
+ */
 const filterProjects = computed(() => {
   return projectPoolStore.projects.filter(
     (project) => project.id !== parseInt(route.params.id)
@@ -36,10 +43,10 @@ const formatDate = (dateString) => {
   return `${year}/${month}/${day}`;
 };
 
-const fetchProjectData = async () => {
+const fetchAppliedUsers = async () => {
   try {
     const response = await $fetch(
-      `http://localhost:8080/api/v1/project/getProjectById?id=${route.params.id}`,
+      `http://localhost:8080/api/v1/applicant/getApplicants?projectId=${route.params.id}`,
       {
         method: 'GET',
         headers: {
@@ -47,23 +54,47 @@ const fetchProjectData = async () => {
         },
       }
     );
-    projectStore.hostId = response.hostUser.id;
-    projectStore.title = response.title;
-    projectStore.description = response.description;
-    projectStore.statusId = response.statusId;
-    projectStore.isGraduationProject = response.graduationProject;
-    projectStore.school = response.school;
-    projectStore.allowApplicantsNum = response.allowApplicantsNum;
-    projectStore.applicantCount = response.applicantCount;
-    projectStore.projectImages = response.images;
-    projectStore.tags = response.tags;
-    projectStore.requireSkills = response.requireSkills;
-    projectStore.createAt = formatDate(response.createAt);
-    commentStore.commentChuncks = response.commentChunks;
+    appliedUsers.value = [...response];
+    if (appliedUsers.value.some((user) => user.id === authStore.userInfo.id)) {
+      applyButtonName.value = '取消申請';
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 
-    avatarURL.value = response.hostUser.avatarUrl;
-    username.value = response.hostUser.nickName;
-    email.value = response.hostUser.email;
+const fetchProjectData = async () => {
+  try {
+    await $fetch(
+      `http://localhost:8080/api/v1/project/getProjectById?id=${route.params.id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((response)=>{
+      projectStore.hostId = response.hostUser.id;
+      projectStore.title = response.title;
+      projectStore.description = response.description;
+      projectStore.statusId = response.statusId;
+      projectStore.isGraduationProject = response.graduationProject;
+      projectStore.school = response.school;
+      projectStore.allowApplicantsNum = response.allowApplicantsNum;
+      projectStore.applicantCount = response.applicantCount;
+      projectStore.projectImages = response.images;
+      projectStore.tags = response.tags;
+      projectStore.requireSkills = response.requireSkills;
+      projectStore.createAt = formatDate(response.createAt);
+      commentStore.commentChuncks = response.commentChunks;
+
+      avatarURL.value = response.hostUser.avatarUrl;
+      username.value = response.hostUser.nickName;
+      email.value = response.hostUser.email;
+    }).then(
+      await fetchAppliedUsers()
+    );
+    
     
   } catch (e) {
     console.error(e);
@@ -121,6 +152,10 @@ const handleProjectApply = async () => {
             title: '取消申請成功',
           });
           projectStore.applicantCount -= 1;
+          appliedUsers.value.splice(
+            appliedUsers.value.findIndex((user) => user.id === authStore.userInfo.id),
+            1
+          );
           applyButtonName.value = '申請';
           break;
         default:
@@ -181,7 +216,7 @@ const handleProjectApply = async () => {
         <!-- need num -->
         <p>需求人數：{{ projectStore.allowApplicantsNum }}</p>
         <!-- applied num -->
-        <p>應徵人數：{{ projectStore.applicantCount }}</p>
+        <p>申請人數：{{ projectStore.applicantCount }}</p>
       </div>
 
       <!-- require skills -->
@@ -193,9 +228,9 @@ const handleProjectApply = async () => {
       <!-- tags -->
       <div class="flex gap-1 flex-wrap">
         <div
-          v-if="projectStore.isGraduationProject"
+          
           class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light 
-          border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-xs md:text-base"
+          border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
         >
           畢業專題
         </div>
