@@ -6,24 +6,13 @@ export const useProjectPoolStore = defineStore(
   () => {
     const projects = ref([]);
 
-    /**
-     * @type {Ref<number[]>}
-     */
-    const archiveProjectIds = ref([]);
+    const archives = ref([]);
 
-    /**
-     * @type {Ref<string>}
-     */
     const selectedGroup = ref("member_recruiting")
     return {
       projects,
-      archiveProjectIds,
+      archives,
       selectedGroup
     }
-  }, {
-    persist: {
-      storage: sessionStorage,
-      paths: ["projects", "archiveProjectIds", "selectedGroup"],
-    },
   }
 )

@@ -1,203 +1,136 @@
 <script setup>
-import { ref } from "vue";
-import { useProjectStore } from "~/store/project";
-import { useProjectPoolStore } from "~/store/projectPool";
-import { useAuthStore } from "~/store/auth";
-import { useCommentStore } from "~/store/comment";
+import { ref, computed } from 'vue';
+import { useAuthStore } from '~/store/auth';
+import { useProjectStore } from '~/store/project';
+import { useProjectPoolStore } from '~/store/projectPool';
+import { useCommentStore } from '~/store/comment';
 
 const route = useRoute();
 const router = useRouter();
-const projectStore = useProjectStore();
 const authStore = useAuthStore();
+const projectStore = useProjectStore();
 const projectPoolStore = useProjectPoolStore();
 const commentStore = useCommentStore();
 const toast = useToast();
 
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
-  router.push("/");
+  router.push('/');
 }
 
-const avatarURL = ref("");
-const username = ref("");
-const email = ref("");
+const avatarURL = ref('');
+const username = ref('');
+const email = ref('');
+const applyButtonName = ref('申請');
 
-const applyButtonName = ref("")
-
-// filter out the current project to display the recommanded
-// projects which relate to current one
 const filterProjects = computed(() => {
   return projectPoolStore.projects.filter(
     (project) => project.id !== parseInt(route.params.id)
   );
 });
 
-const getCommentChunks = async () => {
-  try {
-    await $fetch(
-      `http://localhost:8080/api/v1/comment/getAllCommentChunks?projectId=${route.params.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => {
-      commentStore.commentChuncks = response;
-    });
-
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-};
-
-const getApplicants = async () => {
-  try {
-    await $fetch(
-      `http://localhost:8080/api/v1/applicant/getApplicants?projectId=${route.params.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => {
-      if (response.includes(authStore.userInfo.id)) {
-        applyButtonName.value = "取消申請";
-      } else {
-        applyButtonName.value = "申請";
-      }
-    });
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-};
-
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const year = date.getFullYear();
-  const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  const day = ("0" + date.getDate()).slice(-2);
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
   return `${year}/${month}/${day}`;
 };
 
-const getProjectData = async () => {
+const fetchProjectData = async () => {
   try {
-    await $fetch(
+    const response = await $fetch(
       `http://localhost:8080/api/v1/project/getProjectById?id=${route.params.id}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       }
-    )
-      .then((response) => {
-        projectStore.hostId = response.hostUserId;
-        projectStore.title = response.title;
-        projectStore.description = response.description;
-        projectStore.statusId = response.statusId;
-        projectStore.isGraduationProject = response.graduationProject;
-        projectStore.school = response.school;
-        projectStore.allowApplicantsNum = response.allowApplicantsNum;
-        projectStore.applicantCount = response.applicantCount;
-        projectStore.projectImages = response.images;
-        projectStore.tags = response.tags;
-        projectStore.requireSkills = response.requireSkills;
+    );
+    projectStore.hostId = response.hostUser.id;
+    projectStore.title = response.title;
+    projectStore.description = response.description;
+    projectStore.statusId = response.statusId;
+    projectStore.isGraduationProject = response.graduationProject;
+    projectStore.school = response.school;
+    projectStore.allowApplicantsNum = response.allowApplicantsNum;
+    projectStore.applicantCount = response.applicantCount;
+    projectStore.projectImages = response.images;
+    projectStore.tags = response.tags;
+    projectStore.requireSkills = response.requireSkills;
+    projectStore.createAt = formatDate(response.createAt);
+    commentStore.commentChuncks = response.commentChunks;
 
-        projectStore.createAt = formatDate(response.createAt);
-      })
-      .then(() => {
-        getHostUserData();
-      }).then(() => {
-        getApplicants();
-      }).then(() => {
-        getCommentChunks();
-      });
+    avatarURL.value = response.hostUser.avatarUrl;
+    username.value = response.hostUser.nickName;
+    email.value = response.hostUser.email;
+    
   } catch (e) {
     console.error(e);
-    return;
   }
 };
-getProjectData();
 
-const getHostUserData = async () => {
-  try {
-    await $fetch(`http://localhost:8080/api/v1/users/${projectStore.hostId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      avatarURL.value = response.avatarUrl;
-      username.value = response.nickName;
-      email.value = response.email;
-    });
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-};
+// Fetch project data on first page load using useAsyncData
+const { data, error } = useAsyncData('projectData', fetchProjectData);
 
 const handleProjectApply = async () => {
-  if (applyButtonName.value === "申請") {
+  if (applyButtonName.value === '申請') {
     try {
-      await $fetch(
+      const res = await $fetch(
         `http://localhost:8080/api/v1/applicant/addApplicant?projectId=${route.params.id}&userId=${authStore.userInfo.id}`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
-      ).then((res) => {
-        switch (res) {
-          case "User is already an applicant":
-            toast.add({
-              title: "此專案已經申請",
-            });
-            break;
-          case "Applicant added successfully":
-            toast.add({
-              title: "申請成功，等待提案者審核",
-            });
-            projectStore.applicantCount += 1;
-            applyButtonName.value = "取消申請";
-            break;
-          default:
-            break;
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      return;
-    }
-  } else if (applyButtonName.value === "取消申請") {
-    await $fetch(
-      `http://localhost:8080/api/v1/applicant/deleteApplicant?projectId=${route.params.id}&userId=${authStore.userInfo.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((res) => {
+      );
       switch (res) {
-        case "Applicant deleted successfully":
+        case 'User is already an applicant':
           toast.add({
-            title: "取消申請成功",
+            title: '此專案已經申請',
           });
-          projectStore.applicantCount -= 1;
-          applyButtonName.value = "申請";
+          break;
+        case 'Applicant added successfully':
+          toast.add({
+            title: '申請成功，等待提案者審核',
+          });
+          projectStore.applicantCount += 1;
+          applyButtonName.value = '取消申請';
           break;
         default:
           break;
       }
-    });
+    } catch (e) {
+      console.error(e);
+    }
+  } else if (applyButtonName.value === '取消申請') {
+    try {
+      const res = await $fetch(
+        `http://localhost:8080/api/v1/applicant/deleteApplicant?projectId=${route.params.id}&userId=${authStore.userInfo.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      switch (res) {
+        case 'Applicant deleted successfully':
+          toast.add({
+            title: '取消申請成功',
+          });
+          projectStore.applicantCount -= 1;
+          applyButtonName.value = '申請';
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 };
-
 </script>
 <template>
   <LoginedNavbar />

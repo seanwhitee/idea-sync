@@ -9,6 +9,7 @@ const toast = useToast();
 const router = useRouter();
 const props = defineProps({
   project: Object,
+  isArchived: Boolean,
 });
 
 const hoverEffect = ref(false);
@@ -29,7 +30,9 @@ const addToArchive = async () => {
         toast.add({
           title: "收納成功",
         });
-        projectPoolStore.archiveProjectIds.push(props.project.id);
+        projectPoolStore.archives.push({
+          ...props.project,
+        });
         break;
 
       default:
@@ -95,9 +98,9 @@ const deleteFromArchive = async () => {
         toast.add({
           title: "已移出收納",
         });
-        projectPoolStore.archiveProjectIds =
-          projectPoolStore.archiveProjectIds.filter(
-            (id) => id !== props.project.id
+        projectPoolStore.archives =
+          projectPoolStore.archives.filter(
+            (archive) => archive.id !== props.project.id
           );
         break;
       default:
@@ -107,6 +110,9 @@ const deleteFromArchive = async () => {
     console.error(e);
     return;
   }
+};
+const checkIfArchiveProjectExist = (id) => {
+  return projectPoolStore.archives.filter((archive) => archive.id === id).length > 0;
 };
 </script>
 <template>
@@ -168,14 +174,14 @@ const deleteFromArchive = async () => {
           alt="filled-bookmark"
           class="w-3"
           @click="deleteFromArchive"
-          v-if="projectPoolStore.archiveProjectIds.includes(props.project.id)"
+          v-if="checkIfArchiveProjectExist(props.project.id)"
         />
         <img 
           src="assets/images/unfill-bookmark.png"
           alt="unfill-bookmark" 
           class="w-3"
           @click="addToArchive"
-          v-if="!projectPoolStore.archiveProjectIds.includes(props.project.id)"/>
+          v-if="!checkIfArchiveProjectExist(props.project.id)"/>
       </div>
     </div>
   </div>

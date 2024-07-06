@@ -12,46 +12,46 @@ if (!isLogin || !authStore.userInfo.roleVerified) {
 
 const isLoading = ref(false);
 
-// fetch projects from api
-async function handleGroupChange() {
+const { data: archiveDatas, error: archiveError } = useAsyncData('getarchives', async () => {
+  try {
+    const response = await $fetch(`http://localhost:8080/api/v1/archive/getArchives?userId=${authStore.userInfo.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    projectPoolStore.archives = response;
+    return response;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+});
+
+async function fetchProjects(status) {
   isLoading.value = true;
-  if (projectPoolStore.selectedGroup === "member_recruiting") {
-    try {
-      const response = await $fetch(
-        `http://localhost:8080/api/v1/projectStatus/getProjectStatusForMembers?userId=${authStore.userInfo.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-			projectPoolStore.projects = response[0].projects;
-      isLoading.value = false;
-    } catch (error) {
-      isLoading.value = false;
-      console.error(error);
-    }
-  } else if(projectPoolStore.selectedGroup === 'mentor_recruiting') {
-		try {
-			const response = await $fetch(
-				`http://localhost:8080/api/v1/projectStatus/getProjectStatusForTeachers?userId=${authStore.userInfo.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-			);
-			projectPoolStore.projects = response[0].projects;
-      isLoading.value = false;
-		} catch (error) {
-      isLoading.value = false;
-			console.error(error);
-		}
-	}
+  try {
+    const response = await $fetch(`http://localhost:8080/api/v1/projectStatus/getRecommendProjectsByStatus?userId=${authStore.userInfo.id}&status=${status}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    projectPoolStore.projects = response;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    isLoading.value = false;
+  }
 }
-handleGroupChange(projectPoolStore.selectedGroup);
+
+// Fetch projects on first page load
+const { data: projectDatas, pending, error: projectErrors } = useAsyncData('projects', () => fetchProjects('member_recruiting'));
+
+const handleGroupChange = async (status) => {
+  await fetchProjects(status);
+}
 </script>
 <template>
   <LoginedNavbar />
@@ -91,14 +91,15 @@ handleGroupChange(projectPoolStore.selectedGroup);
       </button>
     </div>
     <Searchbar />
-    <div v-if="!isLoading && projectPoolStore.projects.length > 0">
+    <div v-if="!isLoading"
+      class="flex flex-col items-center justify-start  gap-2 w-full">
       <ProjectPost 
       v-for="project in projectPoolStore.projects" 
       :key="project.id" 
       :project="project" />
     </div>
-    <div v-if="isLoading && projectPoolStore.projects.length !== 0" 
-      class="flex flex-col item justify-center">
+    <div v-if="isLoading" 
+      class="flex flex-col items-center justify-center w-full">
       <Loader />
     </div>
   </div>

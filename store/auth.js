@@ -17,9 +17,6 @@ export const useAuthStore = defineStore(
     const logout = () => {
       isLogin.value = false;
       userInfo.value = {};
-      projectPoolStore.projects = [];
-      projectPoolStore.archiveProjectIds = [];
-      projectPoolStore.selectedGroup = "member_recruiting";
     };
     return { isLogin, userInfo, login, logout };
   },
