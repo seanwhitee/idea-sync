@@ -13,6 +13,8 @@ const messageMap = {
 
 const router = useRouter();
 const toast = useToast();
+const tagModalOpen = ref(false);
+const tagInputString = ref("");
 
 // 1. check if the user is login and role is verified
 // 2. check if the user role is creator
@@ -20,11 +22,11 @@ const toast = useToast();
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
-  router.push("/");
+  throw new Error('Not authorized');
 }
 
-if (authStore.userInfo.roleName !== "creator") {
-  router.push("/projects");
+if (authStore.userInfo.roleName === 'admin') {
+  throw new Error('You cannot access this page');
 }
 
 // clear project store data
@@ -216,10 +218,55 @@ const handleSubmit = async () => {
 <template>
   <LoginedNavbar />
   <Sidebar />
+  
+
+  <UModal color="gray" v-model="tagModalOpen">
+    <div class="p-4 bg-black">
+      <UInput class="mb-4 border border-zinc-500" color="white" variant="none" size="xl" 
+        placeholder="tag name..." 
+        @keyup.enter="projectStore.addTag(tagInputString)" 
+        v-model="tagInputString"
+        maxlength="50"/>
+      <div class="w-full">
+        <div
+          class="flex items-start justify-start gap-2 w-full flex-wrap"
+          v-if="projectStore.tags.length > 0">
+
+          <tag v-for="tag in projectStore.tags"
+            :tagName="tag" color="violet" >
+            <button @click="projectStore.deleteTag(tag)"
+              class="flex items-center justify-center w-3">
+              <NuxtImg src="delete.png" alt="tag-delete" class="w-full" />
+            </button>
+          </tag>
+
+        </div>
+        <p v-else
+          class="flex items-center gap-2 justify-center text-white/65 px-1">
+          <span>Press</span>
+          <UKbd>Enter</UKbd>
+          <span>to add tags</span>       
+        </p>
+      </div>
+    </div>
+  </UModal>
+
   <div
     class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-28 md:pt-36 lg:pt-36 pb-20 mx-auto gap-4"
   >
-    <TagContainer />
+    <!--tags-->
+    <div class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted
+    cursor-pointer border-white w-full flex-wrap"
+    @click="tagModalOpen = true">
+      <Tag 
+      v-if="projectStore.tags.length > 0"
+      v-for="tag in projectStore.tags"
+      color="violet"
+      :tagName="tag" 
+      />
+      <p v-else
+      class="text-white/65 px-1">加入標籤...</p>
+    </div>
     <!--require skills-->
     <label class="form-control w-full bg-primary-content rounded-none">
       <input
@@ -244,7 +291,7 @@ const handleSubmit = async () => {
     <!--allow applcant num-->
     <div class="w-full flex items-center justify-start">
       <label class="label gap-2 flex justify-start items-center">
-        <span class="label-text">需求人數</span>
+        <span class="label-text text-white">需求人數</span>
         <input
           @change="
             (e) => {
@@ -266,7 +313,7 @@ const handleSubmit = async () => {
     <!--is graduation project-->
     <div class="flex items-center justify-start w-full">
       <label class="label cursor-pointer gap-2">
-        <span class="label-text">畢業專題</span>
+        <span class="label-text text-white">畢業專題</span>
         <span class="text-sm">否</span>
         <input
           v-model="projectStore.isGraduationProject"

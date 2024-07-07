@@ -17,6 +17,9 @@ export const useProjectStore = defineStore(
 		const tags = ref([]);
 		const createAt = ref(new Date());
 		const requireSkills = ref("");
+		const applicants = ref([]);
+
+		const relatedProjects = ref([]);
 
 		const reset = () => {
 			hostId.value = 0;
@@ -31,6 +34,20 @@ export const useProjectStore = defineStore(
 			projectImages.value = [];
 			tags.value = [];
 			createAt.value = new Date();
+			applicants.value = [];
+		}
+
+		const getRelatedProjects = async(projectId) => {
+			await $fetch('http://localhost:8080/api/v1/project/getRelatedProjects', {
+				method: 'GET',
+				params: {
+					projectId: projectId
+				}
+			}).then((res)=>{
+				relatedProjects.value = res;
+			})
+
+			
 		}
 
 		/**
@@ -55,6 +72,7 @@ export const useProjectStore = defineStore(
 			addTag,
 			deleteTag,
 			reset,
+			getRelatedProjects,
 			requireSkills,
 			hostId,
 			title,
@@ -66,7 +84,9 @@ export const useProjectStore = defineStore(
 			applicantCount,
 			projectImages,
 			tags,
-			createAt
+			createAt,
+			applicants,
+			relatedProjects
 		};
   },
 );

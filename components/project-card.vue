@@ -45,25 +45,22 @@ const tags = computed(() => {
 
       <!--feature section contains school|allowApplicantsNum|applicantCount-->
       <div class="flex items-center text-xs opacity-80 mb-4">
-        <p>{{ props.school }} <span class="opacity-50 z-0">｜</span></p>
         <p>
-          需求：{{ props.allowApplicantsNum }}
+          需求人數：{{ props.allowApplicantsNum }}
           <span class="opacity-50 z-0">｜</span>
         </p>
-        <p>應徵：{{ props.applicantCount }}</p>
+        <p>申請人數：{{ props.applicantCount }}</p>
       </div>
 
       <div class="flex flex-wrap gap-1">
-        <div
-          v-if="props.isGraduationProject"
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light
-          border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
-        >
-          畢業專題
-        </div>
+        <Tag :tagName="props.school" color="fuchsia"/>
+        <Tag v-if="props.isGraduationProject" 
+          tagName="畢業專題" 
+          color="indigo"/>
         <Tag v-for="tag in tags"
           :key="tag"
           :tagName="tag"
+          color="violet"
         />
       </div>
     </div>

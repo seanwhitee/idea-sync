@@ -12,7 +12,7 @@ const searchStore = useSearchStore();
     <!--search input-->
     <input
       type="text"
-      placeholder="Enter to search..."
+      placeholder="search..."
       class="focus:outline-none outline-none bg-black w-11/12"
       v-model="searchStore.searchString"
       @keyup.enter="searchStore.startSearch(searchStore.searchString)"

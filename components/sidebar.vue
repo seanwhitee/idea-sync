@@ -55,7 +55,7 @@ const visibleItems = computed(() => {
   <!-- sidebar toggler-->
   <div
     @click="toggler = !toggler"
-    class="fixed top-4 left-2 cursor-pointer z-[2] rounded-md"
+    class="fixed top-4 left-2 cursor-pointer z-[3] rounded-md"
   >
     <NuxtImg src="menus.png" alt="sidebar-toggler" class="w-8 h-8" />
   </div>
@@ -64,7 +64,7 @@ const visibleItems = computed(() => {
     <div
       v-if="toggler"
       class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 
-      bg-black fixed overflow-y-scroll z-[1]"
+      bg-black fixed overflow-y-scroll z-[2]"
     >
       <div class="h-4/5 w-full pt-4 pb-2">
         <!--barItem container-->

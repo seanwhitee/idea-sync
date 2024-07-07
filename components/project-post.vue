@@ -1,53 +1,13 @@
 <script setup>
 import { ref } from "vue";
-import { useAuthStore } from "~/store/auth";
-import { useProjectPoolStore } from "~/store/projectPool";
 
-const authStore = useAuthStore();
-const projectPoolStore = useProjectPoolStore();
-const toast = useToast();
 const router = useRouter();
 const props = defineProps({
-  project: Object,
-  isArchived: Boolean,
+  project: Object
 });
 
 const hoverEffect = ref(false);
 
-const addToArchive = async () => {
-  try {
-    const response = await $fetch(
-      `http://localhost:8080/api/v1/archive/addArchive?projectId=${props.project.id}&userId=${authStore.userInfo.id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    switch (response) {
-      case "Archive added successfully":
-        toast.add({
-          title: "收納成功",
-        });
-        projectPoolStore.archives.push({
-          ...props.project,
-        });
-        break;
-
-      default:
-        break;
-    }
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-};
-
-/**
- * @description: if project description is greater than 50 characters, 
-    then show the first 50 characters + ... 
- */
 const description = computed(() => {
   let text = props.project.description;
   if (text.length > 40) {
@@ -57,22 +17,14 @@ const description = computed(() => {
   return text;
 });
 
-/**
- * @description: if tags of project is greater than 5, 
-    then show the first 5 tags
- */
 const tags = computed(() => {
   let projectTags = [...props.project.tags];
-  if (projectTags.length > 5) {
-    return projectTags.slice(0, 5);
+  if (projectTags.length > 3) {
+    return projectTags.slice(0, 3);
   }
   return projectTags;
 });
 
-/**
- * @description: if title of project is greater than 20 characters, 
-    then show the first 20 characters + ... 
- */
 const title = computed(() => {
   let text = props.project.title;
   if (text.length > 20) {
@@ -81,43 +33,10 @@ const title = computed(() => {
   }
   return text;
 });
-
-const deleteFromArchive = async () => {
-  try {
-    const response = await $fetch(
-      `http://localhost:8080/api/v1/archive/deleteArchive?projectId=${props.project.id}&userId=${authStore.userInfo.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    switch (response) {
-      case "Archive deleted successfully":
-        toast.add({
-          title: "已移出收納",
-        });
-        projectPoolStore.archives =
-          projectPoolStore.archives.filter(
-            (archive) => archive.id !== props.project.id
-          );
-        break;
-      default:
-        break;
-    }
-  } catch (e) {
-    console.error(e);
-    return;
-  }
-};
-const checkIfArchiveProjectExist = (id) => {
-  return projectPoolStore.archives.filter((archive) => archive.id === id).length > 0;
-};
 </script>
 <template>
   <div
-    class="flex items-start justify-between px-4 py-4 w-full bg-zinc-900 cursor-pointer"
+    class="flex items-start justify-between px-4 py-4 w-full bg-zinc-900"
     @mouseover="hoverEffect = true"
     @mouseleave="hoverEffect = false"
   >
@@ -134,11 +53,8 @@ const checkIfArchiveProjectExist = (id) => {
         >
           {{ title }}
         </p>
-        <!--feature section contains school|allowApplicantsNum|applicantCount-->
+        <!--feature section contains allowApplicantsNum|applicantCount-->
         <div class="flex items-center gap-2 pt-1 text-xs md:text-base">
-          <p>
-            {{ props.project.school }} <span class="opacity-50 z-0">｜</span>
-          </p>
           <p>
             需求人數：{{ props.project.allowApplicantsNum }}
             <span class="opacity-50 z-0">｜</span>
@@ -152,14 +68,12 @@ const checkIfArchiveProjectExist = (id) => {
 
       <!--tags-->
       <div class="flex flex-wrap items-center gap-2 pe-3 py-1 w-full">
-        <div
-          v-if="props.project.graduationProject"
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border 
-          font-light border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
-        >
-          畢業專題
-        </div>
-        <Tag v-for="tag in tags" :key="tag" :tagName="tag" />
+        <Tag :tagName="props.project.school" color="fuchsia" />
+        <Tag v-if="props.project.graduationProject"
+          tagName="畢業專題"
+          color="indigo"
+        />
+        <Tag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
       </div>
     </div>
 
@@ -167,22 +81,12 @@ const checkIfArchiveProjectExist = (id) => {
       <img
         :src="props.project.images[0]"
         :alt="props.project.images[0]"
-        class="h-20 w-20 md:h-28 md:w-28 mb-2"
+        class="hidden md:flex h-20 w-20 md:h-28 md:w-28 mb-2"
       />
       <div class="">
-        <img 
-          src="assets/images/filled-bookmark.png"
-          alt="filled-bookmark"
-          class="w-3"
-          @click="deleteFromArchive"
-          v-if="checkIfArchiveProjectExist(props.project.id)"
+        <ArchiveButton
+          :project="props.project"
         />
-        <img 
-          src="assets/images/unfill-bookmark.png"
-          alt="unfill-bookmark" 
-          class="w-3"
-          @click="addToArchive"
-          v-if="!checkIfArchiveProjectExist(props.project.id)"/>
       </div>
     </div>
   </div>

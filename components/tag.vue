@@ -1,22 +1,30 @@
 <script setup>
-import { useProjectStore } from '~/store/project';
-const projectStore = useProjectStore();
 const props = defineProps({
 	tagName: String,
+  color: String,
 });
-const router = useRouter();
+
+const colorClasses = computed(() => {
+  // Explicitly map color props to Tailwind classes
+  switch (props.color) {
+    case 'violet':
+      return 'shadow-violet-500/50 border-violet-800';
+    case 'indigo':
+      return 'shadow-indigo-500/50 border-indigo-800';
+    case 'fuchsia':
+      return 'shadow-fuchsia-500/50 border-fuchsia-800';
+    default:
+      return ''; // Default case if no color matches
+  }
+});
 </script>
 <template>
   <div
-    class="flex h-fit text-start items-center justify-center shadow-violet-800/50 border font-light border-violet-500 
-    text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
+    class="flex h-fit text-start items-center justify-start 
+    border font-light text-white px-2 rounded-md gap-1 shadow-md text-xs"
+    :class="colorClasses"
   >
-    <button
-    v-if="router.currentRoute.value.path === '/create-project'"
-    @click="projectStore.deleteTag(props.tagName)"
-    class="flex items-center justify-center w-3">
-      <NuxtImg src="delete.png" alt="tag-delete" class="w-full" />
-    </button>
+    <slot></slot>
     {{ props.tagName}}
 	</div>
 </template>

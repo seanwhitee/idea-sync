@@ -9,31 +9,21 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
-const projectPoolStore = useProjectPoolStore();
 const commentStore = useCommentStore();
 const toast = useToast();
-
-
 
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   router.push('/');
 }
 
-const appliedUsers = ref([]);
 const avatarURL = ref('');
 const username = ref('');
 const email = ref('');
 const applyButtonName = ref('申請');
 
 /**
- * TODO: change projectPoolStore.projects to relatedProjects state
- * and add state to top for this component.
+ * TODO: change projectPoolStore.projects to projectStore.relatedProjects state.
  */
-const filterProjects = computed(() => {
-  return projectPoolStore.projects.filter(
-    (project) => project.id !== parseInt(route.params.id)
-  );
-});
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -43,26 +33,8 @@ const formatDate = (dateString) => {
   return `${year}/${month}/${day}`;
 };
 
-const fetchAppliedUsers = async () => {
-  try {
-    const response = await $fetch(
-      `http://localhost:8080/api/v1/applicant/getApplicants?projectId=${route.params.id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    appliedUsers.value = [...response];
-    if (appliedUsers.value.some((user) => user.id === authStore.userInfo.id)) {
-      applyButtonName.value = '取消申請';
-    }
-  } catch (e) {
-    console.error(e);
-  }
-};
-
+// main fetch function to get current project info and its related data
+// like applied users, etc.
 const fetchProjectData = async () => {
   try {
     await $fetch(
@@ -87,15 +59,19 @@ const fetchProjectData = async () => {
       projectStore.requireSkills = response.requireSkills;
       projectStore.createAt = formatDate(response.createAt);
       commentStore.commentChuncks = response.commentChunks;
+      projectStore.applicants = response.applicants
+      if (projectStore.applicants.find((user) => user.id === authStore.userInfo.id)) {
+        applyButtonName.value = '取消申請';
+      }
 
       avatarURL.value = response.hostUser.avatarUrl;
       username.value = response.hostUser.nickName;
       email.value = response.hostUser.email;
-    }).then(
-      await fetchAppliedUsers()
-    );
-    
-    
+      
+    }).then(()=>{
+      const currProjectId = route.params.id;
+      projectStore.getRelatedProjects(currProjectId);
+    })
   } catch (e) {
     console.error(e);
   }
@@ -124,9 +100,10 @@ const handleProjectApply = async () => {
           break;
         case 'Applicant added successfully':
           toast.add({
-            title: '申請成功，等待提案者審核',
+            title: '申請送出，等待審核',
           });
           projectStore.applicantCount += 1;
+          projectStore.applicants.push(authStore.userInfo);
           applyButtonName.value = '取消申請';
           break;
         default:
@@ -152,8 +129,8 @@ const handleProjectApply = async () => {
             title: '取消申請成功',
           });
           projectStore.applicantCount -= 1;
-          appliedUsers.value.splice(
-            appliedUsers.value.findIndex((user) => user.id === authStore.userInfo.id),
+          projectStore.applicants.splice(
+            projectStore.applicants.findIndex((user) => user.id === authStore.userInfo.id),
             1
           );
           applyButtonName.value = '申請';
@@ -227,14 +204,13 @@ const handleProjectApply = async () => {
 
       <!-- tags -->
       <div class="flex gap-1 flex-wrap">
-        <div
-          
-          class="flex h-fit text-start items-center justify-center shadow-blue-800/50 border font-light 
-          border-blue-300 text-white px-2 rounded-lg gap-1 shadow-lg text-sm"
-        >
-          畢業專題
-        </div>
-        <Tag v-for="tag in projectStore.tags" :key="tag" :tagName="tag" />
+        <Tag v-if="projectStore.isGraduationProject" 
+          tagName="畢業專題" 
+          color="indigo"  />
+        <Tag v-for="tag in projectStore.tags" 
+          :key="tag" 
+          :tagName="tag"
+          color="violet" />
       </div>
 
       <div class="flex flex-col gap-2 mb-10">
@@ -270,7 +246,7 @@ const handleProjectApply = async () => {
     </div>
     <div class="hidden md:flex lg:flex flex-col md:w-5/12 lg:w-4/12 gap-2">
       <ProjectCard
-        v-for="project in filterProjects"
+        v-for="project in projectStore.relatedProjects"
         @click="router.push(`/project/${project.id}`)"
         :key="project.id"
         :isGraduationProject="project.graduationProject"

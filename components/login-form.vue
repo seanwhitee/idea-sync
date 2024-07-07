@@ -47,10 +47,7 @@ const onSubmit = async () => {
     // login successfull
     const user = response;
     authStore.login(user);
-    if (authStore.userInfo.roleName === "admin") {
-      router.push("/admin-dashboard");
-    }
-    router.push("/projects");
+    router.go();
   }
 };
 </script>
@@ -80,17 +77,6 @@ const onSubmit = async () => {
       >
         {{ submitMessage }}
       </p>
-    </div>
-    <div
-      class="w-full flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
-    >
-      <div class="flex items-center justify-center gap-4 w-full">
-        <NuxtLink to="/signup" class="hover:underline">註冊</NuxtLink
-        ><span>|</span
-        ><NuxtLink to="/forgot-password" class="hover:underline"
-          >忘記密碼</NuxtLink
-        >
-      </div>
     </div>
   </UForm>
 </template>

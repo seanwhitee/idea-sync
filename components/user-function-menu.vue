@@ -2,12 +2,20 @@
 import { useAuthStore } from "~/store/auth";
 const router = useRouter();
 const authStore = useAuthStore();
+const isAccountSwitchModalOpen = ref(false)
 const logout = () => {
   authStore.logout();
   router.push("/");
 };
 </script>
 <template>
+  <div>
+    <UModal v-model="isAccountSwitchModalOpen">
+      <div class="p-4">
+        <LoginForm />
+      </div>
+    </UModal>
+  </div>
   <div class="dropdown dropdown-top w-full">
     <div
       tabindex="0"
@@ -36,7 +44,7 @@ const logout = () => {
       tabindex="0"
       class="dropdown-content absolute z-[2] menu px-2 py-3 shadow rounded-lg w-full bg-zinc-800"
     >
-      <li @click="" class="hover:bg-zinc-800/50 rounded-lg">
+      <li @click="isAccountSwitchModalOpen = true" class="hover:bg-zinc-800/50 rounded-lg">
         <p class="py-4">切換帳號</p>
       </li>
       <li @click="logout" class="hover:bg-zinc-800/50 rounded-lg">

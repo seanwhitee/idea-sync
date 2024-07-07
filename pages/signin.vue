@@ -4,7 +4,11 @@ import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const router = useRouter();
 if (authStore.isLogin && authStore.userInfo.roleVerified) {
-  router.push("/projects");
+  if (authStore.userInfo.roleName === 'admin') {
+    router.push("/admin-dashboard");
+  } else {
+    router.push("/projects");
+  }
 }
 </script>
 <template>
@@ -27,6 +31,17 @@ if (authStore.isLogin && authStore.userInfo.roleVerified) {
       <div class="w-full p-4">
         <LoginForm />
       </div>
+      <div
+      class="w-full flex justify-start pe-2 mt-4 text-whit font-extralight text-xs"
+    >
+      <div class="flex items-center justify-center gap-4 w-full">
+        <NuxtLink to="/signup" class="hover:underline">註冊</NuxtLink
+        ><span>|</span
+        ><NuxtLink to="/forgot-password" class="hover:underline"
+          >忘記密碼</NuxtLink
+        >
+      </div>
+    </div>
     </div>
   </div>
 </template>
