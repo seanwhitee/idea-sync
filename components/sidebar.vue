@@ -23,7 +23,10 @@ const handleClick = (item) => {
 // check if the user is creator or admin
 const itemAllowShow = (routeName) => {
   if (routeName === "創建提案") {
-    return authStore.userInfo.roleName === "creator";
+    return (
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor"
+    );
   } else if (routeName === "瀏覽提案") {
     return (
       authStore.userInfo.roleName === "creator" ||
@@ -40,8 +43,10 @@ const itemAllowShow = (routeName) => {
   } else if (routeName === "個人檔案") {
     return true;
   } else if (routeName === "收納") {
-    return authStore.userInfo.roleName === "creator" ||
-    authStore.userInfo.roleName === "mentor";
+    return (
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor"
+    );
   }
 };
 
@@ -49,7 +54,6 @@ const itemAllowShow = (routeName) => {
 const visibleItems = computed(() => {
   return items.value.filter((item) => itemAllowShow(item.name));
 });
-
 </script>
 <template>
   <!-- sidebar toggler-->
@@ -63,8 +67,7 @@ const visibleItems = computed(() => {
   <Transition name="slide-fade">
     <div
       v-if="toggler"
-      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 
-      bg-black fixed overflow-y-scroll z-[2]"
+      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 bg-black fixed overflow-y-scroll z-[2]"
     >
       <div class="h-4/5 w-full pt-4 pb-2">
         <!--barItem container-->

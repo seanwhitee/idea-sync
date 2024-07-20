@@ -7,8 +7,11 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div class="flex items-start gap-2 w-full">
-    <NuxtImg :src="props.avatarURL" class="w-6 h-6 rounded-full border border-white" />
+  <div class="flex items-start gap-2 w-full ps-2">
+    <NuxtImg
+      :src="props.avatarURL"
+      class="w-6 h-6 rounded-full border border-white"
+    />
     <div class="flex flex-col w-full">
       <p class="flex gap-2 items-center">
         <span class="text-sm">{{ props.nickName }}</span>
@@ -16,6 +19,5 @@ const props = defineProps({
       </p>
       <p class="text-xs font-light">{{ props.comment }}</p>
     </div>
-    
   </div>
 </template>

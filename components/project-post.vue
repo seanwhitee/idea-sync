@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 const router = useRouter();
 const props = defineProps({
-  project: Object
+  project: Object,
 });
 
 const hoverEffect = ref(false);
@@ -15,6 +15,10 @@ const description = computed(() => {
     return text;
   }
   return text;
+});
+
+const getApplicantCount = computed(() => {
+  return props.project.applicants.length;
 });
 
 const tags = computed(() => {
@@ -54,12 +58,12 @@ const title = computed(() => {
           {{ title }}
         </p>
         <!--feature section contains allowApplicantsNum|applicantCount-->
-        <div class="flex items-center gap-2 pt-1 text-xs md:text-base">
+        <div class="flex items-center gap-2 pt-1 text-xs md:text-sm mb-3">
           <p>
             需求人數：{{ props.project.allowApplicantsNum }}
             <span class="opacity-50 z-0">｜</span>
           </p>
-          <p>申請人數：{{ props.project.applicantCount }}</p>
+          <p>申請人數：{{ getApplicantCount }}</p>
         </div>
         <p class="break-words py-1 pe-3 font-thin text-xs md:text-base">
           {{ description }}
@@ -69,7 +73,8 @@ const title = computed(() => {
       <!--tags-->
       <div class="flex flex-wrap items-center gap-2 pe-3 py-1 w-full">
         <Tag :tagName="props.project.school" color="fuchsia" />
-        <Tag v-if="props.project.graduationProject"
+        <Tag
+          v-if="props.project.graduationProject"
           tagName="畢業專題"
           color="indigo"
         />
@@ -78,15 +83,13 @@ const title = computed(() => {
     </div>
 
     <div class="py-2 px-2 flex flex-col items-end">
-      <img
+      <NuxtImg
         :src="props.project.images[0]"
         :alt="props.project.images[0]"
         class="hidden md:flex h-20 w-20 md:h-28 md:w-28 mb-2"
       />
       <div class="">
-        <ArchiveButton
-          :project="props.project"
-        />
+        <ArchiveButton :project="props.project" />
       </div>
     </div>
   </div>

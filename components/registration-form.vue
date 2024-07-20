@@ -49,13 +49,22 @@ const state = reactive({
   profileDescription: undefined,
 });
 
+const getAvatar = computed(() => {
+  const randNum = Math.round(Math.random() * 10);
+  if (randNum % 2 == 0) {
+    return "avatar1.png";
+  } else {
+    return "avatar2.png";
+  }
+});
+
 async function onSubmit(event) {
   const result = {
     userName: state.username,
     password: state.password,
     nickName: state.nickName,
     profileDescription: state.profileDescription,
-    avatarUrl: "default-avatar.png",
+    avatarUrl: getAvatar.value,
     firstName: state.firstName,
     lastName: state.lastName,
     email: state.email,
@@ -76,7 +85,7 @@ async function onSubmit(event) {
       id: 2,
       roleName: userRole.value,
     };
-    result.allowProjectCreate = false;
+    result.allowProjectCreate = true;
     result.allowProjectApply = true;
   }
   await $fetch(registerEndPoint, {
@@ -189,6 +198,5 @@ async function onSubmit(event) {
         {{ submitMessage }}
       </p>
     </div>
-
   </UForm>
 </template>

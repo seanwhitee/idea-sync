@@ -1,12 +1,17 @@
 <script setup>
 import { ref, computed } from "vue";
+
 const props = defineProps({
+  statusId: Number,
   title: String,
   school: String,
   allowApplicantsNum: Number,
   applicantCount: Number,
   tags: Array,
-  imageURL: String,
+  imageURL: {
+    type: String,
+    required: false,
+  },
   isGraduationProject: Boolean,
 });
 
@@ -30,16 +35,24 @@ const tags = computed(() => {
 });
 </script>
 <template>
-  <div class="flex w-full items-start justify-between cursor-pointer gap-1 px-3 py-2 bg-zinc-900"
+  <div
+    class="flex w-full items-start justify-between cursor-pointer gap-1 px-3 py-3 bg-zinc-900"
     @mouseover="hoverEffect = true"
-    @mouseleave="hoverEffect = false">
+    @mouseleave="hoverEffect = false"
+  >
     <div class="flex flex-col gap-1">
-      <h3 class="font-bold cursor-pointer hover:bg-violet-500 duration-200 ease-linear w-fit"
-      :class="
-            hoverEffect
-              ? 'border-b-2 border-violet-500 ease-linear duration-200'
-              : 'border-0 ease-linear duration-300'
-          ">
+      <ProjectStatusVisualizer
+        class="rounded-md border-none px-0"
+        :statusId="props.statusId"
+      />
+      <h3
+        class="font-bold text-sm cursor-pointer hover:bg-violet-500 duration-200 ease-linear w-fit"
+        :class="
+          hoverEffect
+            ? 'border-b-2 border-violet-500 ease-linear duration-200'
+            : 'border-0 ease-linear duration-300'
+        "
+      >
         {{ title }}
       </h3>
 
@@ -53,20 +66,19 @@ const tags = computed(() => {
       </div>
 
       <div class="flex flex-wrap gap-1">
-        <Tag :tagName="props.school" color="fuchsia"/>
-        <Tag v-if="props.isGraduationProject" 
-          tagName="畢業專題" 
-          color="indigo"/>
-        <Tag v-for="tag in tags"
-          :key="tag"
-          :tagName="tag"
-          color="violet"
+        <Tag :tagName="props.school" color="fuchsia" />
+        <Tag
+          v-if="props.isGraduationProject"
+          tagName="畢業專題"
+          color="indigo"
         />
+        <Tag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
       </div>
     </div>
-    <NuxtImg 
-      :src="props.imageURL" 
-      alt="project-image" 
+    <NuxtImg
+      v-if="props.imageURL"
+      :src="props.imageURL"
+      alt="project-image"
       class="w-14 h-14 rounded-md hidden lg:flex"
     />
   </div>
