@@ -14,7 +14,6 @@ const props = defineProps({
   },
   isGraduationProject: Boolean,
 });
-
 const hoverEffect = ref(false);
 
 const title = computed(() => {
@@ -36,17 +35,15 @@ const tags = computed(() => {
 </script>
 <template>
   <div
+    v-if="props.statusId !== 3"
     class="flex w-full items-start justify-between cursor-pointer gap-1 px-3 py-3 bg-zinc-900"
     @mouseover="hoverEffect = true"
     @mouseleave="hoverEffect = false"
   >
     <div class="flex flex-col gap-1">
-      <ProjectStatusVisualizer
-        class="rounded-md border-none px-0"
-        :statusId="props.statusId"
-      />
+      <ProjectStatusVisualizer :statusId="props.statusId" class="mb-2" />
       <h3
-        class="font-bold text-sm cursor-pointer hover:bg-violet-500 duration-200 ease-linear w-fit"
+        class="font-bold text-sm cursor-pointer hover:bg-violet-500 duration-200 ease-linear w-fit ms-2"
         :class="
           hoverEffect
             ? 'border-b-2 border-violet-500 ease-linear duration-200'
@@ -57,7 +54,7 @@ const tags = computed(() => {
       </h3>
 
       <!--feature section contains school|allowApplicantsNum|applicantCount-->
-      <div class="flex items-center text-xs opacity-80 mb-4">
+      <div class="flex items-center text-xs opacity-80 mb-4 ms-2">
         <p>
           需求人數：{{ props.allowApplicantsNum }}
           <span class="opacity-50 z-0">｜</span>
@@ -65,7 +62,7 @@ const tags = computed(() => {
         <p>申請人數：{{ props.applicantCount }}</p>
       </div>
 
-      <div class="flex flex-wrap gap-1">
+      <div class="flex flex-wrap gap-1 ms-2">
         <Tag :tagName="props.school" color="fuchsia" />
         <Tag
           v-if="props.isGraduationProject"

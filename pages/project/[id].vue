@@ -2,9 +2,11 @@
 import { ref, computed } from "vue";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
-import { useProjectPoolStore } from "~/store/projectPool";
 import { useCommentStore } from "~/store/comment";
 
+definePageMeta({
+  colorMode: "dark",
+});
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
@@ -74,10 +76,6 @@ const fetchProjectData = async () => {
         const currProjectId = route.params.id;
         projectStore.getRelatedProjects(currProjectId);
       });
-
-    console.log("host", projectStore.hostId);
-    console.log("auth", authStore.userInfo.roleName);
-    console.log("project", projectStore.statusId);
   } catch (e) {
     console.error(e);
   }

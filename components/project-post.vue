@@ -58,14 +58,18 @@ const title = computed(() => {
           {{ title }}
         </p>
         <!--feature section contains allowApplicantsNum|applicantCount-->
-        <div class="flex items-center gap-2 pt-1 text-xs md:text-sm mb-3">
+        <div
+          class="flex items-center gap-2 pt-1 text-xs md:text-sm mb-3 text-white"
+        >
           <p>
             需求人數：{{ props.project.allowApplicantsNum }}
             <span class="opacity-50 z-0">｜</span>
           </p>
           <p>申請人數：{{ getApplicantCount }}</p>
         </div>
-        <p class="break-words py-1 pe-3 font-thin text-xs md:text-base">
+        <p
+          class="break-words py-1 pe-3 font-thin text-xs md:text-base text-white"
+        >
           {{ description }}
         </p>
       </div>

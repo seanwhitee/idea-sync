@@ -12,6 +12,8 @@ if (!isLogin || !authStore.userInfo.roleVerified) {
   throw new Error("Not authorized");
 }
 
+projectPoolStore.selectedGroup = "member_recruiting";
+
 const openSearch = ref(false);
 
 const { data: archiveDatas, error: archiveError } = useAsyncData(
@@ -51,6 +53,9 @@ const {
 const handleGroupChange = async (status) => {
   await fetchProjects(status);
 };
+definePageMeta({
+  colorMode: "dark",
+});
 </script>
 <template>
   <LoginedNavbar />
@@ -88,13 +93,13 @@ const handleGroupChange = async (status) => {
     </div>
   </UModal>
   <div
-    class="flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 pt-20 pb-20 mx-auto gap-4"
+    class="flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 pt-20 pb-20 min-h-dvh mx-auto gap-4 bg-black"
   >
     <div
-      class="fixed flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 mx-auto bg-black z-[1]"
+      class="fixed flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 mx-auto z-[1]"
     >
       <div
-        class="flex justify-between px-4 py-2 mb-4 w-full border border-zinc-800"
+        class="flex justify-between px-4 py-2 mb-4 w-full border border-zinc-800 text-white"
       >
         <button
           class="flex justify-center px-4 py-2 w-1/2 ease-linear duration-200"
@@ -107,7 +112,7 @@ const handleGroupChange = async (status) => {
               handleGroupChange('member_recruiting')
           "
         >
-          <p class="text-white text-lg">學生招募</p>
+          <p class="text-lg">學生招募</p>
         </button>
         <button
           class="flex justify-center px-4 py-2 w-1/2 ease-linear duration-200"
@@ -120,7 +125,7 @@ const handleGroupChange = async (status) => {
               handleGroupChange('mentor_recruiting')
           "
         >
-          <p class="text-white text-lg">指導者招募</p>
+          <p class="text-lg">指導者招募</p>
         </button>
       </div>
       <!-- fake search button-->

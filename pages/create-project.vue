@@ -28,7 +28,9 @@ if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
 if (authStore.userInfo.roleName === "admin") {
   throw new Error("You cannot access this page");
 }
-
+definePageMeta({
+  colorMode: "dark",
+});
 // clear project store data
 projectStore.reset();
 

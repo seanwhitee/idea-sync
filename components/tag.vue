@@ -7,6 +7,8 @@ const props = defineProps({
 const colorClasses = computed(() => {
   // Explicitly map color props to Tailwind classes
   switch (props.color) {
+    case "slate":
+      return "shadow-slate-500/50 border-slate-800";
     case "violet":
       return "shadow-violet-500/50 border-violet-800";
     case "indigo":
@@ -22,7 +24,7 @@ const colorClasses = computed(() => {
 </script>
 <template>
   <div
-    class="flex h-fit text-start items-center justify-start border font-light text-white px-2 rounded-md gap-1 shadow-md text-xs"
+    class="flex h-fit w-fit text-start items-center justify-start border font-light dark:text-white px-2 rounded-md gap-1 shadow-md text-xs"
     :class="colorClasses"
   >
     <slot />

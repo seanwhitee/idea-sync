@@ -1,11 +1,14 @@
 <script setup>
-import { useAuthStore } from '~/store/auth';
+import { useAuthStore } from "~/store/auth";
 const router = useRouter();
 const authStore = useAuthStore();
 const isLogin = authStore.isLogin;
 if (isLogin) {
-    router.push("/projects")
+  router.push("/projects");
 }
+definePageMeta({
+  colorMode: "dark",
+});
 const featuresData = [
   {
     image: "white-check.png",
@@ -33,12 +36,15 @@ const featuresData = [
   <navbar />
   <div class="flex flex-col w-4/5 mx-auto">
     <div class="mt-40 md:mt-80 lg:mt-80">
-			<div class="text-6xl">
-      <p class="text-white font-bold">找專題成員？</p>
-      <p class="text-white font-bold">
-        使用Idea<span class="text-transparent bg-clip-text font-bold bg-gradient-to-tr from-indigo-500 via-purple-500 to-white/80">Sync</span>
-      </p>
-			</div>
+      <div class="text-6xl">
+        <p class="text-white font-bold">找專題成員？</p>
+        <p class="text-white font-bold">
+          使用Idea<span
+            class="text-transparent bg-clip-text font-bold bg-gradient-to-tr from-indigo-500 via-purple-500 to-white/80"
+            >Sync</span
+          >
+        </p>
+      </div>
       <br />
       <p class="text-white text-lg font-bold">讓想法與行動相遇</p>
     </div>
@@ -57,7 +63,9 @@ const featuresData = [
           </div>
         </div>
         <div class="w-full md:w-1/2 lg:w-1/2">
-          <p class="text-white text-4xl md:text-6xl lg:text-6xl">找尋夥伴從未如此簡單</p>
+          <p class="text-white text-4xl md:text-6xl lg:text-6xl">
+            找尋夥伴從未如此簡單
+          </p>
           <NuxtLink to="/signup"
             ><button
               class="mt-20 bg-violet-500 text-white text-2xl font-bold text-center py-4 px-10 rounded-full flex items-center justify-center"

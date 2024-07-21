@@ -4,7 +4,6 @@ const props = defineProps({
   username: String,
   email: String,
 });
-console.log(props.avatarURL);
 </script>
 <template>
   <div class="flex gap-2">

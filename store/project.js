@@ -46,6 +46,19 @@ export const useProjectStore = defineStore("project", () => {
     return res;
   };
 
+  const getProjectAppliedByUser = async (userId) => {
+    const res = await $fetch(
+      "http://localhost:8080/api/v1/applicant/getProjectAppliedByUser",
+      {
+        method: "GET",
+        params: {
+          userId: userId,
+        },
+      }
+    );
+    return res;
+  };
+
   const getRelatedProjects = async (projectId) => {
     await $fetch("http://localhost:8080/api/v1/project/getRelatedProjects", {
       method: "GET",
@@ -137,6 +150,7 @@ export const useProjectStore = defineStore("project", () => {
     changeProjectStatus,
     getRelatedProjects,
     getProjectByUserId,
+    getProjectAppliedByUser,
     getProjectById,
     rejectApplicant,
     acceptApplicant,
