@@ -122,15 +122,19 @@ const changeProjectStatus = async () => {
   }
 };
 
-const setOpenProjectStatusChangeModal = (value, projectId) => {
+const setOpenProjectStatusChangeModal = async (value, projectId) => {
   changeToNextOrPrevious.value = "";
   openProjectStatusChangeModal.value = value;
   modalProjectId.value = projectId;
 
   // get project info
-  projectInfo.value = projects.value.find(
-    (project) => project.id === projectId
-  );
+  projectInfo.value = await projectStore.getProjectById(projectId);
+
+  applicants.value = projectInfo.value.applicants.map((applicant) => {
+    const { id, nickName, email } = applicant.user;
+    const status = applicant.status;
+    return { id, nickName, email, status };
+  });
 
   const projectStatus = projectInfo.value.statusId;
   nextStatus.value = projectStatus === 1 ? 2 : 3;
@@ -251,8 +255,6 @@ const applicantReject = async () => {
 
 const allowChangeStatus = computed(() => {
   if (changeToNextOrPrevious.value === "next") {
-    console.log(applicants.value);
-
     return (
       (projectInfo.value.statusId === 1 &&
         projectInfo.value.allowApplicantsNum >= countAccepted.value &&
