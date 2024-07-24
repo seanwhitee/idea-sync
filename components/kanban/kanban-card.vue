@@ -21,7 +21,6 @@ const items = [
       click: () => {
         props.openProjectStatusChangeModal(true, props.projectId);
       },
-      disabled: props.status === 3,
     },
   ],
 ];

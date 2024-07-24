@@ -112,7 +112,7 @@ export const useProjectStore = defineStore("project", () => {
     return res;
   };
 
-  const changeProjectStatus = async (projectId, statusId) => {
+  const changeProjectStatus = async (projectId, statusId, nextOrPrevious) => {
     const res = await $fetch(
       "http://localhost:8080/api/v1/project/changeProjectStatus",
       {
@@ -120,6 +120,7 @@ export const useProjectStore = defineStore("project", () => {
         params: {
           projectId: projectId,
           status: statusId,
+          nextOrPrevious: nextOrPrevious,
         },
       }
     );

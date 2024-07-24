@@ -75,7 +75,10 @@ const projects = ref([]);
 const openProjectStatusChangeModal = ref(false);
 const openApplicantManageModal = ref(false);
 const openApplicantConfirmModal = ref(false);
+
+const changeToNextOrPrevious = ref("");
 const nextStatus = ref(2);
+const previousStatus = ref(0);
 const applicants = ref([]);
 const modalProjectId = ref(-1);
 const currentTab = ref("我的專案");
@@ -96,9 +99,16 @@ onMounted(async () => {
 const rejectOrAccept = "";
 
 const changeProjectStatus = async () => {
+  let statusChangeTo = 0;
+  if (changeToNextOrPrevious.value === "next") {
+    statusChangeTo = nextStatus.value;
+  } else if (changeToNextOrPrevious.value === "previous") {
+    statusChangeTo = previousStatus.value;
+  }
   const projectResponse = await projectStore.changeProjectStatus(
     modalProjectId.value,
-    nextStatus.value
+    statusChangeTo,
+    changeToNextOrPrevious.value
   );
 
   if (projectResponse) {
@@ -113,6 +123,7 @@ const changeProjectStatus = async () => {
 };
 
 const setOpenProjectStatusChangeModal = (value, projectId) => {
+  changeToNextOrPrevious.value = "";
   openProjectStatusChangeModal.value = value;
   modalProjectId.value = projectId;
 
@@ -120,14 +131,10 @@ const setOpenProjectStatusChangeModal = (value, projectId) => {
   projectInfo.value = projects.value.find(
     (project) => project.id === projectId
   );
-  applicants.value = projectInfo.value.applicants.map((applicant) => {
-    const { id, nickName, email } = applicant.user;
-    const status = applicant.status;
-    return { id, nickName, email, status };
-  });
 
   const projectStatus = projectInfo.value.statusId;
   nextStatus.value = projectStatus === 1 ? 2 : 3;
+  previousStatus.value = projectStatus === 3 ? 2 : 1;
 };
 
 const setOpenApplicantManageModal = async (value, projectId) => {
@@ -220,17 +227,6 @@ const applicantAccept = async () => {
   openApplicantConfirmModal.value = false;
 };
 
-const allowChangeStatus = computed(() => {
-  return (
-    (projectInfo.value.statusId === 1 &&
-      projectInfo.value.allowApplicantsNum >= countAccepted.value &&
-      applicants.value.every((applicant) => applicant.status !== 0)) ||
-    (projectInfo.value.statusId === 2 &&
-      countAccepted.value === 1 &&
-      applicants.value.every((applicant) => applicant.status !== 0))
-  );
-});
-
 const applicantReject = async () => {
   const res = await projectStore.rejectApplicant(
     modalProjectId.value,
@@ -252,28 +248,66 @@ const applicantReject = async () => {
   }
   openApplicantConfirmModal.value = false;
 };
+
+const allowChangeStatus = computed(() => {
+  if (changeToNextOrPrevious.value === "next") {
+    console.log(applicants.value);
+
+    return (
+      (projectInfo.value.statusId === 1 &&
+        projectInfo.value.allowApplicantsNum >= countAccepted.value &&
+        applicants.value.every((applicant) => applicant.status !== 0)) ||
+      (projectInfo.value.statusId === 2 &&
+        countAccepted.value === 1 &&
+        applicants.value.every((applicant) => applicant.status !== 0))
+    );
+  } else if (changeToNextOrPrevious.value === "previous") {
+    return true;
+  }
+  return false;
+});
 </script>
 <template>
   <!--change status model-->
   <UModal v-model="openProjectStatusChangeModal">
-    <div v-if="allowChangeStatus === true" class="p-10">
-      <h4 class="font-bold text-2xl mb-2">變更專案狀態</h4>
-      <p class="text-zinc-500 text-sm mb-10">
-        確認將專案狀態變更為{{ nextStatus === 2 ? "指導者招募" : "完成招募" }}?
+    <div class="p-10">
+      <h4 class="font-bold text-2xl mb-4">變更專案狀態</h4>
+      <p
+        v-if="!allowChangeStatus"
+        class="flex text-xs flex-col border text-yellow-300 border-yellow-500 bg-yellow-500/50 border-dotted mb-4 py-2 px-4"
+      >
+        <Icon
+          class="w-6 h-6 text-yellow-300"
+          name="material-symbols-light:warning-outline"
+        />
+        <span> 1. 如果為成員招募：請確認申請者都已審核完成 </span>
+        <span>
+          2. 如果為指導者招募：請確認已找到一位指導者&申請者都已審核完成
+        </span>
       </p>
+      <div class="flex items-center justify-between mb-10">
+        <UButton
+          v-if="projectInfo.statusId !== 1"
+          class="w-[210px]"
+          size="lg"
+          :color="changeToNextOrPrevious === 'previous' ? 'gray' : 'white'"
+          @click="changeToNextOrPrevious = 'previous'"
+          >{{ previousStatus === 2 ? "指導者招募" : "成員招募" }}</UButton
+        >
+        <UButton
+          v-if="projectInfo.statusId !== 3"
+          class="w-[210px]"
+          size="lg"
+          :color="changeToNextOrPrevious === 'next' ? 'gray' : 'white'"
+          @click="changeToNextOrPrevious = 'next'"
+          >{{ nextStatus === 2 ? "指導者招募" : "完成招募" }}</UButton
+        >
+      </div>
       <UButton
+        :disabled="!changeToNextOrPrevious || !allowChangeStatus"
         @click="changeProjectStatus(), (openProjectStatusChangeModal = false)"
         >確認變更</UButton
       >
-    </div>
-    <div v-else class="p-10">
-      <h4 class="font-bold text-2xl mb-2">無法變更專案狀態</h4>
-      <p class="text-zinc-500 text-sm">
-        1. 如果為成員招募：請確認申請者都已審核完成
-      </p>
-      <p class="text-zinc-500 text-sm mb-10">
-        2. 如果為指導者招募：請確認已找到一位指導者&申請者都已審核完成
-      </p>
     </div>
   </UModal>
 
@@ -304,7 +338,7 @@ const applicantReject = async () => {
 
   <!--applicant manage modal-->
   <UModal v-model="openApplicantManageModal" prevent-close>
-    <div class="p-10">
+    <div class="p-6">
       <div class="flex items-center justify-between">
         <h4 class="font-bold text-2xl mb-2">申請者</h4>
         <UButton
@@ -335,6 +369,18 @@ const applicantReject = async () => {
         :rows="applicants"
         class="border border-zinc-500/50"
       >
+        <template #nickName-data="{ row }">
+          {{
+            row.nickName.length > 7
+              ? row.nickName.slice(0, 7) + "..."
+              : row.nickName
+          }}
+        </template>
+        <template #email-data="{ row }">
+          {{
+            row.email.length > 15 ? row.email.slice(0, 15) + "..." : row.email
+          }}
+        </template>
         <template #status-data="{ row }">
           <ApplicantStatusBadge :applicantStatus="row.status" />
         </template>
