@@ -279,7 +279,7 @@ const handleSubmit = async () => {
     <!--allow applcant num-->
     <div class="w-full flex items-center justify-start">
       <label class="label gap-2 flex justify-start items-center">
-        <span class="label-text">需求人數</span>
+        <span class="label-text text-white">需求人數</span>
         <input @change="(e) => {
         e.preventDefault();
         if (e.target.value < 1) {
@@ -295,7 +295,7 @@ const handleSubmit = async () => {
     <!--is graduation project-->
     <div class="flex items-center justify-start w-full">
       <label class="label cursor-pointer gap-2">
-        <span class="label-text">畢業專題</span>
+        <span class="label-text text-white">畢業專題</span>
         <span class="text-sm">否</span>
         <input v-model="projectStore.isGraduationProject" type="checkbox" class="toggle" checked />
         <span class="text-sm">是</span>
