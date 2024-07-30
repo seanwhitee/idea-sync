@@ -9,10 +9,12 @@ const messageMap = {
   "Project with the same title already exists": "此提案已存在",
   "Project created successfully": "提案創建成功",
   "Project created failed": "提案創建失敗",
-}
+};
 
 const router = useRouter();
 const toast = useToast();
+const tagModalOpen = ref(false);
+const tagInputString = ref("");
 
 // 1. check if the user is login and role is verified
 // 2. check if the user role is creator
@@ -20,13 +22,15 @@ const toast = useToast();
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
-  router.push("/");
+  throw new Error("Not authorized");
 }
 
-if (authStore.userInfo.roleName !== "creator") {
-  router.push("/projects");
+if (authStore.userInfo.roleName === "admin") {
+  throw new Error("You cannot access this page");
 }
-
+definePageMeta({
+  colorMode: "dark",
+});
 // clear project store data
 projectStore.reset();
 
@@ -59,10 +63,23 @@ const computeSHA256 = async (file) => {
   return hashHex;
 };
 
-const isValidInputData = (title, description, school, requireSkills, tags, file) => {
-
+const isValidInputData = (
+  title,
+  description,
+  school,
+  requireSkills,
+  tags,
+  file
+) => {
   // check if the title, description, school is empty
-  if (!title || !description || !school || !file || !requireSkills || tags.length === 0) {
+  if (
+    !title ||
+    !description ||
+    !school ||
+    !file ||
+    !requireSkills ||
+    tags.length === 0
+  ) {
     statusMessage.value = "請填寫完整資料";
     messageType.value = "warning";
     setTimeout(() => {
@@ -98,7 +115,7 @@ const isValidInputData = (title, description, school, requireSkills, tags, file)
     return false;
   }
   return true;
-}
+};
 
 const handleSubmit = async () => {
   isSubmitProcessing.value = true;
@@ -106,12 +123,16 @@ const handleSubmit = async () => {
   // ** upload image to exchange the real url **
 
   // check if the input data is valid
-  if(!isValidInputData(projectStore.title, 
-  projectStore.description, 
-  projectStore.school, 
-  projectStore.requireSkills, 
-  projectStore.tags,
-  file.value)) {
+  if (
+    !isValidInputData(
+      projectStore.title,
+      projectStore.description,
+      projectStore.school,
+      projectStore.requireSkills,
+      projectStore.tags,
+      file.value
+    )
+  ) {
     isSubmitProcessing.value = false;
     return;
   }
@@ -171,28 +192,24 @@ const handleSubmit = async () => {
 
   // ** save project to database **
   try {
-    await $fetch(
-      `http://localhost:8080/api/v1/project/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          hostId: authStore.userInfo.id,
-          title: projectStore.title,
-          description: projectStore.description,
-          statusId: 1,
-          isGraduationProject: projectStore.isGraduationProject,
-          school: projectStore.school,
-          allowApplicantsNum: projectStore.allowApplicantsNum,
-          applicantCount: 0,
-          projectImages: projectStore.projectImages,
-          tags: projectStore.tags,
-          requireSkills: projectStore.requireSkills,
-        }),
-      }
-    ).then((res) => {
+    await $fetch(`http://localhost:8080/api/v1/project/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        hostId: authStore.userInfo.id,
+        title: projectStore.title,
+        description: projectStore.description,
+        statusId: 1,
+        isGraduationProject: projectStore.isGraduationProject,
+        school: projectStore.school,
+        allowApplicantsNum: projectStore.allowApplicantsNum,
+        projectImages: projectStore.projectImages,
+        tags: projectStore.tags,
+        requireSkills: projectStore.requireSkills,
+      }),
+    }).then((res) => {
       if (res === "Project created successfully") {
         isSubmitProcessing.value = false;
         toast.add({ title: "提案創建成功" });
@@ -216,18 +233,68 @@ const handleSubmit = async () => {
 <template>
   <LoginedNavbar />
   <Sidebar />
+
+  <UModal color="gray" v-model="tagModalOpen">
+    <div class="p-4 bg-black">
+      <UInput
+        class="mb-4 border border-zinc-500"
+        color="white"
+        variant="none"
+        size="xl"
+        placeholder="tag name..."
+        @keyup.enter="projectStore.addTag(tagInputString)"
+        v-model="tagInputString"
+        maxlength="50"
+      />
+      <div class="w-full">
+        <div
+          class="flex items-start justify-start gap-2 w-full flex-wrap"
+          v-if="projectStore.tags.length > 0"
+        >
+          <tag v-for="tag in projectStore.tags" :tagName="tag" color="violet">
+            <button
+              @click="projectStore.deleteTag(tag)"
+              class="flex items-center justify-center w-3"
+            >
+              <NuxtImg src="delete.png" alt="tag-delete" class="w-full" />
+            </button>
+          </tag>
+        </div>
+        <p
+          v-else
+          class="flex items-center gap-2 justify-center text-white/65 px-1"
+        >
+          <span>Press</span>
+          <UKbd>Enter</UKbd>
+          <span>to add tags</span>
+        </p>
+      </div>
+    </div>
+  </UModal>
+
   <div
     class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-28 md:pt-36 lg:pt-36 pb-20 mx-auto gap-4"
   >
-    <TagContainer />
+    <!--tags-->
+    <div
+      class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted cursor-pointer border-white w-full flex-wrap"
+      @click="tagModalOpen = true"
+    >
+      <Tag
+        v-if="projectStore.tags.length > 0"
+        v-for="tag in projectStore.tags"
+        color="violet"
+        :tagName="tag"
+      />
+      <p v-else class="text-white/65 px-1">加入標籤...</p>
+    </div>
     <!--require skills-->
     <label class="form-control w-full bg-primary-content rounded-none">
       <input
         v-model="projectStore.requireSkills"
         type="text"
         placeholder="所需技能"
-        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
-        focus:border-white focus:border-dotted"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
       />
     </label>
     <!--title-->
@@ -236,15 +303,14 @@ const handleSubmit = async () => {
         v-model="projectStore.title"
         type="text"
         placeholder="標題"
-        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
-        focus:border-white focus:border-dotted"
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
       />
     </label>
 
     <!--allow applcant num-->
     <div class="w-full flex items-center justify-start">
       <label class="label gap-2 flex justify-start items-center">
-        <span class="label-text">需求人數</span>
+        <span class="label-text text-white">需求人數</span>
         <input
           @change="
             (e) => {
@@ -266,7 +332,7 @@ const handleSubmit = async () => {
     <!--is graduation project-->
     <div class="flex items-center justify-start w-full">
       <label class="label cursor-pointer gap-2">
-        <span class="label-text">畢業專題</span>
+        <span class="label-text text-white">畢業專題</span>
         <span class="text-sm">否</span>
         <input
           v-model="projectStore.isGraduationProject"
@@ -284,16 +350,14 @@ const handleSubmit = async () => {
         v-model="projectStore.school"
         type="text"
         placeholder="學校"
-        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none
-        focus:border-white focus:border-dotted" 
+        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
       />
     </label>
 
     <!--description-->
     <textarea
       v-model="projectStore.description"
-      class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none
-      focus:border-white focus:border-dotted"
+      class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
       placeholder="說明 ..."
     ></textarea>
 

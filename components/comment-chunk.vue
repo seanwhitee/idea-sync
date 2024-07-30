@@ -10,22 +10,33 @@ const props = defineProps({
   projectId: Number,
   formatDate: Function,
 });
+const replyShow = ref(false);
 </script>
 <template>
   <div class="flex items-start gap-2 w-full">
-    <NuxtImg :src="props.avatarURL" class="w-8 h-8 rounded-full border border-white" />
+    <NuxtImg
+      :src="props.avatarURL"
+      class="w-8 h-8 rounded-full border border-white"
+    />
     <div class="flex flex-col w-full">
       <p class="flex gap-2 items-center">
         <span>{{ props.nickName }}</span>
         <span class="opacity-50 text-xs font-light">{{ props.date }}</span>
       </p>
       <p class="font-light text-sm">{{ props.comment }}</p>
-      <ReplyInput 
+      <ReplyInput
         :userId="props.userId"
         :projectId="props.projectId"
         :parentId="props.commentId"
       />
-      <ChildComment 
+      <HideAndShowToggler
+        class="mb-3"
+        v-if="props.children.length > 0"
+        @click="replyShow = !replyShow"
+        :label="props.children.length + ' ' + 'replies'"
+      />
+      <ChildComment
+        v-if="replyShow"
         v-for="child in props.children"
         :key="child.id"
         :avatarURL="child.avatarURL"
@@ -35,7 +46,5 @@ const props = defineProps({
         class="pb-2"
       />
     </div>
-    
   </div>
-
 </template>

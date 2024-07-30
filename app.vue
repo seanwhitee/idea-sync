@@ -1,5 +1,4 @@
-<script setup>
-</script>
+<script setup></script>
 <template>
   <NuxtPage />
   <UNotifications />
@@ -8,7 +7,5 @@
 body {
   background-color: black;
   min-height: 100vh;
-  color: white;
 }
 </style>
-

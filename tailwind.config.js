@@ -1,4 +1,9 @@
+const { default: daisyui } = require("daisyui");
+
 module.exports = {
+  daisyui: {
+    themes: ["dark"],
+  },
   theme: {},
   plugins: [require("daisyui")],
   content: [
@@ -8,6 +13,5 @@ module.exports = {
     "./plugins/**/*.{js,ts}",
     "./app.vue",
     "./error.vue",
-    
   ],
 };

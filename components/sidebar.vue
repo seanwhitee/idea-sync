@@ -4,13 +4,16 @@ import { useAuthStore } from "~/store/auth";
 
 const authStore = useAuthStore();
 const items = ref([
-  { name: "創建提案", icon: "create.png", path: "/create-project" },
-  { name: "瀏覽提案", icon: "browse.png", path: "/projects" },
-  { name: "管理提案", icon: "manage.png", path: "/manage-project" },
-  { name: "儀表板", icon: "dashboard.png", path: "/admin-dashboard" },
-  { name: "個人檔案", icon: "default-avatar.png", path: "/profile" },
-
-  { name: "收納", icon: "archive.png", path: "/archive" },
+  { name: "創建提案", icon: "ic:sharp-create", path: "/create-project" },
+  { name: "瀏覽提案", icon: "ic:baseline-photo-camera", path: "/projects" },
+  { name: "管理提案", icon: "ic:sharp-folder", path: "/manage-project" },
+  {
+    name: "儀表板",
+    icon: "ic:baseline-space-dashboard",
+    path: "/admin-dashboard",
+  },
+  { name: "個人檔案", icon: "ic:baseline-account-circle", path: "/profile" },
+  { name: "收納", icon: "ic:baseline-archive", path: "/archive" },
 ]);
 
 const toggler = ref(false);
@@ -23,7 +26,10 @@ const handleClick = (item) => {
 // check if the user is creator or admin
 const itemAllowShow = (routeName) => {
   if (routeName === "創建提案") {
-    return authStore.userInfo.roleName === "creator";
+    return (
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor"
+    );
   } else if (routeName === "瀏覽提案") {
     return (
       authStore.userInfo.roleName === "creator" ||
@@ -40,8 +46,10 @@ const itemAllowShow = (routeName) => {
   } else if (routeName === "個人檔案") {
     return true;
   } else if (routeName === "收納") {
-    return authStore.userInfo.roleName === "creator" ||
-    authStore.userInfo.roleName === "mentor";
+    return (
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor"
+    );
   }
 };
 
@@ -49,22 +57,20 @@ const itemAllowShow = (routeName) => {
 const visibleItems = computed(() => {
   return items.value.filter((item) => itemAllowShow(item.name));
 });
-
 </script>
 <template>
   <!-- sidebar toggler-->
   <div
     @click="toggler = !toggler"
-    class="fixed top-4 left-2 cursor-pointer z-[2] rounded-md"
+    class="fixed top-4 left-2 cursor-pointer z-[3] rounded-md"
   >
-    <NuxtImg src="menus.png" alt="sidebar-toggler" class="w-8 h-8" />
+    <Icon name="ic:outline-menu" class="w-8 h-8 text-white" />
   </div>
 
   <Transition name="slide-fade">
     <div
       v-if="toggler"
-      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 
-      bg-black fixed overflow-y-scroll z-[1]"
+      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 bg-black fixed overflow-y-scroll z-[2]"
     >
       <div class="h-4/5 w-full pt-4 pb-2">
         <!--barItem container-->

@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import { useAuthStore } from "~/store/auth";
 import { useAdminStore } from "~/store/admin";
+definePageMeta({
+  colorMode: "dark",
+});
 const authStore = useAuthStore();
 const adminStore = useAdminStore();
 const router = useRouter();

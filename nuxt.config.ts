@@ -1,13 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   pages: true,
   tailwindcss: {
-    cssPath: ['~/assets/css/main.css', { injectPosition: "first" }],
-    configPath: 'tailwind.config.js',
+    cssPath: ["~/assets/css/main.css", { injectPosition: "first" }],
+    configPath: "tailwind.config.js",
     exposeConfig: {
-      level: 2
+      level: 2,
     },
     config: {},
     viewer: true,
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
   ],
   image: {
-    dir: "assets/images"
+    dir: "assets/images",
   },
   app: {
     head: {

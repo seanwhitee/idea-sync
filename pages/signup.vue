@@ -6,7 +6,9 @@ const router = useRouter();
 if (authStore.isLogin && authStore.userInfo.roleVerified) {
   router.push("/projects");
 }
-
+definePageMeta({
+  colorMode: "dark",
+});
 const step = ref(1);
 let userInfo = {
   username: "",
@@ -64,8 +66,7 @@ const updateUserInfo = (newUserInfo) => {
 <template>
   <GradientFog />
   <div
-    class="flex items-center justify-center text-black 
-        dark:text-white mx-auto py-20 md:py-32 lg:py-32 rounded-xl w-full"
+    class="flex items-center justify-center text-black dark:text-white mx-auto py-20 md:py-32 lg:py-32 rounded-xl w-full"
   >
     <div
       class="bg-white dark:bg-zinc-950 w-full md:w-1/2 lg:w-1/2 max-w-lg py-5 md:py-20 lg:py-10 px-10 rounded-2xl flex items-start justify-center flex-col"
