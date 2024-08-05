@@ -79,7 +79,7 @@ const getProjectAppliedTableData = computed(() => {
     class="bg-white dark:bg-black w-full border border-zinc-500/50 px-1 rounded-md"
   >
     <template #title-data="{ row }">
-      <p class="cursor-pointer" @click="router.push(`/project/${row.id}`)">
+      <p class="cursor-pointer" @click="router.push(`/Platform/project/${row.id}`)">
         {{
           row.title.length > 30 ? row.title.slice(0, 30) + "..." : row.title
         }}

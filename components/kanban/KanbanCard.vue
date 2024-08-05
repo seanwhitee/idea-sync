@@ -32,7 +32,7 @@ const router = useRouter();
   >
     <h3 class="flex items-start justify-between w-full gap-2 mb-2">
       <span
-        @click="router.push(`/project/${props.projectId}`)"
+        @click="router.push(`/Platform/project/${props.projectId}`)"
         class="w-full cursor-pointer"
         >{{ props.title }}</span
       >
