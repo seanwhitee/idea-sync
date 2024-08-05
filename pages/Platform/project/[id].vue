@@ -149,9 +149,7 @@ const handleProjectApply = async () => {
 };
 </script>
 <template>
-  <LoginedNavbar />
-  <Sidebar />
-  <div class="flex w-11/12 pt-28 md:pt-24 lg:pt-24 pb-20 mx-auto gap-2">
+  <div class="flex gap-2 w-full">
     <div class="flex flex-col w-full md:w-7/12 lg:w-8/12 gap-6 items-start">
       <ProjectStatusVisualizer class="" :statusId="projectStore.statusId" />
       <div class="flex flex-col items-start justify-center p-1">

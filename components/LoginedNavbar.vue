@@ -5,7 +5,7 @@
   >
     <div class="flex items-center font-bold my-2 ps-10">
       <NuxtLink
-        to="/projects"
+        to="/Platform/projects"
         external
         class="text-white flex items-center justify-center"
         ><img src="/public/favicon.png" class="me-3 w-8 rounded-lg" />Idea<span

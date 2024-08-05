@@ -231,9 +231,6 @@ const handleSubmit = async () => {
 };
 </script>
 <template>
-  <LoginedNavbar />
-  <Sidebar />
-
   <UModal color="gray" v-model="tagModalOpen">
     <div class="p-4 bg-black">
       <UInput
@@ -271,10 +268,6 @@ const handleSubmit = async () => {
       </div>
     </div>
   </UModal>
-
-  <div
-    class="flex flex-col items-center w-11/12 md:w-3/5 lg:w-3/5 pt-28 md:pt-36 lg:pt-36 pb-20 mx-auto gap-4"
-  >
     <!--tags-->
     <div
       class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted cursor-pointer border-white w-full flex-wrap"
@@ -394,7 +387,6 @@ const handleSubmit = async () => {
         <Loader v-else />
       </button>
     </div>
-  </div>
 </template>
 <style scoped>
 /* Chrome, Safari, Edge, Opera */

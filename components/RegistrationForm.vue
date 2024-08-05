@@ -12,7 +12,7 @@ const props = defineProps({
   updateStep: Function,
   generatePassCode: Function,
 });
-const router = useRouter();
+
 const userRole = ref("creator");
 
 const updateRole = (role) => {

@@ -39,16 +39,13 @@ const { data: archiveDatas, error: archiveError } = useAsyncData(
   }
 );
 
+onMounted(async () => {
+  await fetchProjects("member_recruiting");
+});
+
 async function fetchProjects(status) {
   projectPoolStore.getProjects(status);
 }
-
-// Fetch projects on first page load
-const {
-  data: projectDatas,
-  pending,
-  error: projectErrors,
-} = useAsyncData("projects", () => fetchProjects("member_recruiting"));
 
 const handleGroupChange = async (status) => {
   await fetchProjects(status);
@@ -58,8 +55,6 @@ definePageMeta({
 });
 </script>
 <template>
-  <LoginedNavbar />
-  <Sidebar />
   <!-- search opened modal-->
   <UModal v-model="openSearch">
     <div class="p-4 bg-black">
@@ -70,7 +65,7 @@ definePageMeta({
         <ProjectCard
           v-for="project in searchStore.search"
           v-if="searchStore.search.length > 0"
-          @click="router.push(`/project/${project.id}`)"
+          @click="router.push(`Platform/project/${project.id}`)"
           :key="project.id"
           :status-id="project.statusId"
           :isGraduationProject="project.graduationProject"
@@ -92,9 +87,6 @@ definePageMeta({
       </div>
     </div>
   </UModal>
-  <div
-    class="flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 pt-20 pb-20 min-h-dvh mx-auto gap-4 bg-black"
-  >
     <div
       class="fixed flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 mx-auto z-[1]"
     >
@@ -152,5 +144,4 @@ definePageMeta({
     >
       <Loader />
     </div>
-  </div>
 </template>
