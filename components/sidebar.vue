@@ -1,28 +1,42 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useAuthStore } from "~/store/auth";
+import { useAuth } from "../composable/useAuth";
 
 const authStore = useAuthStore();
+
 const items = ref([
-  { name: "創建提案", icon: "ic:sharp-create", path: "/create-project" },
-  { name: "瀏覽提案", icon: "ic:baseline-photo-camera", path: "/projects" },
-  { name: "管理提案", icon: "ic:sharp-folder", path: "/manage-project" },
+  {
+    name: "創建提案",
+    icon: "ic:sharp-create",
+    path: "/Platform/create-project",
+  },
+  {
+    name: "瀏覽提案",
+    icon: "ic:baseline-photo-camera",
+    path: "/Platform/projects",
+  },
+  {
+    name: "管理提案",
+    icon: "ic:sharp-folder",
+    path: "/Platform/ManageProject",
+  },
   {
     name: "儀表板",
     icon: "ic:baseline-space-dashboard",
     path: "/admin-dashboard",
   },
-  { name: "個人檔案", icon: "ic:baseline-account-circle", path: "/profile" },
-  { name: "收納", icon: "ic:baseline-archive", path: "/archive" },
+  {
+    name: "個人檔案",
+    icon: "ic:baseline-account-circle",
+    path: `/Platform/Profile/${authStore.userInfo.id}`,
+  },
+  { name: "收納", icon: "ic:baseline-archive", path: "/Platform/archive" },
 ]);
 
 const toggler = ref(false);
-const router = useRouter();
-
-const handleClick = (item) => {
-  router.push(item.path);
-};
-
+const isAccountSwitchModalOpen = ref(false);
+const { logout } = useAuth();
 // check if the user is creator or admin
 const itemAllowShow = (routeName) => {
   if (routeName === "創建提案") {
@@ -59,6 +73,13 @@ const visibleItems = computed(() => {
 });
 </script>
 <template>
+  <UModal v-model="isAccountSwitchModalOpen">
+    <div class="p-10">
+      <h3 class="font-bold text-2xl mb-2">切換帳號</h3>
+      <p class="text-zinc-500 text-sm mb-6">輸入您的帳號密碼以切換帳號</p>
+      <LoginForm />
+    </div>
+  </UModal>
   <!-- sidebar toggler-->
   <div
     @click="toggler = !toggler"
@@ -77,17 +98,27 @@ const visibleItems = computed(() => {
         <ul
           class="w-full h-full flex flex-col items-center justify-start pt-4 pb-2 overflow-y-scroll mb-6"
         >
-          <button
+          <NuxtLink
             v-for="item in visibleItems"
             :key="item.name"
             class="mb-2 w-full hover:bg-zinc-800 transition duration-300 ease-in-out rounded-lg focus:outline-none py-1"
-            @click="handleClick(item)"
+            :to="item.path"
           >
             <BarItem :name="item.name" :icon="item.icon" />
-          </button>
+          </NuxtLink>
         </ul>
         <div class="flex items-center justify-center w-full h-14">
-          <UserFunctionMenu />
+          <UserFunctionMenu>
+            <li
+              @click="isAccountSwitchModalOpen = true"
+              class="hover:bg-zinc-800/50 rounded-lg"
+            >
+              <p class="py-4">切換帳號</p>
+            </li>
+            <li @click="logout();" class="hover:bg-zinc-800/50 rounded-lg">
+              <p class="py-4">登出</p>
+            </li>
+          </UserFunctionMenu>
         </div>
       </div>
     </div>
