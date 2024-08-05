@@ -4,7 +4,7 @@ import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const router = useRouter();
 if (authStore.isLogin && authStore.userInfo.roleVerified) {
-  router.push("/projects");
+  router.push("/Platform/projects");
 }
 definePageMeta({
   colorMode: "dark",
@@ -65,11 +65,9 @@ const updateUserInfo = (newUserInfo) => {
 </script>
 <template>
   <GradientFog />
-  <div
-    class="flex items-center justify-center text-black dark:text-white mx-auto py-20 md:py-32 lg:py-32 rounded-xl w-full"
-  >
+  <div class="py-20 md:py-32 lg:py-32 text-black dark:text-white">
     <div
-      class="bg-white dark:bg-zinc-950 w-full md:w-1/2 lg:w-1/2 max-w-lg py-5 md:py-20 lg:py-10 px-10 rounded-2xl flex items-start justify-center flex-col"
+      class="flex flex-col items-start mx-auto px-10 w-10/12 md:w-1/2 lg:w-1/2 max-w-lg bg-white dark:bg-zinc-950 rounded-2xl py-5 md:py-20 lg:py-10"
     >
       <img
         src="/public/favicon.png"

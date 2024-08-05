@@ -2,10 +2,12 @@
 import { z } from "zod";
 import { ref } from "vue";
 import { useAuthStore } from "~/store/auth";
+import { useAuth } from "../composable/useAuth";
 
 const router = useRouter();
 const submitMessage = ref("");
 const authStore = useAuthStore();
+const { login }  = useAuth();
 
 const schema = z.object({
   username: z
@@ -46,8 +48,7 @@ const onSubmit = async () => {
   } else {
     // login successfull
     const user = response;
-    authStore.login(user);
-    router.go();
+    login(user);
   }
 };
 </script>

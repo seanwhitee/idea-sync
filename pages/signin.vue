@@ -5,9 +5,9 @@ const authStore = useAuthStore();
 const router = useRouter();
 if (authStore.isLogin && authStore.userInfo.roleVerified) {
   if (authStore.userInfo.roleName === "admin") {
-    router.push("/admin-dashboard");
+    router.push("/Admin/admin-dashboard");
   } else {
-    router.push("/projects");
+    router.push("/Platform/projects");
   }
 }
 definePageMeta({

@@ -46,8 +46,8 @@ const title = computed(() => {
   >
     <div class="flex flex-col justify-between h-full w-10/12">
       <div class="flex flex-col">
-        <p
-          @click="router.push(`/project/${props.project.id}`)"
+        <NuxtLink
+          :to="`/Platform/project/${props.project.id}`"
           class="text-white text-base md:text-2xl font-bold hover:bg-violet-500 ease-linear duration-200 cursor-pointer w-fit"
           :class="
             hoverEffect
@@ -56,7 +56,7 @@ const title = computed(() => {
           "
         >
           {{ title }}
-        </p>
+      </NuxtLink>
         <!--feature section contains allowApplicantsNum|applicantCount-->
         <div
           class="flex items-center gap-2 pt-1 text-xs md:text-sm mb-3 text-white"

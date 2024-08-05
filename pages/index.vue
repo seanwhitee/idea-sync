@@ -4,7 +4,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const isLogin = authStore.isLogin;
 if (isLogin) {
-  router.push("/projects");
+  router.push("Platform/projects");
 }
 definePageMeta({
   colorMode: "dark",
