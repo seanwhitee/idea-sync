@@ -33,7 +33,7 @@ const featuresData = [
 ];
 </script>
 <template>
-  <navbar />
+  <Navbar />
   <div class="flex flex-col w-4/5 mx-auto">
     <div class="mt-40 md:mt-80 lg:mt-80">
       <div class="text-6xl">

@@ -1,5 +1,5 @@
 <script setup>
-import LoginForm from "~/components/login-form.vue";
+import LoginForm from "~/components/LoginForm.vue";
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const router = useRouter();
