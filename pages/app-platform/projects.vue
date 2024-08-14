@@ -62,7 +62,7 @@ const handleGroupChange = async (status) => {
         <ProjectCard
           v-for="project in searchStore.search"
           v-if="searchStore.search.length > 0"
-          @click="router.push(`/platform/project/${project.id}`)"
+          @click="router.push(`/app-platform/project/${project.id}`)"
           :key="project.id"
           :status-id="project.statusId"
           :isGraduationProject="project.graduationProject"

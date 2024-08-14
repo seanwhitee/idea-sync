@@ -217,7 +217,7 @@ const handleProjectApply = async () => {
       <div class="hidden md:flex lg:flex flex-col md:w-5.5/12 gap-2">
         <ProjectCard
           v-for="project in projectStore.relatedProjects"
-          @click="router.push(`/platform/project/${project.id}`)"
+          @click="router.push(`/app-platform/project/${project.id}`)"
           :key="project.id"
           :status-id="project.statusId"
           :isGraduationProject="project.graduationProject"
