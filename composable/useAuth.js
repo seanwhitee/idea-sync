@@ -8,10 +8,6 @@ export const useAuth = () => {
     authStore.userInfo = user;
     router.go();
   };
-  const logout = () => {
-    authStore.isLogin = false;
-    authStore.userInfo = {};
-    router.push("/signin");
-  };
-  return { login, logout };
+
+  return { login };
 };

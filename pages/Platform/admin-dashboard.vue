@@ -2,9 +2,7 @@
 import { ref } from "vue";
 import { useAuthStore } from "~/store/auth";
 import { useAdminStore } from "~/store/admin";
-definePageMeta({
-  colorMode: "dark",
-});
+
 const authStore = useAuthStore();
 const adminStore = useAdminStore();
 const router = useRouter();
@@ -25,12 +23,10 @@ if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
 if (authStore.userInfo.roleName !== "admin") {
   router.push("/Platform/projects");
 }
+
 getUsers();
 </script>
 <template>
-  <LoginedNavbar />
-  <Sidebar />
-
   <div class="text-white pt-36 pb-20">
     <div v-for="user in adminStore.userList">
       <div class="flex justify-between">

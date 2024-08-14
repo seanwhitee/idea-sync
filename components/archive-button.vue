@@ -68,17 +68,15 @@ const checkIfArchiveProjectExist = (id) => {
 };
 </script>
 <template>
-  <img
-    src="assets/images/filled-bookmark.png"
-    alt="filled-bookmark"
-    class="w-3"
+  <Icon
+    name="material-symbols:bookmark-remove-sharp"
+    class="w-6 h-6"
     @click="deleteFromArchive"
     v-if="checkIfArchiveProjectExist(props.project.id)"
   />
-  <img
-    src="assets/images/unfill-bookmark.png"
-    alt="unfill-bookmark"
-    class="w-3"
+  <Icon
+    name="material-symbols:bookmark-add-outline-sharp"
+    class="w-6 h-6"
     @click="addToArchive"
     v-if="!checkIfArchiveProjectExist(props.project.id)"
   />

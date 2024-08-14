@@ -1,13 +1,11 @@
 <script setup>
 import { z } from "zod";
 import { ref } from "vue";
-import { useAuthStore } from "~/store/auth";
 import { useAuth } from "../composable/useAuth";
 
-const router = useRouter();
 const submitMessage = ref("");
-const authStore = useAuthStore();
-const { login }  = useAuth();
+
+const { login } = useAuth();
 
 const schema = z.object({
   username: z

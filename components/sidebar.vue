@@ -1,76 +1,21 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useAuthStore } from "~/store/auth";
 import { useAuth } from "../composable/useAuth";
 
-const authStore = useAuthStore();
-
-const items = ref([
-  {
-    name: "創建提案",
-    icon: "ic:sharp-create",
-    path: "/Platform/create-project",
-  },
-  {
-    name: "瀏覽提案",
-    icon: "ic:baseline-photo-camera",
-    path: "/Platform/projects",
-  },
-  {
-    name: "管理提案",
-    icon: "ic:sharp-folder",
-    path: "/Platform/ManageProject",
-  },
-  {
-    name: "儀表板",
-    icon: "ic:baseline-space-dashboard",
-    path: "/admin-dashboard",
-  },
-  {
-    name: "個人檔案",
-    icon: "ic:baseline-account-circle",
-    path: `/Platform/Profile/${authStore.userInfo.id}`,
-  },
-  { name: "收納", icon: "ic:baseline-archive", path: "/Platform/archive" },
-]);
-
-const toggler = ref(false);
-const isAccountSwitchModalOpen = ref(false);
-const { logout } = useAuth();
-// check if the user is creator or admin
-const itemAllowShow = (routeName) => {
-  if (routeName === "創建提案") {
-    return (
-      authStore.userInfo.roleName === "creator" ||
-      authStore.userInfo.roleName === "mentor"
-    );
-  } else if (routeName === "瀏覽提案") {
-    return (
-      authStore.userInfo.roleName === "creator" ||
-      authStore.userInfo.roleName === "admin" ||
-      authStore.userInfo.roleName === "mentor"
-    );
-  } else if (routeName === "管理提案") {
-    return (
-      authStore.userInfo.roleName === "creator" ||
-      authStore.userInfo.roleName === "mentor"
-    );
-  } else if (routeName === "儀表板") {
-    return authStore.userInfo.roleName === "admin";
-  } else if (routeName === "個人檔案") {
-    return true;
-  } else if (routeName === "收納") {
-    return (
-      authStore.userInfo.roleName === "creator" ||
-      authStore.userInfo.roleName === "mentor"
-    );
-  }
-};
-
-// Compute which items are visible based on the role
-const visibleItems = computed(() => {
-  return items.value.filter((item) => itemAllowShow(item.name));
+const props = defineProps({
+  items: Array,
 });
+const navigationItems = computed(() => {
+  return props.items.filter((item) => {
+    return item.path && item.rule;
+  });
+});
+const functionalItems = computed(() => {
+  return props.items.filter((item) => {
+    return !item.path && item.rule;
+  });
+});
+const isAccountSwitchModalOpen = ref(false);
 </script>
 <template>
   <UModal v-model="isAccountSwitchModalOpen">
@@ -80,45 +25,54 @@ const visibleItems = computed(() => {
       <LoginForm />
     </div>
   </UModal>
-  <!-- sidebar toggler-->
-  <div
-    @click="toggler = !toggler"
-    class="fixed top-4 left-2 cursor-pointer z-[3] rounded-md"
-  >
-    <Icon name="ic:outline-menu" class="w-8 h-8 text-white" />
-  </div>
 
   <Transition name="slide-fade">
     <div
-      v-if="toggler"
-      class="top-0 left-0 flex flex-col items-center justify-center border-r border-gray-500/50 h-full w-60 px-2 bg-black fixed overflow-y-scroll z-[2]"
+      class="bottom-0 md:top-0 left-0 h-16 md:h-full w-full md:w-20 lg:w-60 flex md:flex-col items-center justify-center border-t md:border-r border-gray-500/50 px-2 bg-black fixed overflow-y-scroll z-[2]"
     >
-      <div class="h-4/5 w-full pt-4 pb-2">
-        <!--barItem container-->
+      <NuxtLink
+        to="/Platform/projects"
+        external
+        class="text-white text-2xl w-full items-center justify-start ps-4 hidden md:flex"
+      >
+        <img
+          src="/public/favicon.png"
+          alt="logo"
+          class="hidden md:flex lg:hidden w-8 h-8 rounded-md"
+        />
+        <p class="hidden md:hidden lg:flex">
+          Idea<span class="text-violet-500">Sync</span>
+        </p>
+      </NuxtLink>
+      <div
+        class="h-4/5 w-full pt-4 pb-2 flex md:flex-col items-center justify-center"
+      >
         <ul
-          class="w-full h-full flex flex-col items-center justify-start pt-4 pb-2 overflow-y-scroll mb-6"
+          class="w-full h-full flex md:flex-col items-center justify-start pt-4 pb-2 md:overflow-y-scroll mb-2"
         >
           <NuxtLink
-            v-for="item in visibleItems"
+            v-for="item in navigationItems"
             :key="item.name"
-            class="mb-2 w-full hover:bg-zinc-800 transition duration-300 ease-in-out rounded-lg focus:outline-none py-1"
+            class="mb-2 w-14 md:w-full hover:bg-zinc-800 transition duration-300 ease-in-out rounded-lg focus:outline-none py-1"
             :to="item.path"
+            @click="toggler = false"
           >
             <BarItem :name="item.name" :icon="item.icon" />
           </NuxtLink>
+          <button
+            v-for="item in functionalItems"
+            :key="item.name"
+            class="mb-2 w-14 md:w-full hover:bg-zinc-800 transition duration-300 ease-in-out rounded-lg focus:outline-none py-1"
+            @click="isAccountSwitchModalOpen = true"
+          >
+            <BarItem :name="item.name" :icon="item.icon" />
+          </button>
         </ul>
-        <div class="flex items-center justify-center w-full h-14">
-          <UserFunctionMenu>
-            <li
-              @click="isAccountSwitchModalOpen = true"
-              class="hover:bg-zinc-800/50 rounded-lg"
-            >
-              <p class="py-4">切換帳號</p>
-            </li>
-            <li @click="logout();" class="hover:bg-zinc-800/50 rounded-lg">
-              <p class="py-4">登出</p>
-            </li>
-          </UserFunctionMenu>
+
+        <div
+          class="flex items-center justify-center w-20 pb-2 md:w-full h-14 md:translate-y-14"
+        >
+          <UserFunctionMenu />
         </div>
       </div>
     </div>

@@ -2,17 +2,15 @@
 import { ref, computed } from "vue";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
-import { useCommentStore } from "~/store/comment";
+import { useComment } from "~/composable/useComment";
 
-definePageMeta({
-  colorMode: "dark",
-});
+
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
-const commentStore = useCommentStore();
 const toast = useToast();
+const { commentChuncks, addComment, addReply } = useComment();
 
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   router.push("/");
@@ -33,8 +31,6 @@ const formatDate = (dateString) => {
   return `${year}/${month}/${day}`;
 };
 
-// main fetch function to get current project info and its related data
-// like applied users, etc.
 const fetchProjectData = async () => {
   try {
     await $fetch(
@@ -58,7 +54,7 @@ const fetchProjectData = async () => {
         projectStore.tags = response.tags;
         projectStore.requireSkills = response.requireSkills;
         projectStore.createAt = formatDate(response.createAt);
-        commentStore.commentChuncks = response.commentChunks;
+        commentChuncks.value = response.commentChunks;
         projectStore.applicants = response.applicants;
         if (
           projectStore.applicants.find(
@@ -147,127 +143,121 @@ const handleProjectApply = async () => {
     }
   }
 };
+
 </script>
 <template>
-  <div class="flex gap-2 w-full">
-    <div class="flex flex-col w-full md:w-7/12 lg:w-8/12 gap-6 items-start">
-      <ProjectStatusVisualizer class="" :statusId="projectStore.statusId" />
-      <div class="flex flex-col items-start justify-center p-1">
-        <NuxtImg
-          :src="projectStore.projectImages[0]"
-          alt="project-image"
-          class="w-14 h-14 rounded-md flex"
-        />
-        <h1 class="text-2xl font-bold">{{ projectStore.title }}</h1>
-        <p class="text-xs font-extralight opacity-50">
-          {{ projectStore.createAt }}
-        </p>
-      </div>
-
-      <div class="flex items-center gap-4">
-        <AvatarCard
-          :avatarURL="avatarURL"
-          :username="username"
-          :email="email"
-        />
-        <button
-          v-if="
-            projectStore.hostId !== authStore.userInfo.id &&
-            ((projectStore.statusId === 1 &&
-              authStore.userInfo.roleName === 'creator' &&
-              authStore.userInfo.allowProjectApply) ||
-              (projectStore.statusId === 2 &&
-                authStore.userInfo.roleName === 'mentor' &&
-                authStore.userInfo.allowProjectApply))
-          "
-          @click="handleProjectApply"
-          class="flex items-center justify-center bg-white h-3/5 font-light text-sm px-6 py-4 text-black rounded-md"
-          :class="applyButtonName === '申請' ? '' : 'text-red-500'"
-        >
-          {{ applyButtonName }}
-        </button>
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <!-- school -->
-        <div class="flex gap-3">
-          <NuxtImg src="school-icon.png" alt="school-icon" class="w-5 h-5" />
-          <p class="">{{ projectStore.school }}</p>
+  <div class="flex flex-col w-full">
+    <div class="flex justify-between gap-2 w-full">
+      <div class="flex flex-col w-full md:w-6/12 gap-6 items-start">
+        <ProjectStatusVisualizer class="" :statusId="projectStore.statusId" />
+        <div class="flex flex-col items-start justify-center p-1">
+          <NuxtImg
+            :src="projectStore.projectImages[0]"
+            alt="project-image"
+            class="w-14 h-14 rounded-md flex"
+          />
+          <h1 class="text-2xl font-bold">{{ projectStore.title }}</h1>
+          <p class="text-xs font-extralight opacity-50">
+            {{ projectStore.createAt }}
+          </p>
         </div>
-        <!-- need num -->
-        <p>需求人數：{{ projectStore.allowApplicantsNum }}</p>
-        <!-- applied num -->
-        <p>申請人數：{{ getApplicantCount }}</p>
+        <div class="flex items-center gap-4">
+          <AvatarCard
+            :avatarURL="avatarURL"
+            :username="username"
+            :email="email"
+          />
+          <button
+            v-if="
+              projectStore.hostId !== authStore.userInfo.id &&
+              ((projectStore.statusId === 1 &&
+                authStore.userInfo.roleName === 'creator' &&
+                authStore.userInfo.allowProjectApply) ||
+                (projectStore.statusId === 2 &&
+                  authStore.userInfo.roleName === 'mentor' &&
+                  authStore.userInfo.allowProjectApply))
+            "
+            @click="handleProjectApply"
+            class="flex items-center justify-center bg-white h-3/5 font-light text-sm px-6 py-4 text-black rounded-md"
+            :class="applyButtonName === '申請' ? '' : 'text-red-500'"
+          >
+            {{ applyButtonName }}
+          </button>
+        </div>
+        <div class="flex flex-col gap-1">
+          <div class="flex gap-3">
+            <Icon name="material-symbols:school-rounded" class="w-5 h-5" />
+            <p class="">{{ projectStore.school }}</p>
+          </div>
+          <p>需求人數：{{ projectStore.allowApplicantsNum }}</p>
+          <p>申請人數：{{ getApplicantCount }}</p>
+        </div>
+        <div class="flex gap-1 flex-wrap">
+          <Tag
+            v-if="projectStore.isGraduationProject"
+            tagName="畢業專題"
+            color="indigo"
+          />
+          <Tag
+            v-for="tag in projectStore.tags"
+            :key="tag"
+            :tagName="tag"
+            color="violet"
+          />
+        </div>
+        <div class="flex flex-col">
+          <h2 class="font-bold text-lg">所需技能：</h2>
+          <p class="opacity-80">{{ projectStore.requireSkills }}</p>
+        </div>
+        <div class="flex flex-col gap-2 mb-10">
+          <h2 class="font-bold text-lg">提案說明：</h2>
+          <p class="opacity-80">{{ projectStore.description }}</p>
+        </div>
       </div>
-
-      <!-- tags -->
-      <div class="flex gap-1 flex-wrap">
-        <Tag
-          v-if="projectStore.isGraduationProject"
-          tagName="畢業專題"
-          color="indigo"
+      <div class="hidden md:flex lg:flex flex-col md:w-5.5/12 gap-2">
+        <ProjectCard
+          v-for="project in projectStore.relatedProjects"
+          @click="router.push(`/Platform/project/${project.id}`)"
+          :key="project.id"
+          :status-id="project.statusId"
+          :isGraduationProject="project.graduationProject"
+          :title="project.title"
+          :school="project.school"
+          :allowApplicantsNum="project.allowApplicantsNum"
+          :applicantCount="project.applicants.length"
+          :tags="project.tags"
+          :imageURL="project.images[0]"
         />
-        <Tag
-          v-for="tag in projectStore.tags"
-          :key="tag"
-          :tagName="tag"
-          color="violet"
-        />
       </div>
-
-      <!-- require skills -->
-      <div class="flex flex-col">
-        <h2 class="font-bold text-lg">所需技能：</h2>
-        <p class="opacity-80">{{ projectStore.requireSkills }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2 mb-10">
-        <h2 class="font-bold text-lg">提案說明：</h2>
-        <p class="opacity-80">{{ projectStore.description }}</p>
-      </div>
-      <h2 class="font-bold text-lg">
-        {{ commentStore.commentChuncks.length }} 則留言
-      </h2>
-      <div class="flex items-start justify-start gap-2 w-full">
-        <NuxtImg
-          :src="authStore.userInfo.avatarUrl"
-          alt="user-avatar"
-          class="w-8 h-8 rounded-full border border-white"
-        />
-        <CommentInput
-          :userId="authStore.userInfo.id"
-          :projectId="parseInt(route.params.id)"
-        />
-      </div>
-
-      <CommentChunk
-        v-for="chunk in commentStore.commentChuncks"
-        :key="chunk.id"
-        :formatDate="formatDate"
-        :commentId="chunk.id"
-        :avatarURL="chunk.avatarURL"
-        :comment="chunk.text"
-        :nickName="chunk.nickName"
-        :date="formatDate(chunk.createAt)"
+    </div>
+    <h2 class="font-bold text-lg mb-4">
+      {{ commentChuncks.length }} 則留言
+    </h2>
+    <div class="flex items-start justify-start gap-2 w-full">
+      <NuxtImg
+        :src="authStore.userInfo.avatarUrl"
+        alt="user-avatar"
+        class="w-8 h-8 rounded-full border border-white"
+      />
+      <CommentInput
         :userId="authStore.userInfo.id"
         :projectId="parseInt(route.params.id)"
-        :children="chunk.children"
+        :addComment="addComment"
       />
     </div>
-    <div class="hidden md:flex lg:flex flex-col md:w-6/12 lg:w-6/12 gap-2">
-      <ProjectCard
-        v-for="project in projectStore.relatedProjects"
-        @click="router.push(`/Platform/project/${project.id}`)"
-        :key="project.id"
-        :status-id="project.statusId"
-        :isGraduationProject="project.graduationProject"
-        :title="project.title"
-        :school="project.school"
-        :allowApplicantsNum="project.allowApplicantsNum"
-        :applicantCount="project.applicants.length"
-        :tags="project.tags"
-        :imageURL="project.images[0]"
-      />
-    </div>
+    <CommentChunk
+      v-for="chunk in commentChuncks"
+      :key="chunk.id"
+      :formatDate="formatDate"
+      :commentId="chunk.id"
+      :avatarURL="chunk.avatarURL"
+      :comment="chunk.text"
+      :nickName="chunk.nickName"
+      :date="formatDate(chunk.createAt)"
+      :userId="authStore.userInfo.id"
+      :projectId="parseInt(route.params.id)"
+      :children="chunk.children"
+      :addReply="addReply"
+    />
   </div>
 </template>

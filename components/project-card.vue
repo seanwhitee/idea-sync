@@ -36,7 +36,7 @@ const tags = computed(() => {
 <template>
   <div
     v-if="props.statusId !== 3"
-    class="flex w-full items-start justify-between cursor-pointer gap-1 px-3 py-3 bg-zinc-900"
+    class="flex w-full items-start justify-between cursor-pointer gap-1 px-2 py-3 bg-zinc-900"
     @mouseover="hoverEffect = true"
     @mouseleave="hoverEffect = false"
   >
@@ -52,8 +52,6 @@ const tags = computed(() => {
       >
         {{ title }}
       </h3>
-
-      <!--feature section contains school|allowApplicantsNum|applicantCount-->
       <div class="flex items-center text-xs opacity-80 mb-4 ms-2">
         <p>
           需求人數：{{ props.allowApplicantsNum }}

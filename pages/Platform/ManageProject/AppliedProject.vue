@@ -2,9 +2,7 @@
 import ApplicantStatusBadge from "~/components/kanban/applicant-status-badge.vue";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
-definePageMeta({
-  colorMode: "dark",
-});
+
 
 const manageAppliedTableColumns = [
   {

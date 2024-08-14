@@ -5,20 +5,18 @@ const authStore = useAuthStore();
 const router = useRouter();
 if (authStore.isLogin && authStore.userInfo.roleVerified) {
   if (authStore.userInfo.roleName === "admin") {
-    router.push("/Admin/admin-dashboard");
+    router.push("/admin/admin-dashboard");
   } else {
     router.push("/Platform/projects");
   }
 }
-definePageMeta({
-  colorMode: "dark",
-});
+
 </script>
 <template>
   <GradientFog />
   <div class="py-20 md:py-32 lg:py-32 text-black dark:text-white">
     <div
-      class="flex flex-col items-start mx-auto px-10 w-10/12 md:w-1/2 lg:w-1/2 max-w-lg bg-white dark:bg-zinc-950 rounded-2xl py-5 md:py-20 lg:py-10"
+      class="flex flex-col items-start mx-auto px-0 md:px-10 w-10/12 md:w-1/2 lg:w-1/2 max-w-lg bg-white dark:bg-zinc-950 rounded-2xl py-5 md:py-20 lg:py-10"
     >
       <img
         src="/public/favicon.png"

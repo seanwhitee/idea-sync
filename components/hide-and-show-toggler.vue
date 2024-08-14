@@ -14,7 +14,7 @@ const getIcon = computed(() => {
 <template>
   <div
     @click="clicked = !clicked"
-    class="gap-4 hover:bg-blue-800/50 cursor-pointer w-fit flex items-center justify-center text-md px-3 py-1 rounded-full text-blue-400 font-medium"
+    class="gap-4 hover:bg-blue-800/50 cursor-pointer w-fit flex items-center justify-center px-3 py-2 rounded-full text-blue-400 font-medium"
   >
     <Icon :name="getIcon" />
     <p>{{ props.label }}</p>

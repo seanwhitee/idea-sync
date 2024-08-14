@@ -16,9 +16,6 @@ const toast = useToast();
 const tagModalOpen = ref(false);
 const tagInputString = ref("");
 
-// 1. check if the user is login and role is verified
-// 2. check if the user role is creator
-// if not, redirect to home page
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
@@ -28,10 +25,7 @@ if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
 if (authStore.userInfo.roleName === "admin") {
   throw new Error("You cannot access this page");
 }
-definePageMeta({
-  colorMode: "dark",
-});
-// clear project store data
+
 projectStore.reset();
 
 const isSubmitProcessing = ref(false);
@@ -71,7 +65,6 @@ const isValidInputData = (
   tags,
   file
 ) => {
-  // check if the title, description, school is empty
   if (
     !title ||
     !description ||
@@ -120,9 +113,6 @@ const isValidInputData = (
 const handleSubmit = async () => {
   isSubmitProcessing.value = true;
 
-  // ** upload image to exchange the real url **
-
-  // check if the input data is valid
   if (
     !isValidInputData(
       projectStore.title,
@@ -137,7 +127,6 @@ const handleSubmit = async () => {
     return;
   }
 
-  // check if isAllowProjectCreate is true
   if (!authStore.userInfo.allowProjectCreate) {
     statusMessage.value = "您的狀態無法創建提案";
     isSubmitProcessing.value = false;
@@ -171,12 +160,10 @@ const handleSubmit = async () => {
 
     const url = response.success.url;
 
-    // extract the real url from signed url
     const realURL = url.split("?")[0];
 
     projectStore.projectImages.push(realURL);
 
-    // upload file to s3
     await fetch(url, {
       method: "PUT",
       headers: {
@@ -189,8 +176,7 @@ const handleSubmit = async () => {
     console.error(e);
     return;
   }
-
-  // ** save project to database **
+  
   try {
     await $fetch(`http://localhost:8080/api/v1/project/create`, {
       method: "POST",
@@ -253,7 +239,7 @@ const handleSubmit = async () => {
               @click="projectStore.deleteTag(tag)"
               class="flex items-center justify-center w-3"
             >
-              <NuxtImg src="delete.png" alt="tag-delete" class="w-full" />
+              <Icon name="material-symbols:delete-forever" class="w-6 h-6" />
             </button>
           </tag>
         </div>
@@ -268,125 +254,111 @@ const handleSubmit = async () => {
       </div>
     </div>
   </UModal>
-    <!--tags-->
-    <div
-      class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted cursor-pointer border-white w-full flex-wrap"
-      @click="tagModalOpen = true"
-    >
-      <Tag
-        v-if="projectStore.tags.length > 0"
-        v-for="tag in projectStore.tags"
-        color="violet"
-        :tagName="tag"
-      />
-      <p v-else class="text-white/65 px-1">加入標籤...</p>
-    </div>
-    <!--require skills-->
-    <label class="form-control w-full bg-primary-content rounded-none">
-      <input
-        v-model="projectStore.requireSkills"
-        type="text"
-        placeholder="所需技能"
-        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
-      />
-    </label>
-    <!--title-->
-    <label class="form-control w-full bg-primary-content rounded-none">
-      <input
-        v-model="projectStore.title"
-        type="text"
-        placeholder="標題"
-        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
-      />
-    </label>
-
-    <!--allow applcant num-->
-    <div class="w-full flex items-center justify-start">
-      <label class="label gap-2 flex justify-start items-center">
-        <span class="label-text text-white">需求人數</span>
-        <input
-          @change="
-            (e) => {
-              e.preventDefault();
-              if (e.target.value < 1) {
-                e.target.value = 1;
-              }
-              projectStore.allowApplicantsNum = e.target.value;
-            }
-          "
-          :value="projectStore.allowApplicantsNum"
-          type="number"
-          min="1"
-          class="flex items-center justify-center outline-none text-center w-2/5 bg-black py-2 border border-gray-500/30"
-        />
-      </label>
-    </div>
-
-    <!--is graduation project-->
-    <div class="flex items-center justify-start w-full">
-      <label class="label cursor-pointer gap-2">
-        <span class="label-text text-white">畢業專題</span>
-        <span class="text-sm">否</span>
-        <input
-          v-model="projectStore.isGraduationProject"
-          type="checkbox"
-          class="toggle"
-          checked
-        />
-        <span class="text-sm">是</span>
-      </label>
-    </div>
-
-    <!--school-->
-    <label class="form-control w-full bg-primary-content rounded-none">
-      <input
-        v-model="projectStore.school"
-        type="text"
-        placeholder="學校"
-        class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
-      />
-    </label>
-
-    <!--description-->
-    <textarea
-      v-model="projectStore.description"
-      class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
-      placeholder="說明 ..."
-    ></textarea>
-
-    <!--image upload-->
-    <div
-      class="px-30 py-10 bg-violet-400/50 flex flex-col items-center justify-center w-full"
-    >
-      <NuxtImg src="upload.png" alt="upload" class="w-12 mb-5" />
-      <p class="font-semibold text-lg mb-5">Allow content: jpeg, png</p>
-      <input
-        type="file"
-        @change="handleFileChange"
-        class="file-input file-input-bordered w-full max-w-xs bg-violet-400"
-        accept="image/jpeg, image/png"
-      />
-    </div>
-
-    <!--preview upload-->
-    <FilePreviewer v-if="file" :previewURL="previewUrl" :fileName="file.name" />
-
-    <!--submit button-->
-    <StatusMessage
-      v-if="statusMessage"
-      :message="statusMessage"
-      :type="messageType"
+  <div
+    class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted cursor-pointer border-white w-full flex-wrap"
+    @click="tagModalOpen = true"
+  >
+    <Tag
+      v-if="projectStore.tags.length > 0"
+      v-for="tag in projectStore.tags"
+      color="violet"
+      :tagName="tag"
     />
-    <div class="w-full flex items-center justify-end">
-      <button
-        class="hover:bg-zinc-800/50 px-10 border border-gray-600 py-2 text-sm bg-zinc-950 text-white"
-        @click="handleSubmit"
-        :disabled="isSubmitProcessing"
-      >
-        <p v-if="!isSubmitProcessing">發布</p>
-        <Loader v-else />
-      </button>
-    </div>
+    <p v-else class="text-white/65 px-1">加入標籤...</p>
+  </div>
+  <label class="form-control w-full bg-primary-content rounded-none">
+    <input
+      v-model="projectStore.requireSkills"
+      type="text"
+      placeholder="所需技能"
+      class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+    />
+  </label>
+  <label class="form-control w-full bg-primary-content rounded-none">
+    <input
+      v-model="projectStore.title"
+      type="text"
+      placeholder="標題"
+      class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+    />
+  </label>
+  <div class="w-full flex items-center justify-start">
+    <label class="label gap-2 flex justify-start items-center">
+      <span class="label-text text-white">需求人數</span>
+      <input
+        @change="
+          (e) => {
+            e.preventDefault();
+            if (e.target.value < 1) {
+              e.target.value = 1;
+            }
+            projectStore.allowApplicantsNum = e.target.value;
+          }
+        "
+        :value="projectStore.allowApplicantsNum"
+        type="number"
+        min="1"
+        class="flex items-center justify-center outline-none text-center w-2/5 bg-black py-2 border border-gray-500/30"
+      />
+    </label>
+  </div>
+  <div class="flex items-center justify-start w-full">
+    <label class="label cursor-pointer gap-2">
+      <span class="label-text text-white">畢業專題</span>
+      <span class="text-sm">否</span>
+      <input
+        v-model="projectStore.isGraduationProject"
+        type="checkbox"
+        class="toggle"
+        checked
+      />
+      <span class="text-sm">是</span>
+    </label>
+  </div>
+  <label class="form-control w-full bg-primary-content rounded-none">
+    <input
+      v-model="projectStore.school"
+      type="text"
+      placeholder="學校"
+      class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+    />
+  </label>
+  <textarea
+    v-model="projectStore.description"
+    class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+    placeholder="說明 ..."
+  ></textarea>
+  <div
+    class="px-30 py-10 bg-violet-400/50 flex flex-col items-center justify-center w-full"
+  >
+    <Icon name="material-symbols:upload-file" class="w-12 h-12 mb-5" />
+    <p class="font-semibold text-lg mb-5">Allow content: jpeg, png</p>
+    <input
+      type="file"
+      @change="handleFileChange"
+      class="file-input file-input-bordered w-full max-w-xs bg-violet-400"
+      accept="image/jpeg, image/png"
+    />
+  </div>
+  <FilePreviewer v-if="file" :previewURL="previewUrl" :fileName="file.name" />
+  <StatusMessage
+    v-if="statusMessage"
+    :message="statusMessage"
+    :type="messageType"
+  />
+  <div class="w-full flex items-center justify-end">
+    <UButton
+      color="white"
+      variant="solid"
+      size="xl"
+      @click="handleSubmit"
+      :disabled="isSubmitProcessing"
+      class="w-20 h-10 flex items-center justify-center"
+    >
+      <p v-if="!isSubmitProcessing">發布</p>
+      <Loader v-else />
+  </UButton>
+  </div>
 </template>
 <style scoped>
 /* Chrome, Safari, Edge, Opera */

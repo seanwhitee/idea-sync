@@ -4,25 +4,15 @@ const props = defineProps({
 });
 const chooseBorderColor = computed(() => {
   switch (props.title) {
-    case "member recruiting":
+    case "成員招募":
       return "border-violet-500/50";
-    case "mentor recruiting":
+    case "指導者招募":
       return "border-fuchsia-500/50";
     default:
       return "border-green-500/50";
   }
 });
 
-const chineseTitle = computed(() => {
-  switch (props.title) {
-    case "member recruiting":
-      return "成員招募";
-    case "mentor recruiting":
-      return "指導者招募";
-    default:
-      return "完成招募";
-  }
-});
 </script>
 <template>
   <div
@@ -34,7 +24,7 @@ const chineseTitle = computed(() => {
         class="rounded-full border-2 bg-zinc-500/10 w-5 h-5"
         :class="chooseBorderColor"
       ></div>
-      <h3>{{ chineseTitle }}</h3>
+      <h3>{{ props.title }}</h3>
     </div>
     <div class="flex flex-col gap-2 h-[400px] overflow-scroll">
       <slot />

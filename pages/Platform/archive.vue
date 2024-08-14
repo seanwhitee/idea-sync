@@ -10,9 +10,7 @@ const projectPoolStore = useProjectPoolStore();
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   router.push("/");
 }
-definePageMeta({
-  colorMode: "dark",
-});
+
 
 const { data, error } = useAsyncData("getarchives", async () => {
   try {
@@ -35,6 +33,9 @@ const { data, error } = useAsyncData("getarchives", async () => {
 });
 </script>
 <template>
+  <h3 class="text-xl flex items-center gap-3">
+    <Icon name="mdi:archive-arrow-down" class="w-8 h-8" />
+    我的收藏</h3>
   <ProjectPost
     v-for="project in projectPoolStore.archives"
     :key="project.id"
