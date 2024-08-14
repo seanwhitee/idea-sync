@@ -5,13 +5,13 @@ definePageMeta({
 });
 const router = useRouter();
 const authStore = useAuthStore();
-router.push("/Platform/projects");
-// throw new Error("Not founded");
+router.push("/platform/projects");
+
 const items = ref([
   {
     name: "創建提案",
     icon: "ic:sharp-create",
-    path: "/Platform/create-project",
+    path: "/platform/create-project",
     rule:
       authStore.userInfo.roleName === "creator" ||
       authStore.userInfo.roleName === "mentor",
@@ -19,7 +19,7 @@ const items = ref([
   {
     name: "瀏覽提案",
     icon: "ic:baseline-photo-camera",
-    path: "/Platform/projects",
+    path: "/platform/projects",
     rule:
       authStore.userInfo.roleName === "creator" ||
       authStore.userInfo.roleName === "admin" ||
@@ -28,7 +28,7 @@ const items = ref([
   {
     name: "管理提案",
     icon: "ic:sharp-folder",
-    path: "/Platform/ManageProject",
+    path: "/platform/manage-project",
     rule:
       authStore.userInfo.roleName === "creator" ||
       authStore.userInfo.roleName === "mentor",
@@ -36,13 +36,13 @@ const items = ref([
   {
     name: "個人檔案",
     icon: "ic:baseline-account-circle",
-    path: `/Platform/Profile/${authStore.userInfo.id}`,
+    path: `/platform/profile/${authStore.userInfo.id}`,
     rule: true,
   },
   {
     name: "收納",
     icon: "mdi:archive-arrow-down",
-    path: "/Platform/archive",
+    path: "/platform/archive",
     rule:
       authStore.userInfo.roleName === "creator" ||
       authStore.userInfo.roleName === "mentor",
@@ -50,7 +50,7 @@ const items = ref([
   {
     name: "儀表板",
     icon: "ic:baseline-space-dashboard",
-    path: "/Platform/admin-dashboard",
+    path: "/platform/admin-dashboard",
     rule: authStore.userInfo.roleName === "admin",
   },
   {
@@ -61,7 +61,7 @@ const items = ref([
 ]);
 </script>
 <template>
-  <Sidebar :items="items" />
+  <SideBar :items="items" />
   <div class="flex flex-col gap-4 w-full pt-4 pb-24 md:py-4 px-4 md:ps-24 lg:ps-64">
     <NuxtPage />
   </div>

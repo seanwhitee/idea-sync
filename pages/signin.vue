@@ -1,5 +1,5 @@
 <script setup>
-import LoginForm from "~/components/login-form.vue";
+import LoginForm from "~/components/LoginForm.vue";
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const router = useRouter();
@@ -7,7 +7,7 @@ if (authStore.isLogin && authStore.userInfo.roleVerified) {
   if (authStore.userInfo.roleName === "admin") {
     router.push("/admin/admin-dashboard");
   } else {
-    router.push("/Platform/projects");
+    router.push("/platform/projects");
   }
 }
 

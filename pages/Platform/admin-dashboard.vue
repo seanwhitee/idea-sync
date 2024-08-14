@@ -21,7 +21,7 @@ if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
 }
 
 if (authStore.userInfo.roleName !== "admin") {
-  router.push("/Platform/projects");
+  router.push("/platform/projects");
 }
 
 getUsers();

@@ -1,12 +1,13 @@
 <script setup>
 import MenuNav from "~/components/MenuNav.vue";
 import { useAuthStore } from "~/store/auth";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const isLogin = authStore.isLogin;
 if (isLogin) {
-  router.push("Platform/projects");
+  router.push("platform/projects");
 }
 
 const featuresData = [
@@ -35,7 +36,7 @@ const menuItems = [
 const isMenuOpen = ref(false);
 </script>
 <template>
-  <navbar />
+  <NavBar />
   <MenuNav :items="menuItems" v-model="isMenuOpen" />
   <GradientFog />
   <div class="section-1 pt-48 w-full bg-white border-b">
