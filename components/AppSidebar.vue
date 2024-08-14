@@ -31,7 +31,7 @@ const isAccountSwitchModalOpen = ref(false);
       class="bottom-0 md:top-0 left-0 h-16 md:h-full w-full md:w-20 lg:w-60 flex md:flex-col items-center justify-center border-t md:border-r border-gray-500/50 px-2 bg-black fixed overflow-y-scroll z-[2]"
     >
       <NuxtLink
-        to="/Platform/projects"
+        to="/app-platform/projects"
         external
         class="text-white text-2xl w-full items-center justify-start ps-4 hidden md:flex"
       >

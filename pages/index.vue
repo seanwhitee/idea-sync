@@ -7,7 +7,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const isLogin = authStore.isLogin;
 if (isLogin) {
-  router.push("platform/projects");
+  router.push("/app-platform/projects");
 }
 
 const featuresData = [

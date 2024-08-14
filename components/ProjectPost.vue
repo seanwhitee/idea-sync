@@ -47,7 +47,7 @@ const title = computed(() => {
     <div class="flex flex-col justify-between h-full w-10/12">
       <div class="flex flex-col">
         <NuxtLink
-          :to="`/Platform/project/${props.project.id}`"
+          :to="`/app-platform/project/${props.project.id}`"
           class="text-white text-base md:text-2xl font-bold hover:bg-violet-500 ease-linear duration-200 cursor-pointer w-fit"
           :class="
             hoverEffect

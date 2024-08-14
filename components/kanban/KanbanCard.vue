@@ -46,7 +46,7 @@ const router = useRouter();
   >
     <h3 class="flex items-start justify-between w-full gap-2 mb-2 h-[24px] overflow-y-hidden">
       <span
-        @click="router.push(`/platform/project/${props.projectId}`)"
+        @click="router.push(`/app-platform/project/${props.projectId}`)"
         class="w-full cursor-pointer"
         >{{ props.title }}</span
       >
