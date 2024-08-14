@@ -102,7 +102,6 @@ const deleteUser = async (userId) => {
     }
   );
   closeModal();
-  // refresh current page '/admin-dashboard'
   router.go();
 };
 </script>

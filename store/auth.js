@@ -7,7 +7,17 @@ export const useAuthStore = defineStore(
     const isLogin = ref(false);
     const userInfo = ref({});
 
-    return { isLogin, userInfo };
+    const roleName = computed(() => {
+      switch (userInfo.value.roleName) {
+        case "creator":
+          return "提案/申請人";
+        case "mentor":
+          return "指導者";
+        case "admin":
+          return "系統管理者";
+      }
+    });
+    return { isLogin, userInfo, roleName };
   },
   {
     persist: {

@@ -1,11 +1,68 @@
 <script setup>
+import { useAuthStore } from "~/store/auth";
+definePageMeta({
+  colorMode: "dark",
+});
 const router = useRouter();
+const authStore = useAuthStore();
 router.push("/Platform/projects");
+// throw new Error("Not founded");
+const items = ref([
+  {
+    name: "創建提案",
+    icon: "ic:sharp-create",
+    path: "/Platform/create-project",
+    rule:
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor",
+  },
+  {
+    name: "瀏覽提案",
+    icon: "ic:baseline-photo-camera",
+    path: "/Platform/projects",
+    rule:
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "admin" ||
+      authStore.userInfo.roleName === "mentor",
+  },
+  {
+    name: "管理提案",
+    icon: "ic:sharp-folder",
+    path: "/Platform/ManageProject",
+    rule:
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor",
+  },
+  {
+    name: "個人檔案",
+    icon: "ic:baseline-account-circle",
+    path: `/Platform/Profile/${authStore.userInfo.id}`,
+    rule: true,
+  },
+  {
+    name: "收納",
+    icon: "mdi:archive-arrow-down",
+    path: "/Platform/archive",
+    rule:
+      authStore.userInfo.roleName === "creator" ||
+      authStore.userInfo.roleName === "mentor",
+  },
+  {
+    name: "儀表板",
+    icon: "ic:baseline-space-dashboard",
+    path: "/Platform/admin-dashboard",
+    rule: authStore.userInfo.roleName === "admin",
+  },
+  {
+    name: "切換帳號",
+    icon: "mdi:account-switch-outline",
+    rule: true,
+  },
+]);
 </script>
 <template>
-  <LoginedNavbar />
-  <Sidebar />
-  <div class="flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 pt-28 md:pt-24 lg:pt-24 pb-20 mx-auto gap-4">
+  <Sidebar :items="items" />
+  <div class="flex flex-col gap-4 w-full pt-4 pb-24 md:py-4 px-4 md:ps-24 lg:ps-64">
     <NuxtPage />
   </div>
 </template>

@@ -2,13 +2,11 @@
 import ApplicantStatusBadge from "~/components/kanban/applicant-status-badge.vue";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
-definePageMeta({
-  colorMode: "dark",
-});
+
 const projectStatus = [
-  { name: "member_recruiting", statusId: 1 },
-  { name: "mentor_recruiting", statusId: 2 },
-  { name: "complete", statusId: 3 },
+  { name: "成員招募", statusId: 1 },
+  { name: "指導者招募", statusId: 2 },
+  { name: "完成招募", statusId: 3 },
 ];
 
 const manageApplicantTableColumns = [
@@ -59,7 +57,6 @@ if (authStore.userInfo.roleName === "admin") {
 
 onMounted(async () => {
   projects.value = await projectStore.getProjectByUserId(authStore.userInfo.id);
-  
 });
 
 const rejectOrAccept = "";
@@ -343,25 +340,26 @@ const allowChangeStatus = computed(() => {
       </UTable>
     </div>
   </UModal>
-    
-    <!--kanban-->
-    <div class="flex-col flex md:flex-row items-center w-full gap-4 px-4 overflow-auto py-10 bg-white 
-    dark:bg-zinc-900">
-      <KanbanColumn
-        :title="s.name.split('_').join(' ')"
-        v-for="s in projectStatus"
-        :key="s.statusId"
-      >
-        <KanbanCard
-          v-for="p in projects.filter((p) => p.statusId === s.statusId)"
-          :key="p.id"
-          :projectId="p.id"
-          :status="p.statusId"
-          :title="p.title"
-          :text="p.description"
-          :openApplicantManageModal="setOpenApplicantManageModal"
-          :openProjectStatusChangeModal="setOpenProjectStatusChangeModal"
-        />
-      </KanbanColumn>
-    </div>
+
+  <!--kanban-->
+  <div
+    class="flex-col flex md:flex-row items-center w-full gap-4 px-4 overflow-auto py-10 bg-white dark:bg-zinc-900"
+  >
+    <KanbanColumn
+      v-for="s in projectStatus"
+      :title="s.name"
+      :key="s.statusId"
+    >
+      <KanbanCard
+        v-for="p in projects.filter((p) => p.statusId === s.statusId)"
+        :key="p.id"
+        :projectId="p.id"
+        :status="p.statusId"
+        :title="p.title"
+        :text="p.description"
+        :openApplicantManageModal="setOpenApplicantManageModal"
+        :openProjectStatusChangeModal="setOpenProjectStatusChangeModal"
+      />
+    </KanbanColumn>
+  </div>
 </template>

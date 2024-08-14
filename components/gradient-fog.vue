@@ -25,7 +25,7 @@
           74.1% 44.1%
         );
       "
-      class="relative right-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] translate-x-36 -translate-y-40 rotate-[30deg] bg-gradient-to-tr from-[#65c9ff] to-[#4e47b6] opacity-30 sm:right-[calc(50%-30rem)] sm:w-[72.1875rem]"
+      class="right-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] translate-x-10 -translate-y-80 rotate-[30deg] bg-gradient-to-tr from-[#c4b5fd] to-[#2e1065] opacity-35 sm:right-[calc(50%-30rem)] sm:w-[72.1875rem]"
     ></div>
   </div>
 </template>

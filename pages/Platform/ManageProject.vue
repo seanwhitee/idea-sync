@@ -21,7 +21,7 @@ const onTabChange = async (index) => {
 };
 </script>
 <template>
-  <div class="w-full">
+  <div class="w-full pt-10">
     <UTabs :items="tabs" @change="onTabChange" class="mb-4" />
     <NuxtPage />
   </div>

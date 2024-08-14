@@ -50,12 +50,9 @@ async function fetchProjects(status) {
 const handleGroupChange = async (status) => {
   await fetchProjects(status);
 };
-definePageMeta({
-  colorMode: "dark",
-});
+
 </script>
 <template>
-  <!-- search opened modal-->
   <UModal v-model="openSearch">
     <div class="p-4 bg-black">
       <Searchbar class="mb-2" />
@@ -120,7 +117,6 @@ definePageMeta({
           <p class="text-lg">指導者招募</p>
         </button>
       </div>
-      <!-- fake search button-->
       <button
         @click="openSearch = true"
         class="flex border border-zinc-800 items-center justify-start w-full px-4 py-3 cursor-pointer"
