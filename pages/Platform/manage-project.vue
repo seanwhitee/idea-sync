@@ -9,14 +9,14 @@ const tabs = [
 ];
 const router = useRouter();
 const currentTab = ref("我的專案");
-router.push("/Platform/ManageProject/MyProject");
+router.push("/platform/manage-project/my-project");
 const onTabChange = async (index) => {
   const tab = tabs[index];
   currentTab.value = tab.label;
   if (currentTab.value === "我的專案") {
-    router.push("/Platform/ManageProject/MyProject");
+    router.push("/platform/manage-project/my-project");
   } else if (currentTab.value === "已申請") {
-    router.push("/Platform/ManageProject/AppliedProject");
+    router.push("/platform/manage-project/applied-project");
   }
 };
 </script>

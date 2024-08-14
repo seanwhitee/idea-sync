@@ -55,14 +55,14 @@ const handleGroupChange = async (status) => {
 <template>
   <UModal v-model="openSearch">
     <div class="p-4 bg-black">
-      <Searchbar class="mb-2" />
+      <SearchBar class="mb-2" />
       <div
         class="flex flex-col items-center justify-start w-full gap-2 h-[300px] overflow-y-scroll"
       >
         <ProjectCard
           v-for="project in searchStore.search"
           v-if="searchStore.search.length > 0"
-          @click="router.push(`Platform/project/${project.id}`)"
+          @click="router.push(`platform/project/${project.id}`)"
           :key="project.id"
           :status-id="project.statusId"
           :isGraduationProject="project.graduationProject"
