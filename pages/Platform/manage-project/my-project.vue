@@ -335,7 +335,7 @@ const allowChangeStatus = computed(() => {
               拒絕
             </button>
           </div>
-          <Tag v-else tag-name="已審核" color="indigo" />
+          <AppTag v-else tag-name="已審核" color="indigo" />
         </template>
       </UTable>
     </div>

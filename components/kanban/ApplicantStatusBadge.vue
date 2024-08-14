@@ -31,5 +31,5 @@ const getColor = computed(() => {
 });
 </script>
 <template>
-  <Tag :color="getColor" :tag-name="status" />
+  <AppTag :color="getColor" :tag-name="status" />
 </template>

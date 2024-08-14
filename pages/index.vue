@@ -36,7 +36,7 @@ const menuItems = [
 const isMenuOpen = ref(false);
 </script>
 <template>
-  <NavBar />
+  <AppNavbar />
   <MenuNav :items="menuItems" v-model="isMenuOpen" />
   <GradientFog />
   <div class="section-1 pt-48 w-full bg-white border-b">

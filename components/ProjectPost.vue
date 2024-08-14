@@ -76,13 +76,13 @@ const title = computed(() => {
 
       <!--tags-->
       <div class="flex flex-wrap items-center gap-2 pe-3 py-1 w-full">
-        <Tag :tagName="props.project.school" color="fuchsia" />
-        <Tag
+        <AppTag :tagName="props.project.school" color="fuchsia" />
+        <AppTag
           v-if="props.project.graduationProject"
           tagName="畢業專題"
           color="indigo"
         />
-        <Tag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
+        <AppTag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
       </div>
     </div>
 

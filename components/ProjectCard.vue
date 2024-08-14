@@ -61,13 +61,13 @@ const tags = computed(() => {
       </div>
 
       <div class="flex flex-wrap gap-1 ms-2">
-        <Tag :tagName="props.school" color="fuchsia" />
-        <Tag
+        <AppTag :tagName="props.school" color="fuchsia" />
+        <AppTag
           v-if="props.isGraduationProject"
           tagName="畢業專題"
           color="indigo"
         />
-        <Tag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
+        <AppTag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
       </div>
     </div>
     <NuxtImg

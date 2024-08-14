@@ -193,12 +193,12 @@ const handleProjectApply = async () => {
           <p>申請人數：{{ getApplicantCount }}</p>
         </div>
         <div class="flex gap-1 flex-wrap">
-          <Tag
+          <AppTag
             v-if="projectStore.isGraduationProject"
             tagName="畢業專題"
             color="indigo"
           />
-          <Tag
+          <AppTag
             v-for="tag in projectStore.tags"
             :key="tag"
             :tagName="tag"

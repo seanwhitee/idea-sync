@@ -55,7 +55,7 @@ const handleGroupChange = async (status) => {
 <template>
   <UModal v-model="openSearch">
     <div class="p-4 bg-black">
-      <SearchBar class="mb-2" />
+      <AppSearchbar class="mb-2" />
       <div
         class="flex flex-col items-center justify-start w-full gap-2 h-[300px] overflow-y-scroll"
       >
@@ -80,7 +80,7 @@ const handleGroupChange = async (status) => {
             <span>to search</span>
           </p>
         </div>
-        <Loader v-if="searchStore.isSearching" />
+        <AppLoader v-if="searchStore.isSearching" />
       </div>
     </div>
   </UModal>
@@ -138,6 +138,6 @@ const handleGroupChange = async (status) => {
       v-if="projectPoolStore.projectIsLoading"
       class="flex flex-col items-center justify-start w-full mt-40"
     >
-      <Loader />
+      <AppLoader />
     </div>
 </template>
