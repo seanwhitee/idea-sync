@@ -47,7 +47,7 @@ const title = computed(() => {
     <div class="flex flex-col justify-between h-full w-10/12">
       <div class="flex flex-col">
         <NuxtLink
-          :to="`/Platform/project/${props.project.id}`"
+          :to="`/app-platform/project/${props.project.id}`"
           class="text-white text-base md:text-2xl font-bold hover:bg-violet-500 ease-linear duration-200 cursor-pointer w-fit"
           :class="
             hoverEffect
@@ -76,13 +76,13 @@ const title = computed(() => {
 
       <!--tags-->
       <div class="flex flex-wrap items-center gap-2 pe-3 py-1 w-full">
-        <Tag :tagName="props.project.school" color="fuchsia" />
-        <Tag
+        <AppTag :tagName="props.project.school" color="fuchsia" />
+        <AppTag
           v-if="props.project.graduationProject"
           tagName="畢業專題"
           color="indigo"
         />
-        <Tag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
+        <AppTag v-for="tag in tags" :key="tag" :tagName="tag" color="violet" />
       </div>
     </div>
 

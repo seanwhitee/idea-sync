@@ -234,14 +234,14 @@ const handleSubmit = async () => {
           class="flex items-start justify-start gap-2 w-full flex-wrap"
           v-if="projectStore.tags.length > 0"
         >
-          <tag v-for="tag in projectStore.tags" :tagName="tag" color="violet">
+          <AppTag v-for="tag in projectStore.tags" :tagName="tag" color="violet">
             <button
               @click="projectStore.deleteTag(tag)"
               class="flex items-center justify-center w-3"
             >
               <Icon name="material-symbols:delete-forever" class="w-6 h-6" />
             </button>
-          </tag>
+          </AppTag>
         </div>
         <p
           v-else
@@ -258,7 +258,7 @@ const handleSubmit = async () => {
     class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted cursor-pointer border-white w-full flex-wrap"
     @click="tagModalOpen = true"
   >
-    <Tag
+    <AppTag
       v-if="projectStore.tags.length > 0"
       v-for="tag in projectStore.tags"
       color="violet"
@@ -356,7 +356,7 @@ const handleSubmit = async () => {
       class="w-20 h-10 flex items-center justify-center"
     >
       <p v-if="!isSubmitProcessing">發布</p>
-      <Loader v-else />
+      <AppLoader v-else />
   </UButton>
   </div>
 </template>

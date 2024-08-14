@@ -77,20 +77,20 @@ const getProjectAppliedTableData = computed(() => {
     class="bg-white dark:bg-black w-full border border-zinc-500/50 px-1 rounded-md"
   >
     <template #title-data="{ row }">
-      <p class="cursor-pointer" @click="router.push(`/platform/project/${row.id}`)">
+      <p class="cursor-pointer" @click="router.push(`/app-platform/project/${row.id}`)">
         {{
           row.title.length > 30 ? row.title.slice(0, 30) + "..." : row.title
         }}
       </p>
     </template>
     <template #projectStatus-data="{ row }">
-      <Tag v-if="row.projectStatus === 1" color="slate" tag-name="成員招募" />
-      <Tag
+      <AppTag v-if="row.projectStatus === 1" color="slate" tag-name="成員招募" />
+      <AppTag
         v-if="row.projectStatus === 2"
         color="slate"
         tag-name="指導者招募"
       />
-      <Tag v-if="row.projectStatus === 3" color="slate" tag-name="完成招募" />
+      <AppTag v-if="row.projectStatus === 3" color="slate" tag-name="完成招募" />
     </template>
     <template #applicantStatus-data="{ row }">
       <ApplicantStatusBadge :applicant-status="row.applicantStatus" />

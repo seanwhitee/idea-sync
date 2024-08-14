@@ -4,7 +4,7 @@ import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const router = useRouter();
 if (authStore.isLogin && authStore.userInfo.roleVerified) {
-  router.push("/platform/projects");
+  router.push("/app-platform/projects");
 }
 
 const step = ref(1);
