@@ -33,7 +33,7 @@ onMounted(async () => {
         ><span class="text-zinc-500">總錄取專案數</span>
       </UContainer>
     </div>
-    <div class="flex flex-col justify-between w-full gap-6 pt-10 md:flex-row">
+    <div class="flex flex-col justify-between w-full pt-10 gap-6 md:flex-row">
       <div class="flex flex-col w-full max-w-sm pt-10 font-light text-white">
         <NuxtImg
           :src="userDetail.avatarUrl"

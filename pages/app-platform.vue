@@ -28,7 +28,7 @@ const items = ref([
   {
     name: "管理提案",
     icon: "ic:sharp-folder",
-    path: "/app-platform/manage-project",
+    path: "/app-platform/manage-project/my-project",
     rule:
       authStore.userInfo.roleName === "creator" ||
       authStore.userInfo.roleName === "mentor",
@@ -62,7 +62,9 @@ const items = ref([
 </script>
 <template>
   <AppSidebar :items="items" />
-  <div class="flex flex-col w-full px-4 pt-4 pb-24 gap-4 md:py-4 md:ps-24 lg:ps-64">
+  <div
+    class="flex flex-col w-full px-4 pt-4 pb-24 gap-4 md:py-4 md:ps-24 lg:ps-64"
+  >
     <NuxtPage />
   </div>
 </template>

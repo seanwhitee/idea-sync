@@ -343,7 +343,7 @@ const allowChangeStatus = computed(() => {
 
   <!--kanban-->
   <div
-    class="flex flex-col items-center w-full px-4 py-10 overflow-auto bg-white md:flex-row gap-4 dark:bg-zinc-900"
+    class="flex flex-col items-center w-full px-4 py-10 overflow-auto bg-white gap-4 md:flex-row dark:bg-zinc-900"
   >
     <KanbanColumn v-for="s in projectStatus" :title="s.name" :key="s.statusId">
       <KanbanCard
