@@ -7,7 +7,6 @@ export const useProfileStore = (userId) => {
     userCommentCount.value = await countUserComment(userId);
     userAcceptCount.value = await countUserAccept(userId);
     userDetail.value = await getUser(userId);
-    console.log(userDetail.value);
   });
 
   const countUserComment = async (userId) => {

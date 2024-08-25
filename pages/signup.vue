@@ -54,7 +54,6 @@ const updateStep = (newStep) => {
 };
 const updateUserInfo = (newUserInfo) => {
   userInfo = newUserInfo;
-  console.log(userInfo);
 };
 </script>
 <template>
@@ -66,7 +65,7 @@ const updateUserInfo = (newUserInfo) => {
       <img
         src="/public/favicon.png"
         alt="favicon"
-        class="w-20 mb-6 shadow-xl translate-x-4 rounded-3xl"
+        class="w-20 mb-6 translate-x-4 shadow-xl rounded-3xl"
       />
       <h1
         class="flex justify-start w-full px-4 mb-8 text-lg font-semibold md:text-2xl lg:text-2xl"

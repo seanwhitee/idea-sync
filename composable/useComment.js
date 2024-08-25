@@ -33,7 +33,6 @@ export const useComment = () => {
           },
         }
       );
-      console.log("reply: ", reply);
       if (reply) {
         const commentChunk = commentChuncks.value.find((commentChunk) => {
           return commentChunk.id === parentId;
