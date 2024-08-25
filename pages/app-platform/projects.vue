@@ -50,7 +50,6 @@ async function fetchProjects(status) {
 const handleGroupChange = async (status) => {
   await fetchProjects(status);
 };
-
 </script>
 <template>
   <UModal v-model="openSearch">
@@ -74,7 +73,7 @@ const handleGroupChange = async (status) => {
           :imageURL="project.images[0]"
         />
         <div v-if="searchStore.search.length == 0 && !searchStore.isSearching">
-          <p class="flex items-center gap-2 justify-center py-10 text-zinc-500">
+          <p class="flex items-center justify-center py-10 gap-2 text-zinc-500">
             <span>Press</span>
             <UKbd>Enter</UKbd>
             <span>to search</span>
@@ -84,14 +83,15 @@ const handleGroupChange = async (status) => {
       </div>
     </div>
   </UModal>
+  <div class="flex justify-center w-full">
     <div
-      class="fixed flex flex-col items-center w-11/12 md:w-4/5 lg:w-4/5 mx-auto z-[1]"
+      class="fixed flex flex-col items-center w-11/12 md:w-[43rem] lg::w-[57rem] mx-auto z-[1]"
     >
       <div
-        class="flex justify-between px-4 py-2 mb-4 w-full border border-zinc-800 text-white"
+        class="flex justify-between w-full px-4 py-2 mb-4 text-sm text-white border border-zinc-800 md:text-lg"
       >
         <button
-          class="flex justify-center px-4 py-2 w-1/2 ease-linear duration-200"
+          class="flex items-center justify-center w-1/2 px-4 py-2 ease-linear duration-200"
           :class="{
             'bg-zinc-800':
               projectPoolStore.selectedGroup === 'member_recruiting',
@@ -101,10 +101,10 @@ const handleGroupChange = async (status) => {
               handleGroupChange('member_recruiting')
           "
         >
-          <p class="text-lg">學生招募</p>
+          <p>學生招募</p>
         </button>
         <button
-          class="flex justify-center px-4 py-2 w-1/2 ease-linear duration-200"
+          class="flex items-center justify-center w-1/2 px-4 py-2 ease-linear duration-200"
           :class="{
             'bg-zinc-800':
               projectPoolStore.selectedGroup === 'mentor_recruiting',
@@ -114,19 +114,19 @@ const handleGroupChange = async (status) => {
               handleGroupChange('mentor_recruiting')
           "
         >
-          <p class="text-lg">指導者招募</p>
+          <p>指導者招募</p>
         </button>
       </div>
       <button
         @click="openSearch = true"
-        class="flex border border-zinc-800 items-center justify-start w-full px-4 py-3 cursor-pointer"
+        class="flex items-center justify-start w-full px-4 py-3 border cursor-pointer border-zinc-800"
       >
         <p class="flex items-center text-zinc-500">search...</p>
       </button>
     </div>
     <div
       v-if="!projectPoolStore.projectIsLoading"
-      class="flex flex-col items-center justify-start gap-2 w-full mt-40"
+      class="flex flex-col items-center justify-start gap-2 w-11/12 md:w-[43rem] lg::w-[57rem] mt-40"
     >
       <ProjectPost
         v-for="project in projectPoolStore.projects"
@@ -140,4 +140,5 @@ const handleGroupChange = async (status) => {
     >
       <AppLoader />
     </div>
+  </div>
 </template>

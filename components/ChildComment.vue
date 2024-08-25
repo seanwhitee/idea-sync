@@ -7,15 +7,15 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div class="flex items-start gap-2 w-full ps-2">
+  <div class="flex items-start w-full gap-2 ps-2">
     <NuxtImg
       :src="props.avatarURL"
-      class="w-6 h-6 rounded-full border border-white"
+      class="w-6 h-6 border border-white rounded-full"
     />
     <div class="flex flex-col w-full">
-      <p class="flex gap-2 items-center">
+      <p class="flex items-center gap-2">
         <span class="text-sm">{{ props.nickName }}</span>
-        <span class="opacity-50 text-xs font-light">{{ props.date }}</span>
+        <span class="text-xs font-light opacity-50">{{ props.date }}</span>
       </p>
       <p class="text-xs font-light">{{ props.comment }}</p>
     </div>

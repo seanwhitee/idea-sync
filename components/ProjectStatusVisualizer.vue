@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 <template>
   <div
-    class="flex w-fit items-center justify-center border border-white/50 text-xs font-extralight gap-2 px-4 py-1 rounded-full"
+    class="flex items-center justify-center px-4 py-1 text-xs border rounded-full w-fit border-white/50 font-extralight gap-2"
   >
     <p :class="props.statusId === 1 ? 'font-bold border-b-white/70 border-b' : ''">成員招募</p>
     <span>></span>

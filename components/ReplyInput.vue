@@ -18,28 +18,28 @@ const isReplyInputFocus = defineModel();
 const { comment } = useComment();
 </script>
 <template>
-  <div class="flex items-start gap-2 w-full pt-5" v-if="isReplyInputFocus">
+  <div class="flex items-start w-full pt-5 gap-2" v-if="isReplyInputFocus">
     <NuxtImg
       :src="authStore.userInfo.avatarUrl"
       alt="user-avatar"
-      class="w-6 h-6 rounded-full border border-white"
+      class="w-6 h-6 border border-white rounded-full"
     />
     <div class="flex flex-col w-full">
       <input
         type="text"
         v-model="comment"
         placeholder="Add a reply..."
-        class="bg-black border-b border-b-white/50 outline-none mb-2 font-extralight text-sm focus:border-b-white ease-linear duration-300"
+        class="mb-2 text-sm bg-black border-b outline-none border-b-white/50 font-extralight focus:border-b-white ease-linear duration-300"
       />
-      <div class="flex gap-2 items-center justify-end">
+      <div class="flex items-center justify-end gap-2">
         <button
-          class="bg-white hover:opacity-90 text-black rounded-full px-4 py-2 w-fit"
+          class="px-4 py-2 text-black bg-white rounded-full hover:opacity-90 w-fit"
           @click="isReplyInputFocus = false"
         >
           <p class="text-sm w-fit">取消</p>
         </button>
         <button
-          class="bg-white hover:opacity-90 text-black rounded-full px-4 py-2 w-fit"
+          class="px-4 py-2 text-black bg-white rounded-full hover:opacity-90 w-fit"
           :class="!comment ? 'bg-zinc-600' : ''"
           @click="handleClick(props.parentId, props.userId, props.projectId, comment)"
           :disabled="!comment"

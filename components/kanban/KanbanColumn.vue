@@ -12,16 +12,15 @@ const chooseBorderColor = computed(() => {
       return "border-green-500/50";
   }
 });
-
 </script>
 <template>
   <div
-    class="flex flex-col border border-white/50 bg-black w-full pt-6 pb-3 px-3 gap-3"
+    class="flex flex-col w-full px-3 pt-6 pb-3 bg-black border border-white/50 gap-3"
   >
-    <div class="flex items-center justify-start font-bold ps-3 gap-3 mb-4">
+    <div class="flex items-center justify-start mb-4 font-bold ps-3 gap-3">
       <!--circle-->
       <div
-        class="rounded-full border-2 bg-zinc-500/10 w-5 h-5"
+        class="w-5 h-5 border-2 rounded-full bg-zinc-500/10"
         :class="chooseBorderColor"
       ></div>
       <h3>{{ props.title }}</h3>

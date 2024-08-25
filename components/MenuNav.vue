@@ -18,7 +18,7 @@ const props = defineProps({
           },
         }"
       >
-        <div class="flex w-full justify-end mb-10">
+        <div class="flex justify-end w-full mb-10">
           <UButton
             color="gray"
             variant="ghost"
@@ -28,7 +28,7 @@ const props = defineProps({
           />
         </div>
         
-          <ul class="flex flex-col gap-3 items-start justify-center">
+          <ul class="flex flex-col items-start justify-center gap-3">
             <NuxtLink
               @click="isOpen = false"
               v-for="item in items"

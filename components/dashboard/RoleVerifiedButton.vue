@@ -23,7 +23,7 @@ const updateRoleStatus = async (userId, status) => {
   <!-- Open the modal using ID.showModal() method -->
   <button class="btn" onclick="my_modal_1.showModal()">批准</button>
   <dialog id="my_modal_1" class="modal">
-    <div class="modal-box font-light">
+    <div class="font-light modal-box">
       <p>確認核實 {{ props.nickName }} 的使用者身份</p>
       <p class="">身份：{{ props.roleName }}</p>
       <div class="modal-action">

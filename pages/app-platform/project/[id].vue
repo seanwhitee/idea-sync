@@ -147,17 +147,17 @@ const handleProjectApply = async () => {
 </script>
 <template>
   <div class="flex flex-col w-full">
-    <div class="flex justify-between gap-2 w-full">
-      <div class="flex flex-col w-full md:w-6/12 gap-6 items-start">
+    <div class="flex justify-between w-full gap-2">
+      <div class="flex flex-col items-start w-full md:w-6/12 gap-6">
         <ProjectStatusVisualizer class="" :statusId="projectStore.statusId" />
         <div class="flex flex-col items-start justify-center p-1">
           <NuxtImg
             :src="projectStore.projectImages[0]"
             alt="project-image"
-            class="w-14 h-14 rounded-md flex"
+            class="flex w-14 h-14 rounded-md"
           />
           <h1 class="text-2xl font-bold">{{ projectStore.title }}</h1>
-          <p class="text-xs font-extralight opacity-50">
+          <p class="text-xs opacity-50 font-extralight">
             {{ projectStore.createAt }}
           </p>
         </div>
@@ -178,7 +178,7 @@ const handleProjectApply = async () => {
                   authStore.userInfo.allowProjectApply))
             "
             @click="handleProjectApply"
-            class="flex items-center justify-center bg-white h-3/5 font-light text-sm px-6 py-4 text-black rounded-md"
+            class="flex items-center justify-center px-6 py-4 text-sm font-light text-black bg-white h-3/5 rounded-md"
             :class="applyButtonName === '申請' ? '' : 'text-red-500'"
           >
             {{ applyButtonName }}
@@ -192,7 +192,7 @@ const handleProjectApply = async () => {
           <p>需求人數：{{ projectStore.allowApplicantsNum }}</p>
           <p>申請人數：{{ getApplicantCount }}</p>
         </div>
-        <div class="flex gap-1 flex-wrap">
+        <div class="flex flex-wrap gap-1">
           <AppTag
             v-if="projectStore.isGraduationProject"
             tagName="畢業專題"
@@ -206,11 +206,11 @@ const handleProjectApply = async () => {
           />
         </div>
         <div class="flex flex-col">
-          <h2 class="font-bold text-lg">所需技能：</h2>
+          <h2 class="text-lg font-bold">所需技能：</h2>
           <p class="opacity-80">{{ projectStore.requireSkills }}</p>
         </div>
-        <div class="flex flex-col gap-2 mb-10">
-          <h2 class="font-bold text-lg">提案說明：</h2>
+        <div class="flex flex-col mb-10 gap-2">
+          <h2 class="text-lg font-bold">提案說明：</h2>
           <p class="opacity-80">{{ projectStore.description }}</p>
         </div>
       </div>
@@ -230,14 +230,14 @@ const handleProjectApply = async () => {
         />
       </div>
     </div>
-    <h2 class="font-bold text-lg mb-4">
+    <h2 class="mb-4 text-lg font-bold">
       {{ commentChuncks.length }} 則留言
     </h2>
-    <div class="flex items-start justify-start gap-2 w-full">
+    <div class="flex items-start justify-start w-full gap-2">
       <NuxtImg
         :src="authStore.userInfo.avatarUrl"
         alt="user-avatar"
-        class="w-8 h-8 rounded-full border border-white"
+        class="w-8 h-8 border border-white rounded-full"
       />
       <CommentInput
         :userId="authStore.userInfo.id"

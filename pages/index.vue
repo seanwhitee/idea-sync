@@ -39,28 +39,28 @@ const isMenuOpen = ref(false);
   <AppNavbar />
   <MenuNav :items="menuItems" v-model="isMenuOpen" />
   <GradientFog />
-  <div class="section-1 pt-48 w-full bg-white border-b">
+  <div class="w-full pt-48 bg-white border-b section-1">
     <div
-      class="text-zinc-500 animate-slidein mb-10 w-full flex gap-4 items-start md:items-center px-10 text-4xl md:text-6xl flex-col"
+      class="flex flex-col items-start w-full px-10 mb-10 text-4xl text-zinc-500 animate-slidein gap-4 md:items-center md:text-6xl"
     >
       <p>尋找專題成員</p>
       <p class="text-start md:text-center">
         使用Idea<span
-          class="text-transparent bg-clip-text font-bold bg-gradient-to-tr from-indigo-500 via-purple-500 to-white/80"
+          class="font-bold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-500 via-purple-500 to-white/80"
           >Sync</span
         >打造你的專屬團隊
       </p>
     </div>
 
     <p
-      class="animate-slidein text-base md:text-xl font-light text-start md:text-center px-10"
+      class="px-10 text-base font-light animate-slidein md:text-xl text-start md:text-center"
     >
       專題人員招募系統 從提案發想 收集反饋到專案招募 一站式解決
     </p>
   </div>
 
   <div class="relative pt-[30rem] md:pt-[20rem] lg:pt-[20rem]">
-    <div class="custom-shape-divider-top-1723259880 bg-black">
+    <div class="bg-black custom-shape-divider-top-1723259880">
       <svg
         data-name="Layer 1"
         xmlns="http://www.w3.org/2000/svg"
@@ -69,14 +69,14 @@ const isMenuOpen = ref(false);
       >
         <path
           d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-          class="shape-fill hidden md:block lg:block"
+          class="hidden shape-fill md:block lg:block"
         ></path>
       </svg>
 
       <div
-        class="flex flex-col md:flex-row px-4 md:px-32 py-20 md:py-40 w-full"
+        class="flex flex-col w-full px-4 py-20 md:flex-row md:px-32 md:py-40"
       >
-        <div class="w-1/2 flex flex-col gap-2">
+        <div class="flex flex-col w-1/2 gap-2">
           <div
             v-for="feature in featuresData"
             class="flex items-center gap-2"
@@ -92,14 +92,14 @@ const isMenuOpen = ref(false);
             </p>
           </div>
         </div>
-        <div class="w-full md:w-1/2 lg:w-1/2 mt-20 md:mt-0">
+        <div class="w-full mt-20 md:w-1/2 lg:w-1/2 md:mt-0">
           <p class="text-4xl md:text-5xl">找尋夥伴從未如此簡單</p>
           <NuxtLink to="/signin"
             ><UButton
               color="primary"
               size="xl"
               variant="soft"
-              class="mt-10 rounded-full px-6"
+              class="px-6 mt-10 rounded-full"
             >
               <p class="flex items-center justify-center h-fit gap-2">
                 開始使用
