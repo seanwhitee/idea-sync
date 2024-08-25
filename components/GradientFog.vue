@@ -2,7 +2,7 @@
 <template>
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute top-0 transform-gpu w-full overflow-hidden blur-3xl"
+    class="absolute top-0 w-full overflow-hidden pointer-events-none transform-gpu blur-3xl"
   >
     <div
       style="

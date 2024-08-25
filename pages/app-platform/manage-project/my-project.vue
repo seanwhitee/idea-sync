@@ -194,10 +194,10 @@ const allowChangeStatus = computed(() => {
   <!--change status model-->
   <UModal v-model="openProjectStatusChangeModal">
     <div class="p-10">
-      <h4 class="font-bold text-2xl mb-4">變更專案狀態</h4>
+      <h4 class="mb-4 text-2xl font-bold">變更專案狀態</h4>
       <p
         v-if="!allowChangeStatus"
-        class="flex text-xs flex-col border text-yellow-300 border-yellow-500 bg-yellow-500/50 border-dotted mb-4 py-2 px-4"
+        class="flex flex-col px-4 py-2 mb-4 text-xs text-yellow-300 border border-yellow-500 border-dotted bg-yellow-500/50"
       >
         <Icon
           class="w-6 h-6 text-yellow-300"
@@ -238,7 +238,7 @@ const allowChangeStatus = computed(() => {
   <UModal v-model="openApplicantConfirmModal">
     <div class="p-10">
       <div class="flex items-center justify-between">
-        <h4 class="font-bold text-2xl mb-2">
+        <h4 class="mb-2 text-2xl font-bold">
           確認{{ rejectOrAccept }}{{ applicantInfo.nickName }}
         </h4>
         <UButton
@@ -249,7 +249,7 @@ const allowChangeStatus = computed(() => {
           @click="openApplicantConfirmModal = false"
         />
       </div>
-      <p class="text-zinc-500 text-sm mb-10">按下確認將不得再次修改此筆申請</p>
+      <p class="mb-10 text-sm text-zinc-500">按下確認將不得再次修改此筆申請</p>
       <UButton
         @click="
           rejectOrAccept === '接受' ? applicantAccept() : applicantReject()
@@ -263,7 +263,7 @@ const allowChangeStatus = computed(() => {
   <UModal v-model="openApplicantManageModal" prevent-close>
     <div class="p-6">
       <div class="flex items-center justify-between">
-        <h4 class="font-bold text-2xl mb-2">申請者</h4>
+        <h4 class="mb-2 text-2xl font-bold">申請者</h4>
         <UButton
           color="gray"
           variant="ghost"
@@ -272,17 +272,17 @@ const allowChangeStatus = computed(() => {
           @click="openApplicantManageModal = false"
         />
       </div>
-      <p class="text-zinc-500 text-sm mb-10">接受或拒絕申請者加入專案</p>
+      <p class="mb-10 text-sm text-zinc-500">接受或拒絕申請者加入專案</p>
       <!--get require and accept-->
-      <div class="flex w-full gap-4 mb-6 text-zinc-500">
-        <UContainer class="border w-1/2 border-zinc-800 px-4 py-6 rounded-xl"
-          >需求人數<span class="ps-2 text-xl font-mono">{{
+      <div class="flex w-full mb-6 gap-4 text-zinc-500">
+        <UContainer class="w-1/2 px-4 py-6 border border-zinc-800 rounded-xl"
+          >需求人數<span class="font-mono text-xl ps-2">{{
             projectInfo.statusId === 1 ? projectInfo.allowApplicantsNum : 1
           }}</span>
         </UContainer>
         <UContainer
-          class="border w-1/2 border-green-800/50 px-4 py-6 rounded-xl"
-          >錄取人數<span class="ps-2 text-xl font-mono">{{
+          class="w-1/2 px-4 py-6 border border-green-800/50 rounded-xl"
+          >錄取人數<span class="font-mono text-xl ps-2">{{
             countAccepted
           }}</span></UContainer
         >
@@ -293,11 +293,11 @@ const allowChangeStatus = computed(() => {
         class="border border-zinc-500/50"
       >
         <template #nickName-data="{ row }">
-          {{
+          <NuxtLink :to="'/app-platform/user-profile/' + row.id">{{
             row.nickName.length > 7
               ? row.nickName.slice(0, 7) + "..."
               : row.nickName
-          }}
+          }}</NuxtLink>
         </template>
         <template #email-data="{ row }">
           {{
@@ -343,13 +343,9 @@ const allowChangeStatus = computed(() => {
 
   <!--kanban-->
   <div
-    class="flex-col flex md:flex-row items-center w-full gap-4 px-4 overflow-auto py-10 bg-white dark:bg-zinc-900"
+    class="flex flex-col items-center w-full px-4 py-10 overflow-auto bg-white md:flex-row gap-4 dark:bg-zinc-900"
   >
-    <KanbanColumn
-      v-for="s in projectStatus"
-      :title="s.name"
-      :key="s.statusId"
-    >
+    <KanbanColumn v-for="s in projectStatus" :title="s.name" :key="s.statusId">
       <KanbanCard
         v-for="p in projects.filter((p) => p.statusId === s.statusId)"
         :key="p.id"

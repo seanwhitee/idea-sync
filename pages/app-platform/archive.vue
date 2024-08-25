@@ -33,7 +33,7 @@ const { data, error } = useAsyncData("getarchives", async () => {
 });
 </script>
 <template>
-  <h3 class="text-xl flex items-center gap-3">
+  <h3 class="flex items-center text-xl gap-3">
     <Icon name="mdi:archive-arrow-down" class="w-8 h-8" />
     我的收藏</h3>
   <ProjectPost

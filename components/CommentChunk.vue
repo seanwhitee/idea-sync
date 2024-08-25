@@ -15,17 +15,17 @@ const replyShow = ref(false);
 const isReplyInputFocus = ref(false);
 </script>
 <template>
-  <div class="flex items-start gap-2 w-full mb-4">
+  <div class="flex items-start w-full mb-4 gap-2">
     <NuxtImg
       :src="props.avatarURL"
-      class="w-8 h-8 rounded-full border border-white"
+      class="w-8 h-8 border border-white rounded-full"
     />
     <div class="flex flex-col w-full">
-      <p class="flex gap-2 items-center">
+      <p class="flex items-center gap-2">
         <span>{{ props.nickName }}</span>
-        <span class="opacity-50 text-xs font-light">{{ props.date }}</span>
+        <span class="text-xs font-light opacity-50">{{ props.date }}</span>
       </p>
-      <p class="font-light text-sm">{{ props.comment }}</p>
+      <p class="text-sm font-light">{{ props.comment }}</p>
       <ReplyInput
         v-if="isReplyInputFocus"
         v-model="isReplyInputFocus"
@@ -41,7 +41,7 @@ const isReplyInputFocus = ref(false);
           :label="props.children.length + ' ' + 'replies'"
         />
         <button @click="isReplyInputFocus = true"
-          class="hover:bg-zinc-800 text-white text-sm rounded-full px-4 py-2 w-fit font-medium"
+          class="px-4 py-2 text-sm font-medium text-white rounded-full hover:bg-zinc-800 w-fit"
         >
           Reply
         </button>

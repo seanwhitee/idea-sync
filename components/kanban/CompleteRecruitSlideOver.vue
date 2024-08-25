@@ -45,7 +45,7 @@ const isSlideOverOpen = defineModel();
 
 <template>
   <USlideover prevent-close v-model="isSlideOverOpen">
-    <div class="w-full flex justify-end p-4">
+    <div class="flex justify-end w-full p-4">
       <UButton
         color="gray"
         variant="ghost"
@@ -54,19 +54,19 @@ const isSlideOverOpen = defineModel();
         @click="isSlideOverOpen = false"
       />
     </div>
-    <div class="px-6 flex-1 flex-col">
-      <h3 class="text-2xl font-bold mb-6 text-zinc-300">
+    <div class="flex-col flex-1 px-6">
+      <h3 class="mb-6 text-2xl font-bold text-zinc-300">
         {{ projectDetail.title }}
       </h3>
 
-      <p class="text-sm font-bold mb-2">{{ "指導者" }}</p>
+      <p class="mb-2 text-sm font-bold">{{ "指導者" }}</p>
       <AvatarCard
         :avatarURL="teamPeoples.mentors[0].avatarUrl"
         :username="teamPeoples.mentors[0].nickName"
         :email="teamPeoples.mentors[0].email"
-        class="mb-6 borde w-fit py-1 pe-4 px-2 bg-zinc-800 rounded-md"
+        class="px-2 py-1 mb-6 borde w-fit pe-4 bg-zinc-800 rounded-md"
       />
-      <h4 class="text-sm font-bold mb-1">{{ "所需技能" }}</h4>
+      <h4 class="mb-1 text-sm font-bold">{{ "所需技能" }}</h4>
       <p class="mb-4 text-zinc-500">
         {{
           projectDetail.requireSkills.length > 100
@@ -74,12 +74,22 @@ const isSlideOverOpen = defineModel();
             : projectDetail.requireSkills
         }}
       </p>
-      <h4 class="text-sm font-bold mb-2">{{ "團隊成員" }}</h4>
+      <h4 class="mb-2 text-sm font-bold">{{ "團隊成員" }}</h4>
       <UTable
         :rows="teamPeoples.members"
         :columns="memberTableColumn"
         class="h-[425px] overflow-scroll border-zinc-800 border rounded-md"
-      />
+      >
+        <template #nickName-data="{ row }">
+          <NuxtLink :to="'/app-platform/user-profile/' + row.id">
+            {{
+              row.nickName.length > 7
+                ? row.nickName.slice(0, 7) + "..."
+                : row.nickName
+            }}</NuxtLink
+          >
+        </template>
+      </UTable>
     </div>
   </USlideover>
 </template>

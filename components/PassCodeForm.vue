@@ -87,16 +87,16 @@ const onSubmit = async (event) => {
     <UFormGroup label="驗證碼" name="passCode" class="w-full">
       <UInput v-model="state.passCode" class="rounded-md" type="number" />
     </UFormGroup>
-    <div class="w-full flex flex-col gap-y-3 font-thin text-white">
+    <div class="flex flex-col w-full font-thin text-white gap-y-3">
       <button
         @click="props.generatePassCode()"
-        class="w-full bg-violet-800 hover:bg-violet-800/90 py-2 px-4 rounded-lg mt-0"
+        class="w-full px-4 py-2 mt-0 rounded-lg bg-violet-800 hover:bg-violet-800/90"
       >
         重新發送驗證碼
       </button>
       <button
         type="submit"
-        class="w-full bg-violet-800 hover:bg-violet-800/90 py-2 px-4 rounded-lg mt-0"
+        class="w-full px-4 py-2 mt-0 rounded-lg bg-violet-800 hover:bg-violet-800/90"
       >
         <div class="flex items-center justify-center w-full">
           提交
@@ -110,13 +110,13 @@ const onSubmit = async (event) => {
           submitMessage === '驗證碼錯誤' ||
           submitMessage === '註冊失敗'
         "
-        class="text-red-500 font-extralight text-xs"
+        class="text-xs text-red-500 font-extralight"
       >
         {{ submitMessage }}
       </p>
       <p
         v-if="submitMessage === '註冊成功'"
-        class="text-green-500 font-extralight text-xs"
+        class="text-xs text-green-500 font-extralight"
       >
         {{ submitMessage }}
       </p>

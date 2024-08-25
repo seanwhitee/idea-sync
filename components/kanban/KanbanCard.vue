@@ -1,6 +1,6 @@
 <script setup>
-import CompleteRecruitSlideOver from './CompleteRecruitSlideOver.vue';
-
+import CompleteRecruitSlideOver from "./CompleteRecruitSlideOver.vue";
+import ProjectSettingSlideOver from "./ProjectSettingSlideOver.vue";
 const props = defineProps({
   projectId: Number,
   status: Number,
@@ -10,6 +10,7 @@ const props = defineProps({
   openProjectStatusChangeModal: Function,
 });
 const isSlideOverOpen = ref(false);
+const isSettingOpen = ref(false);
 const items = [
   [
     {
@@ -30,7 +31,13 @@ const items = [
       click: () => {
         isSlideOverOpen.value = true;
       },
-      disabled: props.status !== 3
+      disabled: props.status !== 3,
+    },
+    {
+      label: "專案設定",
+      click: () => {
+        isSettingOpen.value = true;
+      },
     },
   ],
 ];
@@ -41,10 +48,16 @@ const router = useRouter();
     v-model="isSlideOverOpen"
     :projectId="props.projectId"
   />
+  <ProjectSettingSlideOver
+    v-model="isSettingOpen"
+    :projectId="props.projectId"
+  />
   <div
-    class="flex flex-col w-full p-3 items-center bg-zinc-900 justify-center border border-zinc-500/40"
+    class="flex flex-col items-center justify-center w-full p-3 border bg-zinc-900 border-zinc-500/40"
   >
-    <h3 class="flex items-start justify-between w-full gap-2 mb-2 h-[24px] overflow-y-hidden">
+    <h3
+      class="flex items-start justify-between w-full gap-2 mb-2 h-[24px] overflow-y-hidden"
+    >
       <span
         @click="router.push(`/app-platform/project/${props.projectId}`)"
         class="w-full cursor-pointer"
@@ -56,7 +69,7 @@ const router = useRouter();
         </div>
       </UDropdown>
     </h3>
-    <p class="w-full h-10 text-xs text-white/50 overflow-hidden">
+    <p class="w-full h-10 overflow-hidden text-xs text-white/50">
       {{ props.text }}
     </p>
   </div>

@@ -5,18 +5,18 @@ const searchStore = useSearchStore();
 </script>
 <template>
   <div
-    class="flex items-center bg-black cursor-pointer px-3 py-3 border border-zinc-800 shadow-xl w-full"
+    class="flex items-center w-full px-3 py-3 bg-black border shadow-xl cursor-pointer border-zinc-800"
   >
     <!--search input-->
     <input
       type="text"
       placeholder="search..."
-      class="focus:outline-none outline-none w-11/12 bg-black"
+      class="w-11/12 bg-black outline-none focus:outline-none"
       v-model="searchStore.searchString"
       @keyup.enter="searchStore.startSearch(searchStore.searchString)"
     />
     <!--search icon-->
-    <div class="w-1/12 flex items-center justify-end">
+    <div class="flex items-center justify-end w-1/12">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"

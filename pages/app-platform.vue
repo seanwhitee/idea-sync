@@ -5,7 +5,7 @@ definePageMeta({
 });
 const router = useRouter();
 const authStore = useAuthStore();
-router.push("/app-platform/projects");
+// router.push("/app-platform/projects");
 
 const items = ref([
   {
@@ -62,7 +62,7 @@ const items = ref([
 </script>
 <template>
   <AppSidebar :items="items" />
-  <div class="flex flex-col gap-4 w-full pt-4 pb-24 md:py-4 px-4 md:ps-24 lg:ps-64">
+  <div class="flex flex-col w-full px-4 pt-4 pb-24 gap-4 md:py-4 md:ps-24 lg:ps-64">
     <NuxtPage />
   </div>
 </template>

@@ -5,7 +5,7 @@ const authStore = useAuthStore();
 <template>
   <div class="flex flex-col w-full">
     <UBadge
-      class="w-fit hidden md:hidden lg:flex"
+      class="hidden w-fit md:hidden lg:flex"
       color="primary"
       variant="subtle"
       size="xs"
@@ -14,8 +14,8 @@ const authStore = useAuthStore();
     <button
       tabindex="0"
       role="button"
-      class="my-1 flex gap-2 items-center md:justify-start justify-center bg-black 
-      text-white hover:bg-zinc-800 w-full rounded-lg py-3 lg:py-2 px-4 md:px-4 lg:ps-4"
+      class="flex items-center justify-center w-full px-4 py-3 my-1 text-white bg-black rounded-lg gap-2 md:justify-start 
+  hover:bg-zinc-800 lg:py-2 md:px-4 lg:ps-4"
     >
       <div class="bg-black rounded-full">
         <NuxtImg
@@ -24,7 +24,7 @@ const authStore = useAuthStore();
           class="w-8 h-8 rounded-full"
         />
       </div>
-      <div class="hidden md:hidden lg:flex flex-col items-start justify-center">
+      <div class="flex-col items-start justify-center hidden md:hidden lg:flex">
         <span class="flex text-sm font-bold w-[131px] overflow-hidden">
           {{ authStore.userInfo.nickName }}
         </span>

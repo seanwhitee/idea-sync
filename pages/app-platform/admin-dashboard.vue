@@ -27,7 +27,7 @@ if (authStore.userInfo.roleName !== "admin") {
 getUsers();
 </script>
 <template>
-  <div class="text-white pt-36 pb-20">
+  <div class="pb-20 text-white pt-36">
     <div v-for="user in adminStore.userList">
       <div class="flex justify-between">
         <div class="flex items-center justify-center gap-3">

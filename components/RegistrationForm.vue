@@ -146,7 +146,7 @@ async function onSubmit(event) {
     <UFormGroup label="密碼" name="password" class="w-full">
       <UInput v-model="state.password" type="password" class="rounded-md" />
     </UFormGroup>
-    <div class="flex w-full justify-between gap-1">
+    <div class="flex justify-between w-full gap-1">
       <UFormGroup label="名" name="firstName" class="w-2/3">
         <UInput v-model="state.firstName" class="rounded-md" />
       </UFormGroup>
@@ -163,7 +163,7 @@ async function onSubmit(event) {
     <div class="w-full">
       <button
         type="submit"
-        class="w-full bg-violet-800 hover:bg-violet-800/90 font-thin py-2 px-4 rounded-lg mt-0"
+        class="w-full px-4 py-2 mt-0 font-thin rounded-lg bg-violet-800 hover:bg-violet-800/90"
       >
         <div class="flex items-center justify-center w-full text-white">
           驗證Email
@@ -175,25 +175,25 @@ async function onSubmit(event) {
     <div v-if="submitMessage" class="flex items-center justify-center w-full">
       <p
         v-if="submitMessage === '註冊成功'"
-        class="text-green-500 font-extralight text-xs"
+        class="text-xs text-green-500 font-extralight"
       >
         {{ submitMessage }}
       </p>
       <p
         v-if="submitMessage === '使用者已經存在'"
-        class="text-red-500 font-extralight text-xs"
+        class="text-xs text-red-500 font-extralight"
       >
         {{ submitMessage }}
       </p>
       <p
         v-if="submitMessage === '電子郵件已經註冊'"
-        class="text-red-500 font-extralight text-xs"
+        class="text-xs text-red-500 font-extralight"
       >
         {{ submitMessage }}
       </p>
       <p
         v-if="submitMessage === '使用者註冊失敗，資料無效'"
-        class="text-red-500 font-extralight text-xs"
+        class="text-xs text-red-500 font-extralight"
       >
         {{ submitMessage }}
       </p>

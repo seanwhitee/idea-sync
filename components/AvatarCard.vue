@@ -10,9 +10,9 @@ const props = defineProps({
     <NuxtImg
       :src="props.avatarURL"
       alt="user-avatar"
-      class="rounded-full border border-white w-8 h-8"
+      class="w-8 h-8 border border-white rounded-full"
     />
-    <div class="flex flex-col font-extralight text-xs">
+    <div class="flex flex-col text-xs font-extralight">
       <p class="text-sm font-bold">{{ props.username }}</p>
       <p class="text-[10px]">{{ props.email }}</p>
     </div>

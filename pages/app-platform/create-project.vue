@@ -231,7 +231,7 @@ const handleSubmit = async () => {
       />
       <div class="w-full">
         <div
-          class="flex items-start justify-start gap-2 w-full flex-wrap"
+          class="flex flex-wrap items-start justify-start w-full gap-2"
           v-if="projectStore.tags.length > 0"
         >
           <AppTag v-for="tag in projectStore.tags" :tagName="tag" color="violet">
@@ -245,7 +245,7 @@ const handleSubmit = async () => {
         </div>
         <p
           v-else
-          class="flex items-center gap-2 justify-center text-white/65 px-1"
+          class="flex items-center justify-center px-1 gap-2 text-white/65"
         >
           <span>Press</span>
           <UKbd>Enter</UKbd>
@@ -255,7 +255,7 @@ const handleSubmit = async () => {
     </div>
   </UModal>
   <div
-    class="flex items-start justify-start px-3 py-3 gap-2 border border-dotted cursor-pointer border-white w-full flex-wrap"
+    class="flex flex-wrap items-start justify-start w-full px-3 py-3 border border-white border-dotted cursor-pointer gap-2"
     @click="tagModalOpen = true"
   >
     <AppTag
@@ -264,27 +264,27 @@ const handleSubmit = async () => {
       color="violet"
       :tagName="tag"
     />
-    <p v-else class="text-white/65 px-1">加入標籤...</p>
+    <p v-else class="px-1 text-white/65">加入標籤...</p>
   </div>
-  <label class="form-control w-full bg-primary-content rounded-none">
+  <label class="w-full rounded-none form-control bg-primary-content">
     <input
       v-model="projectStore.requireSkills"
       type="text"
       placeholder="所需技能"
-      class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+      class="w-full bg-black border border-white border-dotted rounded-none outline-none input focus:outline-none focus:border-white focus:border-dotted"
     />
   </label>
-  <label class="form-control w-full bg-primary-content rounded-none">
+  <label class="w-full rounded-none form-control bg-primary-content">
     <input
       v-model="projectStore.title"
       type="text"
       placeholder="標題"
-      class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+      class="w-full bg-black border border-white border-dotted rounded-none outline-none input focus:outline-none focus:border-white focus:border-dotted"
     />
   </label>
-  <div class="w-full flex items-center justify-start">
-    <label class="label gap-2 flex justify-start items-center">
-      <span class="label-text text-white">需求人數</span>
+  <div class="flex items-center justify-start w-full">
+    <label class="flex items-center justify-start label gap-2">
+      <span class="text-white label-text">需求人數</span>
       <input
         @change="
           (e) => {
@@ -298,13 +298,13 @@ const handleSubmit = async () => {
         :value="projectStore.allowApplicantsNum"
         type="number"
         min="1"
-        class="flex items-center justify-center outline-none text-center w-2/5 bg-black py-2 border border-gray-500/30"
+        class="flex items-center justify-center w-2/5 py-2 text-center bg-black border outline-none border-gray-500/30"
       />
     </label>
   </div>
   <div class="flex items-center justify-start w-full">
-    <label class="label cursor-pointer gap-2">
-      <span class="label-text text-white">畢業專題</span>
+    <label class="cursor-pointer label gap-2">
+      <span class="text-white label-text">畢業專題</span>
       <span class="text-sm">否</span>
       <input
         v-model="projectStore.isGraduationProject"
@@ -315,28 +315,28 @@ const handleSubmit = async () => {
       <span class="text-sm">是</span>
     </label>
   </div>
-  <label class="form-control w-full bg-primary-content rounded-none">
+  <label class="w-full rounded-none form-control bg-primary-content">
     <input
       v-model="projectStore.school"
       type="text"
       placeholder="學校"
-      class="input w-full bg-black rounded-none border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+      class="w-full bg-black border border-white border-dotted rounded-none outline-none input focus:outline-none focus:border-white focus:border-dotted"
     />
   </label>
   <textarea
     v-model="projectStore.description"
-    class="w-full h-40 bg-black rounded-none textarea border border-white border-dotted outline-none focus:outline-none focus:border-white focus:border-dotted"
+    class="w-full h-40 bg-black border border-white border-dotted rounded-none outline-none textarea focus:outline-none focus:border-white focus:border-dotted"
     placeholder="說明 ..."
   ></textarea>
   <div
-    class="px-30 py-10 bg-violet-400/50 flex flex-col items-center justify-center w-full"
+    class="flex flex-col items-center justify-center w-full py-10 px-30 bg-violet-400/50"
   >
     <Icon name="material-symbols:upload-file" class="w-12 h-12 mb-5" />
-    <p class="font-semibold text-lg mb-5">Allow content: jpeg, png</p>
+    <p class="mb-5 text-lg font-semibold">Allow content: jpeg, png</p>
     <input
       type="file"
       @change="handleFileChange"
-      class="file-input file-input-bordered w-full max-w-xs bg-violet-400"
+      class="w-full max-w-xs file-input file-input-bordered bg-violet-400"
       accept="image/jpeg, image/png"
     />
   </div>
@@ -346,14 +346,14 @@ const handleSubmit = async () => {
     :message="statusMessage"
     :type="messageType"
   />
-  <div class="w-full flex items-center justify-end">
+  <div class="flex items-center justify-end w-full">
     <UButton
       color="white"
       variant="solid"
       size="xl"
       @click="handleSubmit"
       :disabled="isSubmitProcessing"
-      class="w-20 h-10 flex items-center justify-center"
+      class="flex items-center justify-center w-20 h-10"
     >
       <p v-if="!isSubmitProcessing">發布</p>
       <AppLoader v-else />

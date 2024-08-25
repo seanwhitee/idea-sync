@@ -24,7 +24,7 @@ const colorClasses = computed(() => {
 </script>
 <template>
   <div
-    class="flex h-fit w-fit text-start items-center justify-start border font-light dark:text-white px-2 rounded-md gap-1 shadow-md text-xs"
+    class="flex items-center justify-start px-2 text-xs font-light border shadow-md h-fit w-fit text-start dark:text-white rounded-md gap-1"
     :class="colorClasses"
   >
     <slot />

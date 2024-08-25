@@ -74,7 +74,7 @@ const getProjectAppliedTableData = computed(() => {
   <UTable
     :columns="manageAppliedTableColumns"
     :rows="getProjectAppliedTableData"
-    class="bg-white dark:bg-black w-full border border-zinc-500/50 px-1 rounded-md"
+    class="w-full px-1 bg-white border dark:bg-black border-zinc-500/50 rounded-md"
   >
     <template #title-data="{ row }">
       <p class="cursor-pointer" @click="router.push(`/app-platform/project/${row.id}`)">
