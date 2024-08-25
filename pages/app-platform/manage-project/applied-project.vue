@@ -3,7 +3,6 @@ import ApplicantStatusBadge from "~/components/kanban/ApplicantStatusBadge.vue";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 
-
 const manageAppliedTableColumns = [
   {
     key: "title",
@@ -39,7 +38,9 @@ if (authStore.userInfo.roleName === "admin") {
 }
 
 onMounted(async () => {
-  projects.value = await projectStore.getProjectAppliedByUser(authStore.userInfo.id);
+  projects.value = await projectStore.getProjectAppliedByUser(
+    authStore.userInfo.id
+  );
 });
 
 const getProjectAppliedTableData = computed(() => {
@@ -64,7 +65,7 @@ const getProjectAppliedTableData = computed(() => {
       title: p.title,
       host: p.hostUser.nickName,
       email: p.hostUser.email,
-      projectStatus: p.statusId,
+      projectStatus: p.status,
       applicantStatus: applicant.status,
     };
   });
@@ -74,23 +75,32 @@ const getProjectAppliedTableData = computed(() => {
   <UTable
     :columns="manageAppliedTableColumns"
     :rows="getProjectAppliedTableData"
-    class="w-full px-1 bg-white border dark:bg-black border-zinc-500/50 rounded-md"
+    class="w-full px-1 bg-white border rounded-md dark:bg-black border-zinc-500/50"
   >
     <template #title-data="{ row }">
-      <p class="cursor-pointer" @click="router.push(`/app-platform/project/${row.id}`)">
-        {{
-          row.title.length > 30 ? row.title.slice(0, 30) + "..." : row.title
-        }}
+      <p
+        class="cursor-pointer"
+        @click="router.push(`/app-platform/project/${row.id}`)"
+      >
+        {{ row.title.length > 30 ? row.title.slice(0, 30) + "..." : row.title }}
       </p>
     </template>
     <template #projectStatus-data="{ row }">
-      <AppTag v-if="row.projectStatus === 1" color="slate" tag-name="成員招募" />
+      <AppTag
+        v-if="row.projectStatus === 1"
+        color="slate"
+        tag-name="成員招募"
+      />
       <AppTag
         v-if="row.projectStatus === 2"
         color="slate"
         tag-name="指導者招募"
       />
-      <AppTag v-if="row.projectStatus === 3" color="slate" tag-name="完成招募" />
+      <AppTag
+        v-if="row.projectStatus === 3"
+        color="slate"
+        tag-name="完成招募"
+      />
     </template>
     <template #applicantStatus-data="{ row }">
       <ApplicantStatusBadge :applicant-status="row.applicantStatus" />

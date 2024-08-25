@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 
 const props = defineProps({
-  statusId: Number,
+  status: String,
   title: String,
   school: String,
   allowApplicantsNum: Number,
@@ -35,15 +35,15 @@ const tags = computed(() => {
 </script>
 <template>
   <div
-    v-if="props.statusId !== 3"
+    v-if="props.status !== 'complete'"
     class="flex items-start justify-between w-full px-2 py-3 cursor-pointer gap-1 bg-zinc-900"
     @mouseover="hoverEffect = true"
     @mouseleave="hoverEffect = false"
   >
     <div class="flex flex-col gap-1">
-      <ProjectStatusVisualizer :statusId="props.statusId" class="mb-2" />
+      <ProjectStatusVisualizer :status="props.status" class="mb-2" />
       <h3
-        class="text-sm font-bold cursor-pointer hover:bg-violet-500 duration-200 ease-linear w-fit ms-2"
+        class="text-sm font-bold cursor-pointer duration-200 ease-linear hover:bg-violet-500 w-fit ms-2"
         :class="
           hoverEffect
             ? 'border-b-2 border-violet-500 ease-linear duration-200'
@@ -74,7 +74,7 @@ const tags = computed(() => {
       v-if="props.imageURL"
       :src="props.imageURL"
       alt="project-image"
-      class="hidden w-14 h-14 rounded-md lg:flex"
+      class="hidden rounded-md w-14 h-14 lg:flex"
     />
   </div>
 </template>

@@ -1,13 +1,13 @@
 <script setup>
 const props = defineProps({
-  commentId: Number,
+  commentId: String,
   avatarURL: String,
   comment: String,
   nickName: String,
   date: String,
   children: Array,
-  userId: Number,
-  projectId: Number,
+  userId: String,
+  projectId: String,
   formatDate: Function,
   addReply: Function,
 });
@@ -40,7 +40,8 @@ const isReplyInputFocus = ref(false);
           @click="replyShow = !replyShow"
           :label="props.children.length + ' ' + 'replies'"
         />
-        <button @click="isReplyInputFocus = true"
+        <button
+          @click="isReplyInputFocus = true"
           class="px-4 py-2 text-sm font-medium text-white rounded-full hover:bg-zinc-800 w-fit"
         >
           Reply

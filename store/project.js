@@ -3,10 +3,10 @@ import { ref } from "vue";
 
 // store for create project
 export const useProjectStore = defineStore("project", () => {
-  const hostId = ref(0);
+  const hostId = ref("");
   const title = ref("");
   const description = ref("");
-  const statusId = ref(0);
+  const status = ref("");
   const isGraduationProject = ref(false);
   const school = ref("");
   const allowApplicantsNum = ref(1);
@@ -19,10 +19,10 @@ export const useProjectStore = defineStore("project", () => {
   const relatedProjects = ref([]);
 
   const reset = () => {
-    hostId.value = 0;
+    hostId.value = "";
     title.value = "";
     description.value = "";
-    statusId.value = 0;
+    status.value = "";
     isGraduationProject.value = false;
     school.value = "";
     requireSkills.value = "";
@@ -112,14 +112,14 @@ export const useProjectStore = defineStore("project", () => {
     return res;
   };
 
-  const changeProjectStatus = async (projectId, statusId, nextOrPrevious) => {
+  const changeProjectStatus = async (projectId, status, nextOrPrevious) => {
     const res = await $fetch(
       "http://localhost:8080/api/v1/project/changeProjectStatus",
       {
         method: "POST",
         params: {
           projectId: projectId,
-          status: statusId,
+          status: status,
           nextOrPrevious: nextOrPrevious,
         },
       }
@@ -159,7 +159,7 @@ export const useProjectStore = defineStore("project", () => {
     hostId,
     title,
     description,
-    statusId,
+    status,
     isGraduationProject,
     school,
     allowApplicantsNum,

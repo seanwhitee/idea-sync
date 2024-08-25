@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { useComment } from "~/composable/useComment";
 
 const props = defineProps({
-  userId: Number,
-  projectId: Number,
+  userId: String,
+  projectId: String,
   addComment: Function,
 });
 const handleClick = async (userId, projectId, text) => {
@@ -21,7 +21,7 @@ const isInputFocused = ref(false);
       v-model="comment"
       placeholder="Add a comment..."
       @click="isInputFocused = true"
-      class="mb-2 bg-black border-b outline-none border-b-white/50 focus:border-b-white ease-linear duration-300 font-extralight"
+      class="mb-2 bg-black border-b outline-none duration-300 ease-linear border-b-white/50 focus:border-b-white font-extralight"
     />
     <div class="flex items-center justify-end gap-2" v-if="isInputFocused">
       <button

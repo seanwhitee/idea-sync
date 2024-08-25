@@ -7,7 +7,7 @@ const authStore = useAuthStore();
 const adminStore = useAdminStore();
 const router = useRouter();
 const getUsers = async () => {
-  const users = await $fetch("http://localhost:8080/api/v1/users/getAllUsers", {
+  await $fetch("http://localhost:8080/api/v1/users/getAllUsers", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

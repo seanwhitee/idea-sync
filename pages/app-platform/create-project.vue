@@ -176,7 +176,7 @@ const handleSubmit = async () => {
     console.error(e);
     return;
   }
-  
+
   try {
     await $fetch(`http://localhost:8080/api/v1/project/create`, {
       method: "POST",
@@ -187,7 +187,7 @@ const handleSubmit = async () => {
         hostId: authStore.userInfo.id,
         title: projectStore.title,
         description: projectStore.description,
-        statusId: 1,
+        status: "member_recruiting",
         isGraduationProject: projectStore.isGraduationProject,
         school: projectStore.school,
         allowApplicantsNum: projectStore.allowApplicantsNum,
@@ -234,7 +234,11 @@ const handleSubmit = async () => {
           class="flex flex-wrap items-start justify-start w-full gap-2"
           v-if="projectStore.tags.length > 0"
         >
-          <AppTag v-for="tag in projectStore.tags" :tagName="tag" color="violet">
+          <AppTag
+            v-for="tag in projectStore.tags"
+            :tagName="tag"
+            color="violet"
+          >
             <button
               @click="projectStore.deleteTag(tag)"
               class="flex items-center justify-center w-3"
@@ -283,7 +287,7 @@ const handleSubmit = async () => {
     />
   </label>
   <div class="flex items-center justify-start w-full">
-    <label class="flex items-center justify-start label gap-2">
+    <label class="flex items-center justify-start gap-2 label">
       <span class="text-white label-text">需求人數</span>
       <input
         @change="
@@ -303,7 +307,7 @@ const handleSubmit = async () => {
     </label>
   </div>
   <div class="flex items-center justify-start w-full">
-    <label class="cursor-pointer label gap-2">
+    <label class="cursor-pointer gap-2 label">
       <span class="text-white label-text">畢業專題</span>
       <span class="text-sm">否</span>
       <input
@@ -357,19 +361,6 @@ const handleSubmit = async () => {
     >
       <p v-if="!isSubmitProcessing">發布</p>
       <AppLoader v-else />
-  </UButton>
+    </UButton>
   </div>
 </template>
-<style scoped>
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-</style>
