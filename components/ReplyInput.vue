@@ -18,7 +18,7 @@ const isReplyInputFocus = defineModel();
 const { comment } = useComment();
 </script>
 <template>
-  <div class="flex items-start w-full pt-5 gap-2" v-if="isReplyInputFocus">
+  <div class="flex items-start w-full gap-2 pt-5" v-if="isReplyInputFocus">
     <NuxtImg
       :src="authStore.userInfo.avatarUrl"
       alt="user-avatar"
@@ -29,7 +29,7 @@ const { comment } = useComment();
         type="text"
         v-model="comment"
         placeholder="Add a reply..."
-        class="mb-2 text-sm bg-black border-b outline-none duration-300 ease-linear border-b-white/50 font-extralight focus:border-b-white"
+        class="mb-2 text-sm duration-300 ease-linear bg-black border-b outline-none border-b-white/50 font-extralight focus:border-b-white"
       />
       <div class="flex items-center justify-end gap-2">
         <button

@@ -65,7 +65,7 @@ const isSlideOverOpen = defineModel();
           :avatarURL="teamPeoples.mentors[0].avatarUrl"
           :username="teamPeoples.mentors[0].nickName"
           :email="teamPeoples.mentors[0].email"
-          class="px-2 py-1 mb-6 rounded-md borde w-fit pe-4 bg-zinc-800"
+          class="px-2 py-1 mb-6 border rounded-md border-white/50 w-fit pe-4 bg-zinc-800"
         />
         <h4 class="mb-3 text-sm font-bold text-white">{{ "所需技能" }}</h4>
         <p class="mb-6 text-zinc-500">
@@ -79,7 +79,7 @@ const isSlideOverOpen = defineModel();
         <UTable
           :rows="teamPeoples.members"
           :columns="memberTableColumn"
-          class="h-[425px] overflow-scroll border-zinc-800 border rounded-md"
+          class="h-[425px] overflow-scroll border rounded-md border-white/50"
         >
           <template #nickName-data="{ row }">
             <NuxtLink :to="'/app-platform/user-profile/' + row.id">

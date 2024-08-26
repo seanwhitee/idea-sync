@@ -87,17 +87,17 @@ const getProjectAppliedTableData = computed(() => {
     </template>
     <template #projectStatus-data="{ row }">
       <AppTag
-        v-if="row.projectStatus === 1"
+        v-if="row.projectStatus === 'member_recruiting'"
         color="slate"
         tag-name="成員招募"
       />
       <AppTag
-        v-if="row.projectStatus === 2"
+        v-if="row.projectStatus === 'mentor_recruiting'"
         color="slate"
         tag-name="指導者招募"
       />
       <AppTag
-        v-if="row.projectStatus === 3"
+        v-if="row.projectStatus === 'complete'"
         color="slate"
         tag-name="完成招募"
       />
