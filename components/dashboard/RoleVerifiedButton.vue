@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
   roleName: String,
-  userId: Number,
+  userId: String,
   nickName: String,
 });
 const router = useRouter();

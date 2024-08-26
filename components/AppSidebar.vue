@@ -38,7 +38,7 @@ const isAccountSwitchModalOpen = ref(false);
         <img
           src="/public/favicon.png"
           alt="logo"
-          class="hidden w-8 h-8 md:flex lg:hidden rounded-md"
+          class="hidden w-8 h-8 rounded-md md:flex lg:hidden"
         />
         <p class="hidden md:hidden lg:flex">
           Idea<span class="text-violet-500">Sync</span>
@@ -53,7 +53,7 @@ const isAccountSwitchModalOpen = ref(false);
           <NuxtLink
             v-for="item in navigationItems"
             :key="item.name"
-            class="py-1 mb-2 rounded-lg w-14 md:w-full hover:bg-zinc-800 transition duration-300 ease-in-out focus:outline-none"
+            class="py-1 mb-2 transition duration-300 ease-in-out rounded-lg w-14 md:w-full hover:bg-zinc-800 focus:outline-none"
             :to="item.path"
             @click="toggler = false"
           >
@@ -62,7 +62,7 @@ const isAccountSwitchModalOpen = ref(false);
           <button
             v-for="item in functionalItems"
             :key="item.name"
-            class="py-1 mb-2 rounded-lg w-14 md:w-full hover:bg-zinc-800 transition duration-300 ease-in-out focus:outline-none"
+            class="py-1 mb-2 transition duration-300 ease-in-out rounded-lg w-14 md:w-full hover:bg-zinc-800 focus:outline-none"
             @click="isAccountSwitchModalOpen = true"
           >
             <BarItem :name="item.name" :icon="item.icon" />
@@ -70,7 +70,7 @@ const isAccountSwitchModalOpen = ref(false);
         </ul>
 
         <div
-          class="flex items-center justify-center w-20 pb-2 md:w-full h-14 md:translate-y-14"
+          class="items-center justify-center hidden w-20 pb-2 md:flex md:w-full h-14 md:translate-y-14"
         >
           <UserFunctionMenu />
         </div>

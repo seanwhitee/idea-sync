@@ -68,12 +68,12 @@ async function onSubmit(event) {
     firstName: state.firstName,
     lastName: state.lastName,
     email: state.email,
+    userRole: { roleName: "" },
   };
   if (userRole.value === "creator") {
     // Prepare data for creator
     result.roleVerified = true;
     result.userRole = {
-      id: 1,
       roleName: userRole.value,
     };
     result.allowProjectCreate = true;
@@ -82,7 +82,6 @@ async function onSubmit(event) {
     // Prepare data for mentor
     result.roleVerified = false;
     result.userRole = {
-      id: 2,
       roleName: userRole.value,
     };
     result.allowProjectCreate = true;
@@ -112,7 +111,6 @@ async function onSubmit(event) {
           password: result.password,
           nickName: result.nickName,
           profileDescription: result.profileDescription,
-          roleId: result.userRole.id,
           allowProjectApply: result.allowProjectApply,
           allowProjectCreate: result.allowProjectCreate,
           roleVerified: result.roleVerified,
@@ -120,6 +118,7 @@ async function onSubmit(event) {
           avatarURL: result.avatarUrl,
           firstName: result.firstName,
           lastName: result.lastName,
+          roleName: result.userRole.roleName,
         });
         props.generatePassCode();
         break;

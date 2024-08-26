@@ -4,9 +4,9 @@ import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 
 const projectStatus = [
-  { name: "成員招募", statusId: 1 },
-  { name: "指導者招募", statusId: 2 },
-  { name: "完成招募", statusId: 3 },
+  { name: "成員招募", status: "member_recruiting" },
+  { name: "指導者招募", status: "mentor_recruiting" },
+  { name: "完成招募", status: "complete" },
 ];
 
 const manageApplicantTableColumns = [
@@ -41,10 +41,10 @@ const openApplicantManageModal = ref(false);
 const openApplicantConfirmModal = ref(false);
 
 const changeToNextOrPrevious = ref("");
-const nextStatus = ref(2);
-const previousStatus = ref(0);
+const nextStatus = ref("mentor_recruiting");
+const previousStatus = ref("");
 const applicants = ref([]);
-const modalProjectId = ref(-1);
+const modalProjectId = ref("");
 const projectInfo = ref({});
 const applicantInfo = ref({});
 
@@ -99,9 +99,11 @@ const setOpenProjectStatusChangeModal = async (value, projectId) => {
     return { id, nickName, email, status };
   });
 
-  const projectStatus = projectInfo.value.statusId;
-  nextStatus.value = projectStatus === 1 ? 2 : 3;
-  previousStatus.value = projectStatus === 3 ? 2 : 1;
+  const projectStatus = projectInfo.value.status;
+  nextStatus.value =
+    projectStatus === "member_recruiting" ? "mentor_recruiting" : "complete";
+  previousStatus.value =
+    projectStatus === "complete" ? "mentor_recruiting" : "member_recruiting";
 };
 
 const setOpenApplicantManageModal = async (value, projectId) => {
@@ -177,10 +179,10 @@ const applicantReject = async () => {
 const allowChangeStatus = computed(() => {
   if (changeToNextOrPrevious.value === "next") {
     return (
-      (projectInfo.value.statusId === 1 &&
+      (projectInfo.value.status === "member_recruiting" &&
         projectInfo.value.allowApplicantsNum >= countAccepted.value &&
         applicants.value.every((applicant) => applicant.status !== 0)) ||
-      (projectInfo.value.statusId === 2 &&
+      (projectInfo.value.status === "mentor_recruiting" &&
         countAccepted.value === 1 &&
         applicants.value.every((applicant) => applicant.status !== 0))
     );
@@ -210,20 +212,24 @@ const allowChangeStatus = computed(() => {
       </p>
       <div class="flex items-center justify-between mb-10">
         <UButton
-          v-if="projectInfo.statusId !== 1"
+          v-if="projectInfo.status !== 'member_recruiting'"
           class="w-[210px]"
           size="lg"
           :color="changeToNextOrPrevious === 'previous' ? 'gray' : 'white'"
           @click="changeToNextOrPrevious = 'previous'"
-          >{{ previousStatus === 2 ? "指導者招募" : "成員招募" }}</UButton
+          >{{
+            previousStatus === "mentor_recruiting" ? "指導者招募" : "成員招募"
+          }}</UButton
         >
         <UButton
-          v-if="projectInfo.statusId !== 3"
+          v-if="projectInfo.status !== 'complete'"
           class="w-[210px]"
           size="lg"
           :color="changeToNextOrPrevious === 'next' ? 'gray' : 'white'"
           @click="changeToNextOrPrevious = 'next'"
-          >{{ nextStatus === 2 ? "指導者招募" : "完成招募" }}</UButton
+          >{{
+            nextStatus === "mentor_recruiting" ? "指導者招募" : "完成招募"
+          }}</UButton
         >
       </div>
       <UButton
@@ -277,7 +283,9 @@ const allowChangeStatus = computed(() => {
       <div class="flex w-full mb-6 gap-4 text-zinc-500">
         <UContainer class="w-1/2 px-4 py-6 border border-zinc-800 rounded-xl"
           >需求人數<span class="font-mono text-xl ps-2">{{
-            projectInfo.statusId === 1 ? projectInfo.allowApplicantsNum : 1
+            projectInfo.status === "member_recruiting"
+              ? projectInfo.allowApplicantsNum
+              : 1
           }}</span>
         </UContainer>
         <UContainer
@@ -311,9 +319,10 @@ const allowChangeStatus = computed(() => {
           <div class="flex items-center gap-3" v-if="row.status === 0">
             <button
               v-if="
-                (projectInfo.statusId === 1 &&
+                (projectInfo.status === 'member_recruiting' &&
                   projectInfo.allowApplicantsNum > countAccepted) ||
-                (projectInfo.statusId === 2 && countAccepted < 1)
+                (projectInfo.status === 'mentor_recruiting' &&
+                  countAccepted < 1)
               "
               @click="
                 (openApplicantConfirmModal = true),
@@ -345,12 +354,12 @@ const allowChangeStatus = computed(() => {
   <div
     class="flex flex-col items-center w-full px-4 py-10 overflow-auto bg-white gap-4 md:flex-row dark:bg-zinc-900"
   >
-    <KanbanColumn v-for="s in projectStatus" :title="s.name" :key="s.statusId">
+    <KanbanColumn v-for="s in projectStatus" :title="s.name" :key="s.status">
       <KanbanCard
-        v-for="p in projects.filter((p) => p.statusId === s.statusId)"
+        v-for="p in projects.filter((p) => p.status === s.status)"
         :key="p.id"
         :projectId="p.id"
-        :status="p.statusId"
+        :status="p.status"
         :title="p.title"
         :text="p.description"
         :openApplicantManageModal="setOpenApplicantManageModal"

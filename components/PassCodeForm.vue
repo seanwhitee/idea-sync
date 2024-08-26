@@ -26,7 +26,6 @@ const onSubmit = async (event) => {
   }
   if (matcher(state.passCode, props.passCode.code)) {
     successFlag = true;
-    
   } else {
     successFlag = false;
     submitMessage.value = "驗證碼錯誤";
@@ -50,10 +49,7 @@ const onSubmit = async (event) => {
           lastName: props.userInfo.lastName,
           email: props.userInfo.email,
           roleVerified: props.userInfo.roleVerified,
-          userRole: {
-            id: props.userInfo.roleId,
-            roleName: props.userRole,
-          },
+          roleName: props.userRole,
           allowProjectCreate: props.userInfo.allowProjectCreate,
           allowProjectApply: props.userInfo.allowProjectApply,
         }),
@@ -61,7 +57,7 @@ const onSubmit = async (event) => {
     );
     switch (response) {
       case "User data saving failed":
-      submitMessage.value = "註冊失敗";
+        submitMessage.value = "註冊失敗";
         setTimeout(() => {
           submitMessage.value = "";
         }, 3000);
@@ -69,7 +65,7 @@ const onSubmit = async (event) => {
       default:
         submitMessage.value = "註冊成功";
         setTimeout(() => {
-          router.push('/signin')
+          router.push("/signin");
           submitMessage.value = "";
         }, 3000);
         break;
@@ -78,7 +74,6 @@ const onSubmit = async (event) => {
     setTimeout(() => {
       submitMessage.value = "";
     }, 3000);
-    
   }
 };
 </script>
@@ -98,9 +93,7 @@ const onSubmit = async (event) => {
         type="submit"
         class="w-full px-4 py-2 mt-0 rounded-lg bg-violet-800 hover:bg-violet-800/90"
       >
-        <div class="flex items-center justify-center w-full">
-          提交
-        </div>
+        <div class="flex items-center justify-center w-full">提交</div>
       </button>
     </div>
     <div class="flex items-center justify-center w-full">

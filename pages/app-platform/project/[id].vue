@@ -4,7 +4,6 @@ import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 import { useComment } from "~/composable/useComment";
 
-
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
@@ -46,7 +45,7 @@ const fetchProjectData = async () => {
         projectStore.hostId = response.hostUser.id;
         projectStore.title = response.title;
         projectStore.description = response.description;
-        projectStore.statusId = response.statusId;
+        projectStore.status = response.status;
         projectStore.isGraduationProject = response.graduationProject;
         projectStore.school = response.school;
         projectStore.allowApplicantsNum = response.allowApplicantsNum;
@@ -143,18 +142,17 @@ const handleProjectApply = async () => {
     }
   }
 };
-
 </script>
 <template>
   <div class="flex flex-col w-full">
     <div class="flex justify-between w-full gap-2">
-      <div class="flex flex-col items-start w-full md:w-6/12 gap-6">
-        <ProjectStatusVisualizer class="" :statusId="projectStore.statusId" />
+      <div class="flex flex-col items-start w-full gap-6 md:w-6/12">
+        <ProjectStatusVisualizer class="" :status="projectStore.status" />
         <div class="flex flex-col items-start justify-center p-1">
           <NuxtImg
             :src="projectStore.projectImages[0]"
             alt="project-image"
-            class="flex w-14 h-14 rounded-md"
+            class="flex rounded-md w-14 h-14"
           />
           <h1 class="text-2xl font-bold">{{ projectStore.title }}</h1>
           <p class="text-xs opacity-50 font-extralight">
@@ -163,6 +161,10 @@ const handleProjectApply = async () => {
         </div>
         <div class="flex items-center gap-4">
           <AvatarCard
+            @click="
+              router.push(`/app-platform/user-profile/${projectStore.hostId}`)
+            "
+            class="hover:cursor-pointer"
             :avatarURL="avatarURL"
             :username="username"
             :email="email"
@@ -170,15 +172,15 @@ const handleProjectApply = async () => {
           <button
             v-if="
               projectStore.hostId !== authStore.userInfo.id &&
-              ((projectStore.statusId === 1 &&
+              ((projectStore.status === 'member_recruiting' &&
                 authStore.userInfo.roleName === 'creator' &&
                 authStore.userInfo.allowProjectApply) ||
-                (projectStore.statusId === 2 &&
+                (projectStore.status === 'mentor_recruiting' &&
                   authStore.userInfo.roleName === 'mentor' &&
                   authStore.userInfo.allowProjectApply))
             "
             @click="handleProjectApply"
-            class="flex items-center justify-center px-6 py-4 text-sm font-light text-black bg-white h-3/5 rounded-md"
+            class="flex items-center justify-center px-6 py-4 text-sm font-light text-black bg-white rounded-md h-3/5"
             :class="applyButtonName === '申請' ? '' : 'text-red-500'"
           >
             {{ applyButtonName }}
@@ -219,7 +221,7 @@ const handleProjectApply = async () => {
           v-for="project in projectStore.relatedProjects"
           @click="router.push(`/app-platform/project/${project.id}`)"
           :key="project.id"
-          :status-id="project.statusId"
+          :status="project.status"
           :isGraduationProject="project.graduationProject"
           :title="project.title"
           :school="project.school"
@@ -230,9 +232,7 @@ const handleProjectApply = async () => {
         />
       </div>
     </div>
-    <h2 class="mb-4 text-lg font-bold">
-      {{ commentChuncks.length }} 則留言
-    </h2>
+    <h2 class="mb-4 text-lg font-bold">{{ commentChuncks.length }} 則留言</h2>
     <div class="flex items-start justify-start w-full gap-2">
       <NuxtImg
         :src="authStore.userInfo.avatarUrl"
@@ -241,7 +241,7 @@ const handleProjectApply = async () => {
       />
       <CommentInput
         :userId="authStore.userInfo.id"
-        :projectId="parseInt(route.params.id)"
+        :projectId="route.params.id"
         :addComment="addComment"
       />
     </div>
@@ -255,7 +255,7 @@ const handleProjectApply = async () => {
       :nickName="chunk.nickName"
       :date="formatDate(chunk.createAt)"
       :userId="authStore.userInfo.id"
-      :projectId="parseInt(route.params.id)"
+      :projectId="route.params.id"
       :children="chunk.children"
       :addReply="addReply"
     />

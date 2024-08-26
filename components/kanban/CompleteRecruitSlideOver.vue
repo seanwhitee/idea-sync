@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  projectId: Number,
+  projectId: String,
 });
 const memberTableColumn = [
   {
@@ -45,51 +45,49 @@ const isSlideOverOpen = defineModel();
 
 <template>
   <USlideover prevent-close v-model="isSlideOverOpen">
-    <div class="flex justify-end w-full p-4">
-      <UButton
-        color="gray"
-        variant="ghost"
-        icon="i-heroicons-x-mark-20-solid"
-        class=""
-        @click="isSlideOverOpen = false"
-      />
-    </div>
-    <div class="flex-col flex-1 px-6">
-      <h3 class="mb-6 text-2xl font-bold text-zinc-300">
-        {{ projectDetail.title }}
-      </h3>
+    <div class="pb-4 overflow-y-scroll">
+      <div class="flex justify-end w-full p-4">
+        <UButton
+          color="gray"
+          variant="ghost"
+          icon="i-heroicons-x-mark-20-solid"
+          class=""
+          @click="isSlideOverOpen = false"
+        />
+      </div>
+      <div class="flex-col flex-1 px-6">
+        <h3 class="mb-6 text-2xl font-bold text-zinc-300">
+          {{ projectDetail.title }}
+        </h3>
 
-      <p class="mb-2 text-sm font-bold">{{ "指導者" }}</p>
-      <AvatarCard
-        :avatarURL="teamPeoples.mentors[0].avatarUrl"
-        :username="teamPeoples.mentors[0].nickName"
-        :email="teamPeoples.mentors[0].email"
-        class="px-2 py-1 mb-6 borde w-fit pe-4 bg-zinc-800 rounded-md"
-      />
-      <h4 class="mb-1 text-sm font-bold">{{ "所需技能" }}</h4>
-      <p class="mb-4 text-zinc-500">
-        {{
-          projectDetail.requireSkills.length > 100
-            ? projectDetail.requireSkills.slice(0, 100) + "..."
-            : projectDetail.requireSkills
-        }}
-      </p>
-      <h4 class="mb-2 text-sm font-bold">{{ "團隊成員" }}</h4>
-      <UTable
-        :rows="teamPeoples.members"
-        :columns="memberTableColumn"
-        class="h-[425px] overflow-scroll border-zinc-800 border rounded-md"
-      >
-        <template #nickName-data="{ row }">
-          <NuxtLink :to="'/app-platform/user-profile/' + row.id">
-            {{
-              row.nickName.length > 7
-                ? row.nickName.slice(0, 7) + "..."
-                : row.nickName
-            }}</NuxtLink
-          >
-        </template>
-      </UTable>
+        <p class="mb-3 text-sm font-bold text-white">{{ "指導者" }}</p>
+        <AvatarCard
+          :avatarURL="teamPeoples.mentors[0].avatarUrl"
+          :username="teamPeoples.mentors[0].nickName"
+          :email="teamPeoples.mentors[0].email"
+          class="px-2 py-1 mb-6 border rounded-md border-white/50 w-fit pe-4 bg-zinc-800"
+        />
+        <h4 class="mb-3 text-sm font-bold text-white">{{ "所需技能" }}</h4>
+        <p class="mb-6 text-zinc-500">
+          {{
+            projectDetail.requireSkills.length > 100
+              ? projectDetail.requireSkills.slice(0, 100) + "..."
+              : projectDetail.requireSkills
+          }}
+        </p>
+        <h4 class="mb-3 text-sm font-bold text-white">{{ "團隊成員" }}</h4>
+        <UTable
+          :rows="teamPeoples.members"
+          :columns="memberTableColumn"
+          class="h-[425px] overflow-scroll border rounded-md border-white/50"
+        >
+          <template #nickName-data="{ row }">
+            <NuxtLink :to="'/app-platform/user-profile/' + row.id">
+              {{ row.nickName }}</NuxtLink
+            >
+          </template>
+        </UTable>
+      </div>
     </div>
   </USlideover>
 </template>

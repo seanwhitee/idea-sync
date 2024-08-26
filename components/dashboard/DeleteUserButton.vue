@@ -36,7 +36,7 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-md p-6 overflow-hidden text-left align-middle bg-white shadow-xl transform rounded-2xl transition-all"
+              class="w-full max-w-md p-6 overflow-hidden text-left align-middle bg-white shadow-xl transition-all transform rounded-2xl"
             >
               <DialogTitle
                 as="h3"
@@ -79,7 +79,7 @@ import {
 
 const router = useRouter();
 const props = defineProps({
-  userId: Number,
+  userId: String,
   nickName: String,
 });
 const isOpen = ref(false);

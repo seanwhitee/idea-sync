@@ -63,7 +63,7 @@ const handleGroupChange = async (status) => {
           v-if="searchStore.search.length > 0"
           @click="router.push(`/app-platform/project/${project.id}`)"
           :key="project.id"
-          :status-id="project.statusId"
+          :status="project.status"
           :isGraduationProject="project.graduationProject"
           :title="project.title"
           :school="project.school"
@@ -91,7 +91,7 @@ const handleGroupChange = async (status) => {
         class="flex justify-between w-full px-4 py-2 mb-4 text-sm text-white border border-zinc-800 md:text-lg"
       >
         <button
-          class="flex items-center justify-center w-1/2 px-4 py-2 ease-linear duration-200"
+          class="flex items-center justify-center w-1/2 px-4 py-2 duration-200 ease-linear"
           :class="{
             'bg-zinc-800':
               projectPoolStore.selectedGroup === 'member_recruiting',
@@ -104,7 +104,7 @@ const handleGroupChange = async (status) => {
           <p>學生招募</p>
         </button>
         <button
-          class="flex items-center justify-center w-1/2 px-4 py-2 ease-linear duration-200"
+          class="flex items-center justify-center w-1/2 px-4 py-2 duration-200 ease-linear"
           :class="{
             'bg-zinc-800':
               projectPoolStore.selectedGroup === 'mentor_recruiting',

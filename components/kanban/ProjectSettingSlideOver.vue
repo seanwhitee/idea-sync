@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  projectId: Number,
+  projectId: String,
 });
 const isSettingOpen = defineModel();
 </script>

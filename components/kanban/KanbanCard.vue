@@ -2,8 +2,8 @@
 import CompleteRecruitSlideOver from "./CompleteRecruitSlideOver.vue";
 import ProjectSettingSlideOver from "./ProjectSettingSlideOver.vue";
 const props = defineProps({
-  projectId: Number,
-  status: Number,
+  projectId: String,
+  status: String,
   title: String,
   text: String,
   openApplicantManageModal: Function,
@@ -18,7 +18,7 @@ const items = [
       click: () => {
         props.openApplicantManageModal(true, props.projectId);
       },
-      disabled: props.status === 3,
+      disabled: props.status === "complete",
     },
     {
       label: "切換狀態",
@@ -31,7 +31,7 @@ const items = [
       click: () => {
         isSlideOverOpen.value = true;
       },
-      disabled: props.status !== 3,
+      disabled: props.status !== "complete",
     },
     {
       label: "專案設定",

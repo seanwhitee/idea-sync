@@ -8,13 +8,13 @@ const projectStore = useProjectStore();
 const router = useRouter();
 const route = useRoute();
 const { userAcceptCount, userCommentCount, userDetail } = useProfileStore(
-  Number(route.params.userId)
+  route.params.userId
 );
 const personalProjects = ref([]);
 
 onMounted(async () => {
   personalProjects.value = await projectStore.getProjectByUserId(
-    Number(route.params.userId)
+    route.params.userId
   );
 });
 </script>
@@ -44,7 +44,7 @@ onMounted(async () => {
         <p class="mb-6 text-sm text-white/50">{{ userDetail.email }}</p>
         <p class="mb-3">{{ userDetail.profileDescription }}</p>
         <button
-          v-if="authStore.userInfo.id === Number(route.params.userId)"
+          v-if="authStore.userInfo.id === route.params.userId"
           class="px-4 py-1 border rounded-md border-zinc-800 bg-zinc-800/50 text-zinc-500 hover:text-white"
         >
           編輯個人檔案
@@ -58,7 +58,7 @@ onMounted(async () => {
           v-for="project in personalProjects"
           @click="router.push(`/app-platform/project/${project.id}`)"
           :key="project.id"
-          :statusId="project.statusId"
+          :status="project.status"
           :isGraduationProject="project.graduationProject"
           :title="project.title"
           :school="project.school"

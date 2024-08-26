@@ -3,9 +3,9 @@ import { useComment } from "~/composable/useComment";
 import { useAuthStore } from "~/store/auth";
 
 const props = defineProps({
-  userId: Number,
-  projectId: Number,
-  parentId: Number,
+  userId: String,
+  projectId: String,
+  parentId: String,
   addReply: Function,
 });
 const handleClick = async (parentId, userId, projectId, text) => {
@@ -18,7 +18,7 @@ const isReplyInputFocus = defineModel();
 const { comment } = useComment();
 </script>
 <template>
-  <div class="flex items-start w-full pt-5 gap-2" v-if="isReplyInputFocus">
+  <div class="flex items-start w-full gap-2 pt-5" v-if="isReplyInputFocus">
     <NuxtImg
       :src="authStore.userInfo.avatarUrl"
       alt="user-avatar"
@@ -29,7 +29,7 @@ const { comment } = useComment();
         type="text"
         v-model="comment"
         placeholder="Add a reply..."
-        class="mb-2 text-sm bg-black border-b outline-none border-b-white/50 font-extralight focus:border-b-white ease-linear duration-300"
+        class="mb-2 text-sm duration-300 ease-linear bg-black border-b outline-none border-b-white/50 font-extralight focus:border-b-white"
       />
       <div class="flex items-center justify-end gap-2">
         <button
@@ -41,7 +41,9 @@ const { comment } = useComment();
         <button
           class="px-4 py-2 text-black bg-white rounded-full hover:opacity-90 w-fit"
           :class="!comment ? 'bg-zinc-600' : ''"
-          @click="handleClick(props.parentId, props.userId, props.projectId, comment)"
+          @click="
+            handleClick(props.parentId, props.userId, props.projectId, comment)
+          "
           :disabled="!comment"
         >
           <p class="text-sm w-fit">回覆</p>

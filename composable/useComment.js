@@ -12,7 +12,7 @@ export const useComment = () => {
             "Content-Type": "application/json",
           },
         }
-      )
+      );
       if (commentChunk) {
         commentChuncks.value.push(commentChunk);
       }
@@ -32,11 +32,11 @@ export const useComment = () => {
             "Content-Type": "application/json",
           },
         }
-      )
+      );
       if (reply) {
         const commentChunk = commentChuncks.value.find((commentChunk) => {
           return commentChunk.id === parentId;
-        })
+        });
         commentChunk.children.push(reply);
       }
     } catch (e) {
@@ -45,11 +45,10 @@ export const useComment = () => {
     }
   };
 
-  return { 
+  return {
     commentChuncks,
     comment,
     addComment,
-    addReply
+    addReply,
   };
-
-}
+};

@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import GradientFog from "~/components/GradientFog.vue";
+import PassCodeForm from "~/components/PassCodeForm.vue";
+import RegistrationForm from "~/components/RegistrationForm.vue";
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const router = useRouter();
@@ -13,7 +16,6 @@ let userInfo = {
   password: "",
   nickName: "",
   profileDescription: "",
-  roleId: 1,
   allowProjectApply: false,
   allowProjectCreate: false,
   roleVerified: false,
@@ -21,6 +23,7 @@ let userInfo = {
   avatarURL: "",
   firstName: "",
   lastName: "",
+  roleName: "",
 };
 const passCode = {
   code: 0,
@@ -45,15 +48,7 @@ const generatePassCode = async () => {
     }
   );
 };
-const getRoleName = (roleId) => {
-  if (roleId === 1) {
-    return "creator";
-  } else if (roleId === 2) {
-    return "mentor";
-  } else if (roleId === 3) {
-    return "admin";
-  }
-};
+
 const updateStep = (newStep) => {
   step.value = newStep;
 };
@@ -70,7 +65,7 @@ const updateUserInfo = (newUserInfo) => {
       <img
         src="/public/favicon.png"
         alt="favicon"
-        class="w-20 mb-6 shadow-xl translate-x-4 rounded-3xl"
+        class="w-20 mb-6 translate-x-4 shadow-xl rounded-3xl"
       />
       <h1
         class="flex justify-start w-full px-4 mb-8 text-lg font-semibold md:text-2xl lg:text-2xl"
@@ -89,12 +84,12 @@ const updateUserInfo = (newUserInfo) => {
           :updateUserInfo="updateUserInfo"
           :generatePassCode="generatePassCode"
         />
-        <PasscodeForm
+        <PassCodeForm
           v-else-if="step === 2"
           :userInfo="userInfo"
           :passCode="passCode"
           :generatePassCode="generatePassCode"
-          :userRole="getRoleName(userInfo.roleId)"
+          :userRole="userInfo.roleName"
         />
         <div
           class="flex justify-start w-full mt-4 text-xs pe-2 text-whit font-extralight"
