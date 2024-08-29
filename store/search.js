@@ -1,37 +1,45 @@
 import { defineStore } from "pinia";
+import useCustomFetch from "~/composable/useCustomFetch";
+import { useAuthStore } from "./auth";
 
-export const useSearchStore = defineStore(
-  "search",
-  () => {
-    const isSearching = ref(false);
-    const searchString = ref('');
+export const useSearchStore = defineStore("search", () => {
+  const isSearching = ref(false);
+  const searchString = ref("");
+  const { fetch: searchProj } = useCustomFetch(
+    "http://localhost:8080/api/v1/project/search"
+  );
+  const authStore = useAuthStore();
 
-    const startSearch = async (searchString) => {
-      if(!searchString) return;
-      isSearching.value = true;
-      try {
-        await $fetch(`http://localhost:8080/api/v1/project/search?searchString=${searchString}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => {
-          search.value = [...res];
-          isSearching.value = false;
-        });
-        
-      } catch (error) {
+  const startSearch = async (searchString) => {
+    if (!searchString) return;
+    isSearching.value = true;
+    try {
+      await searchProj(
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.token.accessToken}`,
+        },
+        {
+          searchString: searchString,
+        },
+        null,
+        "GET"
+      ).then((res) => {
+        search.value = [...res];
         isSearching.value = false;
-        console.error(error);
-      }
-    };
+      });
+    } catch (error) {
+      isSearching.value = false;
+      console.error(error);
+    }
+  };
 
-    // list of projects
-    const search = ref([]);
-    return { 
-      startSearch,
-      searchString,
-      isSearching,
-      search };
-  }
-);
+  // list of projects
+  const search = ref([]);
+  return {
+    startSearch,
+    searchString,
+    isSearching,
+    search,
+  };
+});

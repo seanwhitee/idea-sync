@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 import { useComment } from "~/composable/useComment";
+import useCustomFetch from "~/composable/useCustomFetch";
 
 const route = useRoute();
 const router = useRouter();
@@ -10,6 +11,15 @@ const authStore = useAuthStore();
 const projectStore = useProjectStore();
 const toast = useToast();
 const { commentChuncks, addComment, addReply } = useComment();
+const { fetch: getProjectDetail } = useCustomFetch(
+  "http://localhost:8080/api/v1/project/getProjectById"
+);
+const { fetch: add } = useCustomFetch(
+  "http://localhost:8080/api/v1/applicant/addApplicant"
+);
+const { fetch: deleteAppli } = useCustomFetch(
+  "http://localhost:8080/api/v1/applicant/deleteApplicant"
+);
 
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   router.push("/");
@@ -32,14 +42,17 @@ const formatDate = (dateString) => {
 
 const fetchProjectData = async () => {
   try {
-    await $fetch(
-      `http://localhost:8080/api/v1/project/getProjectById?id=${route.params.id}`,
+    await getProjectDetail(
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        userId: authStore.userInfo.id,
+        projectId: route.params.id,
+      },
+      null,
+      "GET"
     )
       .then((response) => {
         projectStore.hostId = response.hostUser.id;
@@ -53,6 +66,7 @@ const fetchProjectData = async () => {
         projectStore.tags = response.tags;
         projectStore.requireSkills = response.requireSkills;
         projectStore.createAt = formatDate(response.createAt);
+        projectStore.isPublic = response.public;
         commentChuncks.value = response.commentChunks;
         projectStore.applicants = response.applicants;
         if (
@@ -82,14 +96,17 @@ const { data, error } = useAsyncData("projectData", fetchProjectData);
 const handleProjectApply = async () => {
   if (applyButtonName.value === "申請") {
     try {
-      const res = await $fetch(
-        `http://localhost:8080/api/v1/applicant/addApplicant?projectId=${route.params.id}&userId=${authStore.userInfo.id}`,
+      const res = await add(
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.token.accessToken}`,
+        },
+        {
+          projectId: route.params.id,
+          userId: authStore.userInfo.id,
+        },
+        null,
+        "POST"
       );
       switch (res) {
         case "User is already an applicant":
@@ -112,14 +129,17 @@ const handleProjectApply = async () => {
     }
   } else if (applyButtonName.value === "取消申請") {
     try {
-      const res = await $fetch(
-        `http://localhost:8080/api/v1/applicant/deleteApplicant?projectId=${route.params.id}&userId=${authStore.userInfo.id}`,
+      const res = await deleteAppli(
         {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.token.accessToken}`,
+        },
+        {
+          projectId: route.params.id,
+          userId: authStore.userInfo.id,
+        },
+        null,
+        "DELETE"
       );
       switch (res) {
         case "Applicant deleted successfully":
@@ -154,7 +174,14 @@ const handleProjectApply = async () => {
             alt="project-image"
             class="flex rounded-md w-14 h-14"
           />
-          <h1 class="text-2xl font-bold">{{ projectStore.title }}</h1>
+          <h1 class="text-2xl font-bold">
+            <Icon
+              v-if="!projectStore.isPublic"
+              name="ic:outline-disabled-visible"
+              class="w-6 h-6"
+            />
+            <p>{{ projectStore.title }}</p>
+          </h1>
           <p class="text-xs opacity-50 font-extralight">
             {{ projectStore.createAt }}
           </p>
@@ -211,7 +238,7 @@ const handleProjectApply = async () => {
           <h2 class="text-lg font-bold">所需技能：</h2>
           <p class="opacity-80">{{ projectStore.requireSkills }}</p>
         </div>
-        <div class="flex flex-col mb-10 gap-2">
+        <div class="flex flex-col gap-2 mb-10">
           <h2 class="text-lg font-bold">提案說明：</h2>
           <p class="opacity-80">{{ projectStore.description }}</p>
         </div>

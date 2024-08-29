@@ -56,7 +56,10 @@ if (authStore.userInfo.roleName === "admin") {
 }
 
 onMounted(async () => {
-  projects.value = await projectStore.getProjectByUserId(authStore.userInfo.id);
+  projects.value = await projectStore.getProjectByUserId(
+    authStore.userInfo.id,
+    true
+  );
 });
 
 const rejectOrAccept = "";
@@ -280,7 +283,7 @@ const allowChangeStatus = computed(() => {
       </div>
       <p class="mb-10 text-sm text-zinc-500">接受或拒絕申請者加入專案</p>
       <!--get require and accept-->
-      <div class="flex w-full mb-6 gap-4 text-zinc-500">
+      <div class="flex w-full gap-4 mb-6 text-zinc-500">
         <UContainer class="w-1/2 px-4 py-6 border border-zinc-800 rounded-xl"
           >需求人數<span class="font-mono text-xl ps-2">{{
             projectInfo.status === "member_recruiting"
@@ -352,7 +355,7 @@ const allowChangeStatus = computed(() => {
 
   <!--kanban-->
   <div
-    class="flex flex-col items-center w-full px-4 py-10 overflow-auto bg-white gap-4 md:flex-row dark:bg-zinc-900"
+    class="flex flex-col items-center w-full gap-4 px-4 py-10 overflow-auto bg-white md:flex-row dark:bg-zinc-900"
   >
     <KanbanColumn v-for="s in projectStatus" :title="s.name" :key="s.status">
       <KanbanCard

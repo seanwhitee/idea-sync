@@ -1,8 +1,20 @@
+import { useAuthStore } from "~/store/auth";
+import useCustomFetch from "./useCustomFetch";
+
 export const useProfileStore = (userId) => {
   const userCommentCount = ref(0);
   const userAcceptCount = ref(0);
   const userDetail = ref({});
-
+  const authStore = useAuthStore();
+  const { fetch: countComment } = useCustomFetch(
+    "http://localhost:8080/api/v1/users/countUserComments"
+  );
+  const { fetch: countAccept } = useCustomFetch(
+    "http://localhost:8080/api/v1/users/countAccept"
+  );
+  const { fetch: getUserDetail } = useCustomFetch(
+    "http://localhost:8080/api/v1/users/getDetail"
+  );
   onMounted(async () => {
     userCommentCount.value = await countUserComment(userId);
     userAcceptCount.value = await countUserAccept(userId);
@@ -10,32 +22,47 @@ export const useProfileStore = (userId) => {
   });
 
   const countUserComment = async (userId) => {
-    const d = await $fetch(
-      "http://localhost:8080/api/v1/users/countUserComments",
+    const d = await countComment(
       {
-        method: "GET",
-        params: {
-          userId: userId,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        userId: userId,
+      },
+      null,
+      "GET"
     );
     return d;
   };
 
   const countUserAccept = async (userId) => {
-    const d = await $fetch("http://localhost:8080/api/v1/users/countAccept", {
-      method: "GET",
-      params: {
+    const d = await countAccept(
+      {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
         userId: userId,
       },
-    });
+      null,
+      "GET"
+    );
     return d;
   };
 
   const getUser = async (userId) => {
-    const d = await $fetch(`http://localhost:8080/api/v1/users/${userId}`, {
-      method: "GET",
-    });
+    const d = await getUserDetail(
+      {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        id: userId,
+      },
+      null,
+      "GET"
+    );
     return d;
   };
   return {
