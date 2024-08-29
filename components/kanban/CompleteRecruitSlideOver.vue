@@ -1,4 +1,6 @@
 <script setup>
+import { useProjectStore } from "~/store/project";
+
 const props = defineProps({
   projectId: String,
 });
@@ -13,16 +15,9 @@ const memberTableColumn = [
   },
 ];
 const projectDetail = ref({});
-
+const projectStore = useProjectStore();
 onMounted(async () => {
-  projectDetail.value = await $fetch(
-    "http://localhost:8080/api/v1/project/getProjectById",
-    {
-      params: {
-        id: props.projectId,
-      },
-    }
-  );
+  projectDetail.value = await projectStore.getProjectById(props.projectId);
 });
 
 const teamPeoples = computed(() => {

@@ -1,4 +1,5 @@
 <script setup>
+import useCustomFetch from "~/composable/useCustomFetch";
 import { useAuthStore } from "~/store/auth";
 import { useProjectPoolStore } from "~/store/projectPool";
 import { useSearchStore } from "~/store/search";
@@ -15,32 +16,23 @@ if (!isLogin || !authStore.userInfo.roleVerified) {
 projectPoolStore.selectedGroup = "member_recruiting";
 
 const openSearch = ref(false);
-
-const { data: archiveDatas, error: archiveError } = useAsyncData(
-  "getarchives",
-  async () => {
-    try {
-      const response = await $fetch(
-        `http://localhost:8080/api/v1/archive/getArchives?userId=${authStore.userInfo.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      projectPoolStore.archives = response;
-      return response;
-    } catch (e) {
-      console.error(e);
-      return [];
-    }
-  }
+const { fetch: fetchArc, isLoading: isArcLoading } = useCustomFetch(
+  "http://localhost:8080/api/v1/archive/getArchives"
 );
 
 onMounted(async () => {
   await fetchProjects("member_recruiting");
+  projectPoolStore.archives = await fetchArc(
+    {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authStore.token.accessToken}`,
+    },
+    {
+      userId: authStore.userInfo.id,
+    },
+    null,
+    "GET"
+  );
 });
 
 async function fetchProjects(status) {
@@ -73,7 +65,7 @@ const handleGroupChange = async (status) => {
           :imageURL="project.images[0]"
         />
         <div v-if="searchStore.search.length == 0 && !searchStore.isSearching">
-          <p class="flex items-center justify-center py-10 gap-2 text-zinc-500">
+          <p class="flex items-center justify-center gap-2 py-10 text-zinc-500">
             <span>Press</span>
             <UKbd>Enter</UKbd>
             <span>to search</span>

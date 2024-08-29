@@ -1,17 +1,31 @@
+import { useAuthStore } from "~/store/auth";
+import useCustomFetch from "./useCustomFetch";
+
 export const useComment = () => {
   const commentChuncks = ref([]);
   const comment = ref("");
+  const authStore = useAuthStore();
+  const { fetch: add } = useCustomFetch(
+    "http://localhost:8080/api/v1/comment/addComment"
+  );
+  const { fetch: replyComment } = useCustomFetch(
+    "http://localhost:8080/api/v1/comment/addReply"
+  );
 
   const addComment = async (userId, projectId, text) => {
     try {
-      const commentChunk = await $fetch(
-        `http://localhost:8080/api/v1/comment/addComment?userId=${userId}&projectId=${projectId}&text=${text}`,
+      const commentChunk = await add(
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.token.accessToken}`,
+        },
+        {
+          userId: userId,
+          projectId: projectId,
+          text: text,
+        },
+        null,
+        "POST"
       );
       if (commentChunk) {
         commentChuncks.value.push(commentChunk);
@@ -24,14 +38,19 @@ export const useComment = () => {
 
   const addReply = async (parentId, userId, projectId, text) => {
     try {
-      const reply = await $fetch(
-        `http://localhost:8080/api/v1/comment/addReply?userId=${userId}&projectId=${projectId}&text=${text}&parentId=${parentId}`,
+      const reply = await replyComment(
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authStore.token.accessToken}`,
+        },
+        {
+          userId: userId,
+          projectId: projectId,
+          text: text,
+          parentId: parentId,
+        },
+        null,
+        "POST"
       );
       if (reply) {
         const commentChunk = commentChuncks.value.find((commentChunk) => {

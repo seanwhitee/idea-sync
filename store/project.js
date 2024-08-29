@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import useCustomFetch from "~/composable/useCustomFetch";
+import { useAuthStore } from "./auth";
 
 // store for create project
 export const useProjectStore = defineStore("project", () => {
@@ -16,7 +18,36 @@ export const useProjectStore = defineStore("project", () => {
   const requireSkills = ref("");
   const applicants = ref([]);
 
+  const isPublic = ref(true);
+
   const relatedProjects = ref([]);
+  const authStore = useAuthStore();
+  const { fetch: getProjectsByUser } = useCustomFetch(
+    "http://localhost:8080/api/v1/project/getProjectsByUser"
+  );
+  const { fetch: getProjectApplied } = useCustomFetch(
+    "http://localhost:8080/api/v1/applicant/getProjectAppliedByUser"
+  );
+
+  const { fetch: getRelated } = useCustomFetch(
+    "http://localhost:8080/api/v1/project/getRelatedProjects"
+  );
+
+  const { fetch: getProjectDetail } = useCustomFetch(
+    "http://localhost:8080/api/v1/project/getProjectById"
+  );
+
+  const { fetch: reject } = useCustomFetch(
+    "http://localhost:8080/api/v1/applicant/rejectApplicant"
+  );
+
+  const { fetch: accept } = useCustomFetch(
+    "http://localhost:8080/api/v1/applicant/acceptApplicant"
+  );
+
+  const { fetch: changeProjStatus } = useCustomFetch(
+    "http://localhost:8080/api/v1/project/changeProjectStatus"
+  );
 
   const reset = () => {
     hostId.value = "";
@@ -31,98 +62,115 @@ export const useProjectStore = defineStore("project", () => {
     tags.value = [];
     createAt.value = new Date();
     applicants.value = [];
+    isPublic.value = true;
   };
 
-  const getProjectByUserId = async (userId) => {
-    const res = await $fetch(
-      "http://localhost:8080/api/v1/project/getProjectsByUser",
+  const getProjectByUserId = async (userId, includePrivate) => {
+    const res = await getProjectsByUser(
       {
-        method: "GET",
-        params: {
-          userId: userId,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        userId: userId,
+        includePrivate: includePrivate,
+      },
+      null,
+      "GET"
     );
     return res;
   };
-
   const getProjectAppliedByUser = async (userId) => {
-    const res = await $fetch(
-      "http://localhost:8080/api/v1/applicant/getProjectAppliedByUser",
+    const res = await getProjectApplied(
       {
-        method: "GET",
-        params: {
-          userId: userId,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        userId: userId,
+      },
+      null,
+      "GET"
     );
     return res;
   };
 
   const getRelatedProjects = async (projectId) => {
-    await $fetch("http://localhost:8080/api/v1/project/getRelatedProjects", {
-      method: "GET",
-      params: {
+    await getRelated(
+      {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
         projectId: projectId,
       },
-    }).then((res) => {
+      null,
+      "GET"
+    ).then((res) => {
       relatedProjects.value = res;
     });
   };
 
   const getProjectById = async (projectId) => {
-    const res = await $fetch(
-      "http://localhost:8080/api/v1/project/getProjectById",
+    const res = await getProjectDetail(
       {
-        method: "GET",
-        params: {
-          id: projectId,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        id: projectId,
+      },
+      null,
+      "GET"
     );
-
     return res;
   };
 
   const rejectApplicant = async (projectId, userId) => {
-    const res = await $fetch(
-      "http://localhost:8080/api/v1/applicant/rejectApplicant",
+    const res = await reject(
       {
-        method: "POST",
-        params: {
-          projectId: projectId,
-          userId: userId,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        projectId: projectId,
+        userId: userId,
+      },
+      null,
+      "POST"
     );
     return res;
   };
 
   const acceptApplicant = async (projectId, userId) => {
-    const res = await $fetch(
-      "http://localhost:8080/api/v1/applicant/acceptApplicant",
+    const res = await accept(
       {
-        method: "POST",
-        params: {
-          projectId: projectId,
-          userId: userId,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        projectId: projectId,
+        userId: userId,
+      },
+      null,
+      "POST"
     );
     return res;
   };
 
   const changeProjectStatus = async (projectId, status, nextOrPrevious) => {
-    const res = await $fetch(
-      "http://localhost:8080/api/v1/project/changeProjectStatus",
+    const res = await changeProjStatus(
       {
-        method: "POST",
-        params: {
-          projectId: projectId,
-          status: status,
-          nextOrPrevious: nextOrPrevious,
-        },
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
+      },
+      {
+        projectId: projectId,
+        status: status,
+        nextOrPrevious: nextOrPrevious,
+      },
+      null,
+      "POST"
     );
     return res;
   };
@@ -168,5 +216,6 @@ export const useProjectStore = defineStore("project", () => {
     createAt,
     applicants,
     relatedProjects,
+    isPublic,
   };
 });

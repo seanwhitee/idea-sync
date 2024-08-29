@@ -14,7 +14,8 @@ const personalProjects = ref([]);
 
 onMounted(async () => {
   personalProjects.value = await projectStore.getProjectByUserId(
-    route.params.userId
+    route.params.userId,
+    false
   );
 });
 </script>
@@ -24,16 +25,16 @@ onMounted(async () => {
     <div class="flex flex-col gap-4 md:flex-row">
       <UContainer
         class="flex flex-col w-full px-4 py-6 text-white rounded-md bg-zinc-900 md:w-1/2"
-        ><span class="text-5xl font-bold">{{ userCommentCount }}</span
+        ><span class="text-5xl font-bold">{{ userCommentCount ?? 0 }}</span
         ><span class="text-zinc-500">總留言數</span>
       </UContainer>
       <UContainer
         class="flex flex-col w-full px-4 py-6 text-white rounded-md bg-zinc-900 md:w-1/2"
-        ><span class="text-5xl font-bold">{{ userAcceptCount }}</span
+        ><span class="text-5xl font-bold">{{ userAcceptCount ?? 0 }}</span
         ><span class="text-zinc-500">總錄取專案數</span>
       </UContainer>
     </div>
-    <div class="flex flex-col justify-between w-full pt-10 gap-6 md:flex-row">
+    <div class="flex flex-col justify-between w-full gap-6 pt-10 md:flex-row">
       <div class="flex flex-col w-full max-w-sm pt-10 font-light text-white">
         <NuxtImg
           :src="userDetail.avatarUrl"

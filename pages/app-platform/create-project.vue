@@ -1,4 +1,5 @@
 <script setup>
+import useCustomFetch from "~/composable/useCustomFetch";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 
@@ -18,6 +19,9 @@ const tagInputString = ref("");
 
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
+const { fetch: create } = useCustomFetch(
+  "http://localhost:8080/api/v1/project/create"
+);
 if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
   throw new Error("Not authorized");
 }
@@ -178,12 +182,13 @@ const handleSubmit = async () => {
   }
 
   try {
-    await $fetch(`http://localhost:8080/api/v1/project/create`, {
-      method: "POST",
-      headers: {
+    await create(
+      {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${authStore.token.accessToken}`,
       },
-      body: JSON.stringify({
+      null,
+      {
         hostId: authStore.userInfo.id,
         title: projectStore.title,
         description: projectStore.description,
@@ -194,8 +199,9 @@ const handleSubmit = async () => {
         projectImages: projectStore.projectImages,
         tags: projectStore.tags,
         requireSkills: projectStore.requireSkills,
-      }),
-    }).then((res) => {
+      },
+      "POST"
+    ).then((res) => {
       if (res === "Project created successfully") {
         isSubmitProcessing.value = false;
         toast.add({ title: "提案創建成功" });
@@ -249,7 +255,7 @@ const handleSubmit = async () => {
         </div>
         <p
           v-else
-          class="flex items-center justify-center px-1 gap-2 text-white/65"
+          class="flex items-center justify-center gap-2 px-1 text-white/65"
         >
           <span>Press</span>
           <UKbd>Enter</UKbd>
@@ -259,7 +265,7 @@ const handleSubmit = async () => {
     </div>
   </UModal>
   <div
-    class="flex flex-wrap items-start justify-start w-full px-3 py-3 border border-white border-dotted cursor-pointer gap-2"
+    class="flex flex-wrap items-start justify-start w-full gap-2 px-3 py-3 border border-white border-dotted cursor-pointer"
     @click="tagModalOpen = true"
   >
     <AppTag
@@ -307,7 +313,7 @@ const handleSubmit = async () => {
     </label>
   </div>
   <div class="flex items-center justify-start w-full">
-    <label class="cursor-pointer gap-2 label">
+    <label class="gap-2 cursor-pointer label">
       <span class="text-white label-text">畢業專題</span>
       <span class="text-sm">否</span>
       <input

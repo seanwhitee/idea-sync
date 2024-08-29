@@ -6,6 +6,9 @@ export const useAuthStore = defineStore(
   () => {
     const isLogin = ref(false);
     const userInfo = ref({});
+    const token = reactive({
+      accessToken: undefined,
+    });
 
     const roleName = computed(() => {
       switch (userInfo.value.roleName) {
@@ -17,12 +20,12 @@ export const useAuthStore = defineStore(
           return "系統管理者";
       }
     });
-    return { isLogin, userInfo, roleName };
+    return { isLogin, userInfo, roleName, token };
   },
   {
     persist: {
       storage: sessionStorage,
-      paths: ["isLogin", "userInfo"],
+      paths: ["isLogin", "userInfo", "token"],
     },
   }
 );

@@ -5,8 +5,9 @@ export const useAuth = () => {
   const router = useRouter();
   const login = (user) => {
     authStore.isLogin = true;
-    authStore.userInfo = user;
-    router.go();
+    authStore.userInfo = user.userResponse;
+    authStore.token.accessToken = user.token.accessToken;
+    router.push("/");
   };
 
   return { login };

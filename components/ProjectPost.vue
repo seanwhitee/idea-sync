@@ -48,7 +48,7 @@ const title = computed(() => {
       <div class="flex flex-col">
         <NuxtLink
           :to="`/app-platform/project/${props.project.id}`"
-          class="text-base font-bold text-white cursor-pointer md:text-2xl hover:bg-violet-500 ease-linear duration-200 w-fit"
+          class="text-base font-bold text-white duration-200 ease-linear cursor-pointer md:text-2xl hover:bg-violet-500 w-fit"
           :class="
             hoverEffect
               ? 'border-b-4 border-violet-500 ease-linear duration-200'
@@ -56,10 +56,11 @@ const title = computed(() => {
           "
         >
           {{ title }}
-      </NuxtLink>
+        </NuxtLink>
+
         <!--feature section contains allowApplicantsNum|applicantCount-->
         <div
-          class="flex items-center pt-1 mb-3 text-xs text-white gap-2 md:text-sm"
+          class="flex items-center gap-2 pt-1 mb-3 text-xs text-white md:text-sm"
         >
           <p>
             需求人數：{{ props.project.allowApplicantsNum }}
@@ -75,7 +76,7 @@ const title = computed(() => {
       </div>
 
       <!--tags-->
-      <div class="flex flex-wrap items-center w-full py-1 gap-2 pe-3">
+      <div class="flex flex-wrap items-center w-full gap-2 py-1 pe-3">
         <AppTag :tagName="props.project.school" color="fuchsia" />
         <AppTag
           v-if="props.project.graduationProject"
