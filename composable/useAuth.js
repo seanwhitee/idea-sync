@@ -7,8 +7,11 @@ export const useAuth = () => {
     authStore.isLogin = true;
     authStore.userInfo = user.userResponse;
     authStore.token.accessToken = user.token.accessToken;
-    router.push("/");
+    router.push("/app-platform/projects");
   };
-
-  return { login };
+  const logout = () => {
+    authStore.reset();
+    router.push("/signin");
+  };
+  return { login, logout };
 };

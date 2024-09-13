@@ -1,14 +1,5 @@
 <script setup>
 import MenuNav from "~/components/MenuNav.vue";
-import { useAuthStore } from "~/store/auth";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-const authStore = useAuthStore();
-const isLogin = authStore.isLogin;
-if (isLogin) {
-  router.push("/app-platform/projects");
-}
 
 const featuresData = [
   {
@@ -28,11 +19,12 @@ const menuItems = [
   {
     name: "登入",
     path: "/signin",
-  }, {
+  },
+  {
     name: "立即註冊",
     path: "/signup",
-  }
-]
+  },
+];
 const isMenuOpen = ref(false);
 </script>
 <template>
@@ -41,7 +33,7 @@ const isMenuOpen = ref(false);
   <GradientFog />
   <div class="w-full pt-48 bg-white border-b section-1">
     <div
-      class="flex flex-col items-start w-full px-10 mb-10 text-4xl text-zinc-500 animate-slidein gap-4 md:items-center md:text-6xl"
+      class="flex flex-col items-start w-full gap-4 px-10 mb-10 text-4xl text-zinc-500 animate-slidein md:items-center md:text-6xl"
     >
       <p>尋找專題成員</p>
       <p class="text-start md:text-center">
@@ -101,7 +93,7 @@ const isMenuOpen = ref(false);
               variant="soft"
               class="px-6 mt-10 rounded-full"
             >
-              <p class="flex items-center justify-center h-fit gap-2">
+              <p class="flex items-center justify-center gap-2 h-fit">
                 開始使用
                 <Icon
                   name="mdi:arrow-right"

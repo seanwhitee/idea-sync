@@ -1,4 +1,5 @@
 <script setup>
+import { formatDate } from "~/utils/formatDate";
 const props = defineProps({
   commentId: String,
   avatarURL: String,
@@ -8,14 +9,13 @@ const props = defineProps({
   children: Array,
   userId: String,
   projectId: String,
-  formatDate: Function,
   addReply: Function,
 });
 const replyShow = ref(false);
 const isReplyInputFocus = ref(false);
 </script>
 <template>
-  <div class="flex items-start w-full mb-4 gap-2">
+  <div class="flex items-start w-full gap-2 mb-4">
     <NuxtImg
       :src="props.avatarURL"
       class="w-8 h-8 border border-white rounded-full"

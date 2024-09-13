@@ -1,4 +1,6 @@
 <script setup>
+import ProfileForm from "~/components/form/profileForm.vue";
+import useCustomFetch from "~/composable/useCustomFetch";
 import { useProfileStore } from "~/composable/useProfileStore";
 import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
@@ -7,8 +9,18 @@ const authStore = useAuthStore();
 const projectStore = useProjectStore();
 const router = useRouter();
 const route = useRoute();
-const { userAcceptCount, userCommentCount, userDetail } = useProfileStore(
+const isProfileEditable = ref(false);
+const profile = computed(() => ({
+  nickName: authStore.userInfo.nickName,
+  profileDescription: authStore.userInfo.profileDescription,
+}));
+
+const toast = useToast();
+const { userAcceptCount, userCommentCount } = useProfileStore(
   route.params.userId
+);
+const { fetch: updateUser, isLoading: updateLoading } = useCustomFetch(
+  "http://localhost:8080/api/v1/users/updateUser"
 );
 const personalProjects = ref([]);
 
@@ -18,6 +30,27 @@ onMounted(async () => {
     false
   );
 });
+const updateProfile = async (data) => {
+  const res = await updateUser(
+    {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authStore.token.accessToken}`,
+    },
+    null,
+    {
+      ...authStore.userInfo,
+      ...data,
+    },
+    "PATCH"
+  );
+
+  Object.assign(authStore.userInfo, res);
+  toast.add({
+    title: "更新成功",
+    description: "個人檔案已更新",
+  });
+  isProfileEditable.value = false;
+};
 </script>
 <template>
   <div class="w-full px-4 py-3 mx-auto md:w-11/12">
@@ -37,19 +70,40 @@ onMounted(async () => {
     <div class="flex flex-col justify-between w-full gap-6 pt-10 md:flex-row">
       <div class="flex flex-col w-full max-w-sm pt-10 font-light text-white">
         <NuxtImg
-          :src="userDetail.avatarUrl"
+          :src="authStore.userInfo.avatarUrl"
           alt="user-img"
           class="mb-4 rounded-full"
         />
-        <h2 class="text-3xl font-bold">{{ userDetail.nickName }}</h2>
-        <p class="mb-6 text-sm text-white/50">{{ userDetail.email }}</p>
-        <p class="mb-3">{{ userDetail.profileDescription }}</p>
-        <button
-          v-if="authStore.userInfo.id === route.params.userId"
-          class="px-4 py-1 border rounded-md border-zinc-800 bg-zinc-800/50 text-zinc-500 hover:text-white"
-        >
-          編輯個人檔案
-        </button>
+        <UBadge
+          :label="mapRoleName(authStore.userInfo.roleName)"
+          variant="soft"
+          class="mb-2 w-fit"
+          size="sm"
+        />
+
+        <!-- profile info -->
+        <div v-if="!isProfileEditable" class="flex flex-col">
+          <h2 class="text-3xl font-bold">{{ authStore.userInfo.nickName }}</h2>
+          <p class="mb-6 text-sm text-white/50">
+            {{ authStore.userInfo.email }}
+          </p>
+          <p class="mb-3">{{ authStore.userInfo.profileDescription }}</p>
+          <UButton
+            v-if="authStore.userInfo.id === route.params.userId"
+            @click="isProfileEditable = true"
+            color="white"
+            class="flex justify-center px-3 py-2.5"
+          >
+            編輯個人檔案
+          </UButton>
+        </div>
+        <ProfileForm
+          v-else
+          :defaultValues="profile"
+          :isLoading="updateLoading"
+          actionText="更新"
+          @save="updateProfile"
+        />
       </div>
       <div class="flex flex-col w-full max-w-sm gap-2">
         <h4 class="text-2xl">

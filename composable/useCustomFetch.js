@@ -4,6 +4,7 @@
  * @returns
  */
 const useCustomFetch = (endPoint) => {
+  const router = useRouter();
   const isLoading = ref(false);
   const error = ref(null);
   /**
@@ -31,6 +32,13 @@ const useCustomFetch = (endPoint) => {
       return data;
     } catch (e) {
       isLoading.value = false;
+      if (e?.response?.status === 401) {
+        router.push("/signin");
+      } else {
+        error.value = e instanceof Error ? e.message : JSON.stringify(e);
+      }
+
+      console.error(error.value);
       throw new Error(`Failed to fetch on url: ${endPoint}`);
     }
   };

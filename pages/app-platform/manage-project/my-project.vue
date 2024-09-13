@@ -48,13 +48,6 @@ const modalProjectId = ref("");
 const projectInfo = ref({});
 const applicantInfo = ref({});
 
-if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
-  throw new Error("Not authenticated");
-}
-if (authStore.userInfo.roleName === "admin") {
-  throw new Error("You cannot access this page");
-}
-
 onMounted(async () => {
   projects.value = await projectStore.getProjectByUserId(
     authStore.userInfo.id,
@@ -94,7 +87,11 @@ const setOpenProjectStatusChangeModal = async (value, projectId) => {
   modalProjectId.value = projectId;
 
   // get project info
-  projectInfo.value = await projectStore.getProjectById(projectId);
+  projectInfo.value = await projectStore.getProjectById(
+    authStore.userInfo.id,
+    projectId,
+    true
+  );
 
   applicants.value = projectInfo.value.applicants.map((applicant) => {
     const { id, nickName, email } = applicant.user;
@@ -115,7 +112,11 @@ const setOpenApplicantManageModal = async (value, projectId) => {
   modalProjectId.value = projectId;
 
   // get project info
-  projectInfo.value = await projectStore.getProjectById(projectId);
+  projectInfo.value = await projectStore.getProjectById(
+    authStore.userInfo.id,
+    projectId,
+    true
+  );
 
   applicants.value = projectInfo.value.applicants.map((applicant) => {
     const { id, nickName, email } = applicant.user;

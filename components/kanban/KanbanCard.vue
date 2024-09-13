@@ -51,6 +51,7 @@ const router = useRouter();
   <ProjectSettingSlideOver
     v-model="isSettingOpen"
     :projectId="props.projectId"
+    :include-private="true"
   />
   <div
     class="flex flex-col items-center justify-center w-full p-3 border bg-zinc-900 border-zinc-500/40"

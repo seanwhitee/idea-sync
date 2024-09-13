@@ -12,7 +12,6 @@ const messageMap = {
   "Project created failed": "提案創建失敗",
 };
 
-const router = useRouter();
 const toast = useToast();
 const tagModalOpen = ref(false);
 const tagInputString = ref("");
@@ -22,13 +21,6 @@ const projectStore = useProjectStore();
 const { fetch: create } = useCustomFetch(
   "http://localhost:8080/api/v1/project/create"
 );
-if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
-  throw new Error("Not authorized");
-}
-
-if (authStore.userInfo.roleName === "admin") {
-  throw new Error("You cannot access this page");
-}
 
 projectStore.reset();
 

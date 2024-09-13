@@ -1,8 +1,11 @@
 <script setup>
+import { useAuthStore } from "~/store/auth";
 import { useProjectStore } from "~/store/project";
 
 const props = defineProps({
   projectId: String,
+  disabled: Boolean,
+  includePrivate: Boolean,
 });
 const memberTableColumn = [
   {
@@ -14,14 +17,36 @@ const memberTableColumn = [
     label: "Email",
   },
 ];
-const projectDetail = ref({});
+const authStore = useAuthStore();
+const projectDetail = reactive({
+  allowApplicantsNum: undefined,
+  applicants: [],
+  commentChunks: [],
+  createAt: "",
+  description: "",
+  graduationProject: undefined,
+  hostUser: undefined,
+  id: "",
+  images: [],
+  public: undefined,
+  requireSkills: "",
+  school: "",
+  status: "",
+  tags: [],
+  title: "",
+});
 const projectStore = useProjectStore();
 onMounted(async () => {
-  projectDetail.value = await projectStore.getProjectById(props.projectId);
+  const detail = await projectStore.getProjectById(
+    authStore.userInfo.id,
+    props.projectId,
+    props.includePrivate
+  );
+  Object.assign(projectDetail, detail);
 });
 
 const teamPeoples = computed(() => {
-  const applicants = projectDetail.value.applicants;
+  const applicants = projectDetail.applicants;
   if (!applicants) {
     return;
   }
@@ -39,7 +64,11 @@ const isSlideOverOpen = defineModel();
 </script>
 
 <template>
-  <USlideover prevent-close v-model="isSlideOverOpen">
+  <USlideover
+    v-if="teamPeoples && projectDetail"
+    prevent-close
+    v-model="isSlideOverOpen"
+  >
     <div class="pb-4 overflow-y-scroll">
       <div class="flex justify-end w-full p-4">
         <UButton
@@ -57,6 +86,7 @@ const isSlideOverOpen = defineModel();
 
         <p class="mb-3 text-sm font-bold text-white">{{ "指導者" }}</p>
         <AvatarCard
+          v-if="teamPeoples.mentors.length > 0"
           :avatarURL="teamPeoples.mentors[0].avatarUrl"
           :username="teamPeoples.mentors[0].nickName"
           :email="teamPeoples.mentors[0].email"

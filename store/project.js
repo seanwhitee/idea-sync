@@ -111,14 +111,16 @@ export const useProjectStore = defineStore("project", () => {
     });
   };
 
-  const getProjectById = async (projectId) => {
+  const getProjectById = async (userId, projectId, includePrivate) => {
     const res = await getProjectDetail(
       {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authStore.token.accessToken}`,
       },
       {
-        id: projectId,
+        userId,
+        projectId,
+        includePrivate,
       },
       null,
       "GET"

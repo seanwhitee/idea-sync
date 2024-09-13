@@ -3,7 +3,7 @@ import { z } from "zod";
 import { ref } from "vue";
 
 // api end point
-const registerEndPoint = "http://localhost:8080/api/v1/users/register";
+const registerEndPoint = "http://localhost:8080/api/v1/users/checkUserData";
 
 const submitMessage = ref("");
 // props annotation
@@ -137,13 +137,22 @@ async function onSubmit(event) {
   <RoleSelector :updateRole="updateRole" />
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormGroup label="Email" name="email" class="w-full">
-      <UInput v-model="state.email" class="rounded-md" />
+      <UInput v-model="state.email" class="rounded-md" autocomplete="off" />
     </UFormGroup>
     <UFormGroup label="帳號" name="username" class="w-full">
-      <UInput v-model="state.username" class="rounded-md" />
+      <UInput
+        v-model="state.username"
+        class="rounded-md"
+        autocomplete="username"
+      />
     </UFormGroup>
     <UFormGroup label="密碼" name="password" class="w-full">
-      <UInput v-model="state.password" type="password" class="rounded-md" />
+      <UInput
+        v-model="state.password"
+        type="password"
+        class="rounded-md"
+        autocomplete="current-password"
+      />
     </UFormGroup>
     <div class="flex justify-between w-full gap-1">
       <UFormGroup label="名" name="firstName" class="w-2/3">
