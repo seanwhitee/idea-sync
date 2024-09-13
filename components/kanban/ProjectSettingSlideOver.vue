@@ -5,6 +5,7 @@ import { useProjectStore } from "~/store/project";
 
 const props = defineProps({
   projectId: String,
+  includePrivate: Boolean,
 });
 const isSettingOpen = defineModel();
 const projectStore = useProjectStore();
@@ -15,6 +16,7 @@ const projectDetail = ref({});
 const setting = reactive({
   projectId: props.projectId,
   isPublic: undefined,
+  statusName: "",
 });
 const { fetch: update, isLoading: updateIsLoading } = useCustomFetch(
   "http://localhost:8080/api/v1/project/updateSetting"
@@ -37,8 +39,13 @@ const updateSetting = async () => {
   });
 };
 onMounted(async () => {
-  projectDetail.value = await projectStore.getProjectById(props.projectId);
+  projectDetail.value = await projectStore.getProjectById(
+    authStore.userInfo.id,
+    props.projectId,
+    props.includePrivate
+  );
   setting.isPublic = projectDetail.value.public;
+  setting.statusName = projectDetail.value.status;
 });
 </script>
 

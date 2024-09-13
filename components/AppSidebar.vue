@@ -1,10 +1,16 @@
 <script setup>
-import { ref, computed } from "vue";
-import { useAuth } from "../composable/useAuth";
+import { useAuthStore } from "~/store/auth";
 
 const props = defineProps({
   items: Array,
 });
+
+const emit = defineEmits(["click"]);
+
+const hover = ref(false);
+
+const authStore = useAuthStore();
+
 const navigationItems = computed(() => {
   return props.items.filter((item) => {
     return item.path && item.rule;
@@ -15,20 +21,14 @@ const functionalItems = computed(() => {
     return !item.path && item.rule;
   });
 });
-const isAccountSwitchModalOpen = ref(false);
 </script>
 <template>
-  <UModal v-model="isAccountSwitchModalOpen">
-    <div class="p-10">
-      <h3 class="mb-2 text-2xl font-bold">切換帳號</h3>
-      <p class="mb-6 text-sm text-zinc-500">輸入您的帳號密碼以切換帳號</p>
-      <LoginForm />
-    </div>
-  </UModal>
-
   <Transition name="slide-fade">
     <div
-      class="bottom-0 md:top-0 left-0 h-16 md:h-full w-full md:w-20 lg:w-60 flex md:flex-col items-center justify-center border-t md:border-r border-gray-500/50 px-2 bg-black fixed overflow-y-scroll z-[2]"
+      @mouseover="hover = true"
+      @mouseleave="hover = false"
+      :class="hover ? 'md:w-56 ease-linear' : ''"
+      class="bottom-0 md:top-0 left-0 h-16 md:h-full w-full md:w-20 flex md:flex-col items-center justify-center border-t md:border-r border-gray-500/50 px-2 bg-black fixed overflow-y-scroll z-[2]"
     >
       <NuxtLink
         to="/app-platform/projects"
@@ -38,11 +38,11 @@ const isAccountSwitchModalOpen = ref(false);
         <img
           src="/public/favicon.png"
           alt="logo"
-          class="hidden w-8 h-8 rounded-md md:flex lg:hidden"
+          class="hidden w-8 h-8 rounded-md md:flex"
         />
-        <p class="hidden md:hidden lg:flex">
+        <h2 v-if="hover" class="font-light ps-4">
           Idea<span class="text-violet-500">Sync</span>
-        </p>
+        </h2>
       </NuxtLink>
       <div
         class="flex items-center justify-center w-full pt-4 pb-2 h-4/5 md:flex-col"
@@ -57,22 +57,41 @@ const isAccountSwitchModalOpen = ref(false);
             :to="item.path"
             @click="toggler = false"
           >
-            <BarItem :name="item.name" :icon="item.icon" />
+            <BarItem
+              :name="item.name"
+              :icon="item.icon"
+              :isTextVisible="hover"
+            />
           </NuxtLink>
           <button
             v-for="item in functionalItems"
             :key="item.name"
             class="py-1 mb-2 transition duration-300 ease-in-out rounded-lg w-14 md:w-full hover:bg-zinc-800 focus:outline-none"
-            @click="isAccountSwitchModalOpen = true"
+            @click="emit('click', item.name)"
           >
-            <BarItem :name="item.name" :icon="item.icon" />
+            <BarItem
+              :name="item.name"
+              :icon="item.icon"
+              :isTextVisible="hover"
+            />
           </button>
         </ul>
 
         <div
-          class="items-center justify-center hidden w-20 pb-2 md:flex md:w-full h-14 md:translate-y-14"
+          class="items-center justify-start hidden w-20 gap-4 pb-2 bg-black rounded-full ps-3 md:flex md:w-full h-14 md:translate-y-14"
         >
-          <UserFunctionMenu />
+          <NuxtImg
+            v-if="!hover"
+            :src="authStore.userInfo.avatarUrl"
+            alt="user-avatar"
+            class="w-0 rounded-full md:w-10 md:h-10"
+          />
+          <AvatarCard
+            v-if="hover"
+            :avatarURL="authStore.userInfo.avatarUrl"
+            :username="authStore.userInfo.nickName"
+            :email="authStore.userInfo.email"
+          />
         </div>
       </div>
     </div>

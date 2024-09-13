@@ -3,15 +3,13 @@ import { ref } from "vue";
 import GradientFog from "~/components/GradientFog.vue";
 import PassCodeForm from "~/components/PassCodeForm.vue";
 import RegistrationForm from "~/components/RegistrationForm.vue";
-import { useAuthStore } from "~/store/auth";
-const authStore = useAuthStore();
-const router = useRouter();
-if (authStore.isLogin && authStore.userInfo.roleVerified) {
-  router.push("/app-platform/projects");
-}
+import useCustomFetch from "~/composable/useCustomFetch";
 
+const { fetch: sendEmail } = useCustomFetch(
+  "http://localhost:8080/api/v1/users/sendEmail"
+);
 const step = ref(1);
-let userInfo = {
+const userInfo = reactive({
   username: "",
   password: "",
   nickName: "",
@@ -24,7 +22,7 @@ let userInfo = {
   firstName: "",
   lastName: "",
   roleName: "",
-};
+});
 const passCode = {
   code: 0,
   createAt: new Date().getTime(),
@@ -35,17 +33,16 @@ const generatePassCode = async () => {
   passCode.createAt = new Date().getTime();
   passCode.expiryTime = passCode.createAt + 5 * 60 * 1000;
   // send passCode to user email
-  const response = await $fetch(
-    "http://localhost:8080/api/v1/users/sendEmail?email=" +
-      userInfo.email +
-      "&passCode=" +
-      passCode.code,
+  await sendEmail(
     {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
+      "Content-Type": "application/json",
+    },
+    {
+      email: userInfo.email,
+      passCode: passCode.code,
+    },
+    null,
+    "GET"
   );
 };
 
@@ -53,7 +50,7 @@ const updateStep = (newStep) => {
   step.value = newStep;
 };
 const updateUserInfo = (newUserInfo) => {
-  userInfo = newUserInfo;
+  Object.assign(userInfo, newUserInfo);
 };
 </script>
 <template>

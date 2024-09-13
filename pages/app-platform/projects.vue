@@ -6,12 +6,8 @@ import { useSearchStore } from "~/store/search";
 const authStore = useAuthStore();
 const searchStore = useSearchStore();
 const projectPoolStore = useProjectPoolStore();
-const isLogin = authStore.isLogin;
-const router = useRouter();
 
-if (!isLogin || !authStore.userInfo.roleVerified) {
-  throw new Error("Not authorized");
-}
+const router = useRouter();
 
 projectPoolStore.selectedGroup = "member_recruiting";
 

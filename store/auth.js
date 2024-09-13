@@ -6,22 +6,21 @@ export const useAuthStore = defineStore(
   () => {
     const isLogin = ref(false);
     const userInfo = ref({});
-    const token = reactive({
+    const initialToken = {
       accessToken: undefined,
-    });
+    };
+    const token = reactive({ ...initialToken });
 
-    const roleName = computed(() => {
-      switch (userInfo.value.roleName) {
-        case "creator":
-          return "提案/申請人";
-        case "mentor":
-          return "指導者";
-        case "admin":
-          return "系統管理者";
-      }
-    });
-    return { isLogin, userInfo, roleName, token };
+    const roleName = computed(() => mapRoleName(userInfo.value.roleName));
+    const reset = () => {
+      isLogin.value = false;
+      userInfo.value = {};
+      Object.assign(token, initialToken);
+      sessionStorage.clear();
+    };
+    return { isLogin, userInfo, roleName, token, reset };
   },
+
   {
     persist: {
       storage: sessionStorage,

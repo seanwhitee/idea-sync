@@ -1,16 +1,5 @@
 <script setup>
 import LoginForm from "~/components/LoginForm.vue";
-import { useAuthStore } from "~/store/auth";
-const authStore = useAuthStore();
-const router = useRouter();
-if (authStore.isLogin && authStore.userInfo.roleVerified) {
-  if (authStore.userInfo.roleName === "admin") {
-    router.push("/admin/admin-dashboard");
-  } else {
-    router.push("/app-platform/projects");
-  }
-}
-
 </script>
 <template>
   <GradientFog />
@@ -21,7 +10,7 @@ if (authStore.isLogin && authStore.userInfo.roleVerified) {
       <img
         src="/public/favicon.png"
         alt="favicon"
-        class="w-20 mb-6 shadow-xl translate-x-4 rounded-3xl"
+        class="w-20 mb-6 translate-x-4 shadow-xl rounded-3xl"
       />
       <div
         class="flex items-center justify-start w-full px-4 mb-8 text-lg font-semibold md:text-2xl lg:text-2xl"
@@ -38,11 +27,11 @@ if (authStore.isLogin && authStore.userInfo.roleVerified) {
         class="flex justify-start w-full mt-4 text-xs pe-2 text-whit font-extralight"
       >
         <div class="flex items-center justify-center w-full gap-4">
-          <NuxtLink to="/signup" class="hover:underline">註冊</NuxtLink
-          ><span>|</span
-          ><NuxtLink to="/forgot-password" class="hover:underline"
+          <NuxtLink to="/signup" class="hover:underline">註冊</NuxtLink>
+          <!-- <span>|</span>
+          <NuxtLink to="/forgot-password" class="hover:underline"
             >忘記密碼</NuxtLink
-          >
+          > -->
         </div>
       </div>
     </div>

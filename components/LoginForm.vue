@@ -53,10 +53,19 @@ const onSubmit = async () => {
 <template>
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormGroup label="帳號" name="username" class="w-full">
-      <UInput v-model="state.username" class="rounded-md" />
+      <UInput
+        v-model="state.username"
+        class="rounded-md"
+        autocomplete="username"
+      />
     </UFormGroup>
     <UFormGroup label="密碼" name="password" class="w-full">
-      <UInput v-model="state.password" type="password" class="rounded-md" />
+      <UInput
+        v-model="state.password"
+        type="password"
+        class="rounded-md"
+        autocomplete="current-password"
+      />
     </UFormGroup>
     <div class="w-full">
       <button

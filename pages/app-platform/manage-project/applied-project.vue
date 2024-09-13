@@ -30,13 +30,6 @@ const projectStore = useProjectStore();
 const router = useRouter();
 const projects = ref([]);
 
-if (!authStore.isLogin || !authStore.userInfo.roleVerified) {
-  throw new Error("Not authenticated");
-}
-if (authStore.userInfo.roleName === "admin") {
-  throw new Error("You cannot access this page");
-}
-
 onMounted(async () => {
   projects.value = await projectStore.getProjectAppliedByUser(
     authStore.userInfo.id

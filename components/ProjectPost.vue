@@ -93,9 +93,8 @@ const title = computed(() => {
         :alt="props.project.images[0]"
         class="hidden w-20 h-20 mb-2 md:flex md:h-28 md:w-28"
       />
-      <div class="">
-        <ArchiveButton :project="props.project" />
-      </div>
+
+      <ArchiveButton :project="props.project" />
     </div>
   </div>
 </template>
