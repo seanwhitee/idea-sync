@@ -52,7 +52,9 @@ const teamPeoples = computed(() => {
   }
   return {
     mentors: applicants
-      .map((a) => (a.user.roleName === "mentor" ? a.user : null))
+      .map((a) =>
+        a.user.roleName === "mentor" && a.status === 1 ? a.user : null
+      )
       .filter((user) => user),
     members: applicants
       .map((a) => (a.user.roleName === "creator" ? a.user : null))
