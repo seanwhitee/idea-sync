@@ -116,7 +116,7 @@ import useCustomFetch from "~/composable/useCustomFetch";
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const { fetch: getProjects, isLoading: projectsLoading } = useCustomFetch(
-  "http://localhost:8080/api/v1/project/getProjects"
+  "/api/v1/project/getProjects"
 );
 const projectList = ref([]);
 const slideOverSetting = reactive({
@@ -124,7 +124,7 @@ const slideOverSetting = reactive({
   projectId: "",
 });
 const { fetch: updateSetting } = useCustomFetch(
-  "http://localhost:8080/api/v1/project/updateSetting"
+  "/api/v1/project/updateSetting"
 );
 const toast = useToast();
 const router = useRouter();

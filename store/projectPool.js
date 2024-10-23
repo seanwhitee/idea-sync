@@ -10,7 +10,7 @@ export const useProjectPoolStore = defineStore("projectPool", () => {
   const archives = ref([]);
   const selectedGroup = ref("member_recruiting");
   const { fetch: fetchRecProj, isLoading: projectIsLoading } = useCustomFetch(
-    "http://localhost:8080/api/v1/projectStatus/getRecommendProjectsByStatus"
+    "/api/v1/projectStatus/getRecommendProjectsByStatus"
   );
   const getProjects = async (status) => {
     await fetchRecProj(

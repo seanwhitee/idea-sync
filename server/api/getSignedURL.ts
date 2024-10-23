@@ -1,27 +1,25 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import crypto from "crypto"
+import crypto from "crypto";
 
+const config = useRuntimeConfig();
 const s3 = new S3Client({
-  region: process.env.AWS_BUCKET_REGION!,
+  region: config.awsBucketRegion!,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: config.awsAccessKey!,
+    secretAccessKey: config.awsSecretAccessKey!,
   },
 });
 
-const acceptFileTypes = [
-  "image/png",
-  "image/jpeg",
-];
+const acceptFileTypes = ["image/png", "image/jpeg"];
 
 const maxFileSize = 1024 * 1024 * 10; // 10MB
 
 const generateFileName = (bytes = 32) => {
-  const array = new Uint8Array(bytes)
-  crypto.getRandomValues(array)
-  return [...array].map((b) => b.toString(16).padStart(2, "0")).join("")
-}
+  const array = new Uint8Array(bytes);
+  crypto.getRandomValues(array);
+  return [...array].map((b) => b.toString(16).padStart(2, "0")).join("");
+};
 
 export default defineEventHandler(async (event) => {
   const data = await readBody(event);
@@ -32,7 +30,7 @@ export default defineEventHandler(async (event) => {
       failure: "Not authenticated",
     };
   }
-  
+
   if (!acceptFileTypes.includes(fileType)) {
     return {
       failure: "Invalid file type",
@@ -46,7 +44,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const putObjectCommand = new PutObjectCommand({
-    Bucket: process.env.AWS_BUCKET_NAME!,
+    Bucket: config.awsBucketName!,
     Key: generateFileName(),
     ContentType: fileType,
     ContentLength: size,
@@ -56,7 +54,7 @@ export default defineEventHandler(async (event) => {
   const signedURL = await getSignedUrl(s3, putObjectCommand, {
     expiresIn: 60,
   });
-  
+
   return {
     success: { url: signedURL },
   };

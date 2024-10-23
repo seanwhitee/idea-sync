@@ -26,6 +26,15 @@ export default defineNuxtConfig({
   image: {
     dir: "assets/images",
   },
+  runtimeConfig: {
+    awsAccessKey: "",
+    awsSecretAccessKey: "",
+    awsBucketName: "",
+    awsBucketRegion: "",
+    public: {
+      baseUrl: "",
+    },
+  },
   app: {
     head: {
       meta: [

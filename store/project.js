@@ -23,30 +23,26 @@ export const useProjectStore = defineStore("project", () => {
   const relatedProjects = ref([]);
   const authStore = useAuthStore();
   const { fetch: getProjectsByUser } = useCustomFetch(
-    "http://localhost:8080/api/v1/project/getProjectsByUser"
+    "/api/v1/project/getProjectsByUser"
   );
   const { fetch: getProjectApplied } = useCustomFetch(
-    "http://localhost:8080/api/v1/applicant/getProjectAppliedByUser"
+    "/api/v1/applicant/getProjectAppliedByUser"
   );
 
   const { fetch: getRelated } = useCustomFetch(
-    "http://localhost:8080/api/v1/project/getRelatedProjects"
+    "/api/v1/project/getRelatedProjects"
   );
 
   const { fetch: getProjectDetail } = useCustomFetch(
-    "http://localhost:8080/api/v1/project/getProjectById"
+    "/api/v1/project/getProjectById"
   );
 
-  const { fetch: reject } = useCustomFetch(
-    "http://localhost:8080/api/v1/applicant/rejectApplicant"
-  );
+  const { fetch: reject } = useCustomFetch("/api/v1/applicant/rejectApplicant");
 
-  const { fetch: accept } = useCustomFetch(
-    "http://localhost:8080/api/v1/applicant/acceptApplicant"
-  );
+  const { fetch: accept } = useCustomFetch("/api/v1/applicant/acceptApplicant");
 
   const { fetch: changeProjStatus } = useCustomFetch(
-    "http://localhost:8080/api/v1/project/changeProjectStatus"
+    "/api/v1/project/changeProjectStatus"
   );
 
   const reset = () => {

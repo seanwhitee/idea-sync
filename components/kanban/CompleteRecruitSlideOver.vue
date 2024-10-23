@@ -47,6 +47,7 @@ onMounted(async () => {
 
 const teamPeoples = computed(() => {
   const applicants = projectDetail.applicants;
+
   if (!applicants) {
     return;
   }

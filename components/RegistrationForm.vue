@@ -1,16 +1,14 @@
 <script setup>
 import { z } from "zod";
 import { ref } from "vue";
+import useCustomFetch from "~/composable/useCustomFetch";
 
-// api end point
-const registerEndPoint = "http://localhost:8080/api/v1/users/checkUserData";
+const { fetch } = useCustomFetch("/api/v1/users/checkUserData");
 
 const submitMessage = ref("");
 // props annotation
 const props = defineProps({
   updateUserInfo: Function,
-  updateStep: Function,
-  generatePassCode: Function,
 });
 
 const userRole = ref("creator");
@@ -87,13 +85,12 @@ async function onSubmit(event) {
     result.allowProjectCreate = true;
     result.allowProjectApply = true;
   }
-  await $fetch(registerEndPoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(result),
-  }).then((response) => {
+  await fetch(
+    { "Content-Type": "application/json" },
+    null,
+    JSON.stringify(result),
+    "POST"
+  ).then(async (response) => {
     switch (response) {
       case "user already exist":
         submitMessage.value = "使用者已經存在";
@@ -105,8 +102,7 @@ async function onSubmit(event) {
         submitMessage.value = "電子郵件已經註冊";
         break;
       case "user data is valid":
-        props.updateStep(2);
-        props.updateUserInfo({
+        await props.updateUserInfo({
           username: result.userName,
           password: result.password,
           nickName: result.nickName,
@@ -120,7 +116,6 @@ async function onSubmit(event) {
           lastName: result.lastName,
           roleName: result.userRole.roleName,
         });
-        props.generatePassCode();
         break;
       default:
         break;
@@ -173,14 +168,19 @@ async function onSubmit(event) {
         type="submit"
         class="w-full px-4 py-2 mt-0 font-thin rounded-lg bg-violet-800 hover:bg-violet-800/90"
       >
-        <div class="flex items-center justify-center w-full text-white">
-          驗證Email
+        <div
+          class="flex items-center justify-center w-full font-semibold text-white"
+        >
+          註冊/申請
         </div>
       </button>
     </div>
 
     <!--submit feeback-->
-    <div v-if="submitMessage" class="flex items-center justify-center w-full">
+    <div
+      v-if="submitMessage"
+      class="flex items-center justify-center w-full py-3"
+    >
       <p
         v-if="submitMessage === '註冊成功'"
         class="text-xs text-green-500 font-extralight"
