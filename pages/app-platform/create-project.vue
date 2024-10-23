@@ -18,9 +18,7 @@ const tagInputString = ref("");
 
 const authStore = useAuthStore();
 const projectStore = useProjectStore();
-const { fetch: create } = useCustomFetch(
-  "http://localhost:8080/api/v1/project/create"
-);
+const { fetch: create } = useCustomFetch("/api/v1/project/create");
 
 projectStore.reset();
 

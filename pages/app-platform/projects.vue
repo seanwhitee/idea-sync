@@ -13,7 +13,7 @@ projectPoolStore.selectedGroup = "member_recruiting";
 
 const openSearch = ref(false);
 const { fetch: fetchArc, isLoading: isArcLoading } = useCustomFetch(
-  "http://localhost:8080/api/v1/archive/getArchives"
+  "/api/v1/archive/getArchives"
 );
 
 onMounted(async () => {

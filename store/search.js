@@ -5,9 +5,7 @@ import { useAuthStore } from "./auth";
 export const useSearchStore = defineStore("search", () => {
   const isSearching = ref(false);
   const searchString = ref("");
-  const { fetch: searchProj } = useCustomFetch(
-    "http://localhost:8080/api/v1/project/search"
-  );
+  const { fetch: searchProj } = useCustomFetch("/api/v1/project/search");
   const authStore = useAuthStore();
 
   const startSearch = async (searchString) => {

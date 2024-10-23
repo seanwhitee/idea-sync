@@ -19,7 +19,7 @@ const setting = reactive({
   statusName: "",
 });
 const { fetch: update, isLoading: updateIsLoading } = useCustomFetch(
-  "http://localhost:8080/api/v1/project/updateSetting"
+  "/api/v1/project/updateSetting"
 );
 const updateSetting = async () => {
   await update(

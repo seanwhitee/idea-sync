@@ -20,7 +20,7 @@ const { userAcceptCount, userCommentCount } = useProfileStore(
   route.params.userId
 );
 const { fetch: updateUser, isLoading: updateLoading } = useCustomFetch(
-  "http://localhost:8080/api/v1/users/updateUser"
+  "/api/v1/users/updateUser"
 );
 const personalProjects = ref([]);
 

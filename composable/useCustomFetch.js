@@ -4,6 +4,7 @@
  * @returns
  */
 const useCustomFetch = (endPoint) => {
+  const config = useRuntimeConfig();
   const router = useRouter();
   const isLoading = ref(false);
   const error = ref(null);
@@ -18,7 +19,7 @@ const useCustomFetch = (endPoint) => {
   const fetch = async (headers, params, body, method) => {
     isLoading.value = true;
     try {
-      const data = await $fetch(endPoint, {
+      const data = await $fetch(`${config.public.baseUrl}${endPoint}`, {
         method: method,
         headers: headers,
         params: params,

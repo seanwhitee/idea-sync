@@ -13,13 +13,11 @@ const projectStore = useProjectStore();
 const toast = useToast();
 const { commentChuncks, addComment, addReply } = useComment();
 const { fetch: getProjectDetail } = useCustomFetch(
-  "http://localhost:8080/api/v1/project/getProjectById"
+  "/api/v1/project/getProjectById"
 );
-const { fetch: add } = useCustomFetch(
-  "http://localhost:8080/api/v1/applicant/addApplicant"
-);
+const { fetch: add } = useCustomFetch("/api/v1/applicant/addApplicant");
 const { fetch: deleteAppli } = useCustomFetch(
-  "http://localhost:8080/api/v1/applicant/deleteApplicant"
+  "/api/v1/applicant/deleteApplicant"
 );
 
 const avatarURL = ref("");

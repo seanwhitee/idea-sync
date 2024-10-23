@@ -2,10 +2,12 @@
 import { z } from "zod";
 import { ref } from "vue";
 import { useAuth } from "../composable/useAuth";
+import useCustomFetch from "~/composable/useCustomFetch";
 
 const submitMessage = ref("");
 
 const { login } = useAuth();
+const { fetch } = useCustomFetch("/api/v1/users/login");
 
 const schema = z.object({
   username: z
@@ -28,20 +30,19 @@ const state = reactive({
 });
 
 const onSubmit = async () => {
-  const response = await $fetch(
-    "http://localhost:8080/api/v1/users/login?username=" +
-      state.username +
-      "&password=" +
-      state.password,
+  const response = await fetch(
     {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
+      "Content-Type": "application/json",
+    },
+    {
+      username: state.username,
+      password: state.password,
+    },
+    null,
+    "GET"
   );
 
-  if (response === "") {
+  if (!response) {
     submitMessage.value = "帳號密碼錯誤，或身份尚未通過申請";
   } else {
     // login successfull

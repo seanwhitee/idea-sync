@@ -6,11 +6,9 @@ const projectPoolStore = useProjectPoolStore();
 const authStore = useAuthStore();
 const toast = useToast();
 const { fetch: delFromArchive } = useCustomFetch(
-  "http://localhost:8080/api/v1/archive/deleteArchive"
+  "/api/v1/archive/deleteArchive"
 );
-const { fetch: addArchive } = useCustomFetch(
-  "http://localhost:8080/api/v1/archive/addArchive"
-);
+const { fetch: addArchive } = useCustomFetch("/api/v1/archive/addArchive");
 const props = defineProps({
   project: Object,
 });

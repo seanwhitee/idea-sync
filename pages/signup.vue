@@ -1,14 +1,11 @@
 <script setup>
-import { ref } from "vue";
 import GradientFog from "~/components/GradientFog.vue";
-import PassCodeForm from "~/components/PassCodeForm.vue";
 import RegistrationForm from "~/components/RegistrationForm.vue";
 import useCustomFetch from "~/composable/useCustomFetch";
 
-const { fetch: sendEmail } = useCustomFetch(
-  "http://localhost:8080/api/v1/users/sendEmail"
-);
-const step = ref(1);
+const { fetch } = useCustomFetch("/api/v1/users/saveUserData");
+const router = useRouter();
+const submitMessage = ref("");
 const userInfo = reactive({
   username: "",
   password: "",
@@ -23,34 +20,44 @@ const userInfo = reactive({
   lastName: "",
   roleName: "",
 });
-const passCode = {
-  code: 0,
-  createAt: new Date().getTime(),
-  expiryTime: new Date().getTime() + 5 * 60 * 1000,
-};
-const generatePassCode = async () => {
-  passCode.code = Math.floor(100000 + Math.random() * 900000);
-  passCode.createAt = new Date().getTime();
-  passCode.expiryTime = passCode.createAt + 5 * 60 * 1000;
-  // send passCode to user email
-  await sendEmail(
+const updateUserInfo = async (newUserInfo) => {
+  Object.assign(userInfo, newUserInfo);
+  const response = await fetch(
     {
       "Content-Type": "application/json",
     },
-    {
-      email: userInfo.email,
-      passCode: passCode.code,
-    },
     null,
-    "GET"
+    JSON.stringify({
+      userName: userInfo.username,
+      password: userInfo.password,
+      nickName: userInfo.nickName,
+      profileDescription: userInfo.profileDescription,
+      avatarUrl: userInfo.avatarURL,
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: userInfo.email,
+      roleVerified: userInfo.roleVerified,
+      roleName: userInfo.roleName,
+      allowProjectCreate: userInfo.allowProjectCreate,
+      allowProjectApply: userInfo.allowProjectApply,
+    }),
+    "POST"
   );
-};
-
-const updateStep = (newStep) => {
-  step.value = newStep;
-};
-const updateUserInfo = (newUserInfo) => {
-  Object.assign(userInfo, newUserInfo);
+  switch (response) {
+    case "User data saving failed":
+      submitMessage.value = "註冊失敗";
+      setTimeout(() => {
+        submitMessage.value = "";
+      }, 3000);
+      break;
+    default:
+      submitMessage.value = "註冊成功";
+      setTimeout(() => {
+        router.push("/signin");
+        submitMessage.value = "";
+      }, 3000);
+      break;
+  }
 };
 </script>
 <template>
@@ -75,19 +82,18 @@ const updateUserInfo = (newUserInfo) => {
       </h1>
 
       <div class="w-full p-4">
-        <RegistrationForm
-          v-if="step === 1"
-          :updateStep="updateStep"
-          :updateUserInfo="updateUserInfo"
-          :generatePassCode="generatePassCode"
-        />
-        <PassCodeForm
-          v-else-if="step === 2"
-          :userInfo="userInfo"
-          :passCode="passCode"
-          :generatePassCode="generatePassCode"
-          :userRole="userInfo.roleName"
-        />
+        <RegistrationForm :updateUserInfo="updateUserInfo" />
+        <div class="flex items-center justify-center w-full">
+          <p
+            v-if="submitMessage === '註冊失敗'"
+            class="text-xs text-red-500 font-extralight"
+          >
+            {{ submitMessage }}
+          </p>
+          <p v-else class="text-xs text-green-500 font-extralight">
+            {{ submitMessage }}
+          </p>
+        </div>
         <div
           class="flex justify-start w-full mt-4 text-xs pe-2 text-whit font-extralight"
         >

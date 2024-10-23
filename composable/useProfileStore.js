@@ -6,14 +6,10 @@ export const useProfileStore = (userId) => {
   const userAcceptCount = ref(0);
   const authStore = useAuthStore();
   const { fetch: countComment } = useCustomFetch(
-    "http://localhost:8080/api/v1/users/countUserComments"
+    "/api/v1/users/countUserComments"
   );
-  const { fetch: countAccept } = useCustomFetch(
-    "http://localhost:8080/api/v1/users/countAccept"
-  );
-  const { fetch: getUserDetail } = useCustomFetch(
-    "http://localhost:8080/api/v1/users/getDetail"
-  );
+  const { fetch: countAccept } = useCustomFetch("/api/v1/users/countAccept");
+  const { fetch: getUserDetail } = useCustomFetch("/api/v1/users/getDetail");
   onMounted(async () => {
     userCommentCount.value = await countUserComment(userId);
     userAcceptCount.value = await countUserAccept(userId);

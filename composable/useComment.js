@@ -5,12 +5,8 @@ export const useComment = () => {
   const commentChuncks = ref([]);
   const comment = ref("");
   const authStore = useAuthStore();
-  const { fetch: add } = useCustomFetch(
-    "http://localhost:8080/api/v1/comment/addComment"
-  );
-  const { fetch: replyComment } = useCustomFetch(
-    "http://localhost:8080/api/v1/comment/addReply"
-  );
+  const { fetch: add } = useCustomFetch("/api/v1/comment/addComment");
+  const { fetch: replyComment } = useCustomFetch("/api/v1/comment/addReply");
 
   const addComment = async (userId, projectId, text) => {
     try {

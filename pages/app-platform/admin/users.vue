@@ -113,12 +113,10 @@ import useCustomFetch from "~/composable/useCustomFetch";
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const { fetch: getUsers, isLoading: usersLoading } = useCustomFetch(
-  "http://localhost:8080/api/v1/users/getAllUsers"
+  "/api/v1/users/getAllUsers"
 );
 const userList = ref([]);
-const { fetch: updateRole } = useCustomFetch(
-  "http://localhost:8080/api/v1/users/updateUser"
-);
+const { fetch: updateRole } = useCustomFetch("/api/v1/users/updateUser");
 const toast = useToast();
 onMounted(async () => {
   userList.value = await getUsers(

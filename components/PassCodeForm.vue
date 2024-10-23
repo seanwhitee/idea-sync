@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { set, z } from "zod";
+import useCustomFetch from "~/composable/useCustomFetch";
 const props = defineProps({
   userInfo: Object,
   passCode: Object,
@@ -8,6 +9,7 @@ const props = defineProps({
   userRole: String,
 });
 const router = useRouter();
+const { fetch } = useCustomFetch("/api/v1/users/saveUserData");
 const submitMessage = ref("");
 const schema = z.object({
   passCode: z.number().min(100000).max(999999),
@@ -32,28 +34,26 @@ const onSubmit = async (event) => {
   }
 
   if (successFlag) {
-    const response = await $fetch(
-      "http://localhost:8080/api/v1/users/saveUserData",
+    const response = await fetch(
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userName: props.userInfo.username,
-          password: props.userInfo.password,
-          nickName: props.userInfo.nickName,
-          profileDescription: props.userInfo.profileDescription,
-          avatarUrl: props.userInfo.avatarURL,
-          firstName: props.userInfo.firstName,
-          lastName: props.userInfo.lastName,
-          email: props.userInfo.email,
-          roleVerified: props.userInfo.roleVerified,
-          roleName: props.userRole,
-          allowProjectCreate: props.userInfo.allowProjectCreate,
-          allowProjectApply: props.userInfo.allowProjectApply,
-        }),
-      }
+        "Content-Type": "application/json",
+      },
+      null,
+      JSON.stringify({
+        userName: props.userInfo.username,
+        password: props.userInfo.password,
+        nickName: props.userInfo.nickName,
+        profileDescription: props.userInfo.profileDescription,
+        avatarUrl: props.userInfo.avatarURL,
+        firstName: props.userInfo.firstName,
+        lastName: props.userInfo.lastName,
+        email: props.userInfo.email,
+        roleVerified: props.userInfo.roleVerified,
+        roleName: props.userRole,
+        allowProjectCreate: props.userInfo.allowProjectCreate,
+        allowProjectApply: props.userInfo.allowProjectApply,
+      }),
+      "POST"
     );
     switch (response) {
       case "User data saving failed":
